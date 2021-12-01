@@ -1,0 +1,14 @@
+$body-color: #fff;
+$primary-color: #000248;
+$accent-color: #375bd2;
+$nav-link-color: #ffffffb2;
+$active-nav-bg-color: #f6f7fc;
+$active-nav-link-color: #000248;
+
+:export {
+  primaryColor: $primary-color;
+  accentColor: $accent-color;
+  navLinkColor: $nav-link-color;
+  activeNavBgColor: $active-nav-bg-color;
+  activeNavLinkColor: $active-nav-link-color;
+}

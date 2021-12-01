@@ -1,0 +1,73 @@
+@import './variables.module.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  background-color: $body-color;
+}
+
+.outline-none {
+  outline-color: transparent;
+}
+
+// launchpad styles
+.launchpad-banner {
+  width: 100%;
+  background: linear-gradient(
+    89.86deg,
+    rgba(0, 2, 72, 0.72) 47.48%,
+    rgba(0, 2, 72, 0) 99.82%
+  );
+  background: url(../../public/assets/images/bg-img.svg) no-repeat;
+}
+
+.MuiSvgIcon-root {
+  width: 34px;
+  height: 34px;
+  color: #a9a9a9;
+}
+
+.MuiSvgIcon-root.Mui-active {
+  color: #000248;
+}
+
+.MuiSvgIcon-root.Mui-completed {
+  color: #000248;
+}
+
+.css-8t49rw-MuiStepConnector-line {
+  border-left-width: 2px;
+  border-color: #a9a9a9;
+  min-height: 33px;
+  margin-left: 3px;
+}
+
+.MuiStepContent-root {
+  border-left-width: 2px;
+  border-color: #a9a9a9;
+  margin-left: 15px;
+  padding-left: 33px;
+}
+
+.css-vnkopk-MuiStepLabel-iconContainer {
+  padding-right: 13px;
+}
+
+.MuiStepIcon-text.css-117w1su-MuiStepIcon-text {
+  font-family: Montserrat;
+  font-style: normal;
+}
+
+.MuiStepLabel-label.Mui-completed.css-qivjh0-MuiStepLabel-label h1,
+.MuiStepLabel-label.Mui-active.css-qivjh0-MuiStepLabel-label h1 {
+  font-weight: 700;
+}
