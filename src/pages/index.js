@@ -9,7 +9,6 @@ import { LaunchPadHeader } from '../components/Launchpad/LaunchPad';
 // utils
 import { DIDO_DATA, LISTING_OPTIONS } from '../utils/data';
 
-
 const index = () => {
   const router = useRouter();
   return (
@@ -18,7 +17,7 @@ const index = () => {
         <LaunchPadHeader route='/id' />
 
         <section>
-          <div className='pt-6 flex items-center justify-between gap-x-8'>
+          <div className='pt-10 flex items-center justify-between gap-x-8'>
             <div className='w-3/5'>
               <h1 className='font-semibold font-mont text-base text-[#282828] leading-[20px]'>
                 DeFi Launchpad With Instant Listing And Liquidity Locking

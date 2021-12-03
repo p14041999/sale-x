@@ -31,9 +31,9 @@ const index = () => {
       <div className='py-7'>
         <LaunchPadHeader route='/id/start-sale' />
         {/* section */}
-        <div className='w-full flex items-start justify-between gap-x-5 pt-12'>
-          <div className='w-[53%]'>
-            <div className='flex items-center justify-between'>
+        <div className='w-full flex justify-between gap-x-5 pt-12'>
+          <div className='w-[53%] bg-[#FAFBFD] rounded-[10px] p-4'>
+            <div className='flex justify-between'>
               <div className='flex gap-x-4 items-center'>
                 <img src='/assets/images/pokemon-img.svg' alt='' />
                 <div>
@@ -69,7 +69,7 @@ const index = () => {
               </div>
             </div>
 
-            <p className='font-mont-font-normal text-[12px] text-[#474646] leading-6 pt-10 pb-10'>
+            <p className='font-mont-font-normal text-[12px] text-[#474646] leading-6 pt-5 '>
               Baby Pokemon Monsters are beautifully animated digital
               collectibles with varying scarcities. Each one backed by a unique
               NFT and can be unpacked by using $Baby Pokemon Our vision is best
@@ -105,7 +105,7 @@ const index = () => {
               </div>
             )}
             <div className='border-solid border-[#1A2B6B] border-[0.5px] rounded-[10px] py-6'>
-              <div className='flex flex-col justify-center items-center py-4 px-6 border-b-[0.5px] border-solid border-[#A9A9A9]'>
+              <div className='flex flex-col justify-center py-4 px-4 border-b-[0.5px] border-solid border-[#A9A9A9]'>
                 {pokemon === 'first' && (
                   <div>
                     <h1 className='font-medium font-mont text-center text-lg text-[#474646] leading-[22px]'>
@@ -120,10 +120,10 @@ const index = () => {
                 {pokemon === 'second' && (
                   <div
                     className='flex items-start gap-x-5
-                   justify-between'
+                   '
                   >
-                    <div className='flex-1'>
-                      <div className='rounded-[10px] bg-[#F6F7FC] px-6 h-[64px] flex justify-center items-center'>
+                    <div className='w-1/2'>
+                      <div className='rounded-[10px] bg-[#F6F7FC] px-6 overflow-hidden h-[64px] flex justify-center items-center'>
                         <h1 className='font-mont text-sm text-[#474646]'>
                           1BNB=1000BABYPOKEMON
                         </h1>
@@ -153,7 +153,7 @@ const index = () => {
                   </div>
                 )}
               </div>
-              <div className='flex justify-between gap-x-8 items-center pt-7 px-6'>
+              <div className='flex justify-between gap-x-8 pt-7 px-6'>
                 {[
                   {
                     title: 'Your Contributed amount',
@@ -290,7 +290,7 @@ const index = () => {
               </h1>
 
               {/* reactions */}
-              <div className='grid grid-cols-3 gap-x-12 gap-y-9 justify-center py-5 px-14'>
+              <div className='grid grid-cols-3 gap-x-8 gap-y-9 justify-center py-5 px-14'>
                 {REACTIONS.map((data, i) => (
                   <button
                     key={i}

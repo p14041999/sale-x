@@ -20,12 +20,12 @@ export const LaunchPadHeader = props => {
         <h1 className='font-mont font-semibold text-[#2C2C2C] text-sm'>Back</h1>
       </button>
 
-      <div className='launchpad-banner w-full rounded-[20px] py-7 px-8 mt-7 flex justify-between items-center'>
+      <div className='launchpad-banner rounded-[10px] py-5 px-9 mt-7 flex justify-between items-center'>
         <div>
-          <h1 className='font-bold font-mont text-2xl text-white leading-[29px]'>
+          <h1 className='font-bold font-mont text-base xl:text-xl text-white leading-[29px]'>
             SaleX Launchpad
           </h1>
-          <h1 className='font-medium font-mont text-base text-white pt-2 leading-[20px]'>
+          <h1 className='font-medium font-mont text-[12px] xl:text-sm text-white xl:pt-1 leading-[20px]'>
             {bannerSmallText
               ? bannerSmallText
               : 'DeFi Launchpad With Instant Listing And Liquidity Locking'}
@@ -33,9 +33,9 @@ export const LaunchPadHeader = props => {
         </div>
         <button
           onClick={() => router.push(route)}
-          className='w-[40%] h-[64px] rounded-[10px] bg-white justify-center items-center'
+          className='w-[216px] h-[46px] rounded-[10px] bg-white justify-center items-center'
         >
-          <h1 className='font-bold font-mont text-sm text-custom-accentColor'>
+          <h1 className='font-bold font-mont text-[12px] xl:text-sm text-custom-accentColor'>
             {btnText ? btnText : 'Start Sale'}
           </h1>
         </button>
