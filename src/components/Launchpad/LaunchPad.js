@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 
 export const LaunchPadHeader = props => {
   const router = useRouter();
-  const { route, btnText } = props;
+  const { route, btnText, bannerSmallText } = props;
 
   return (
     <div className='w-full'>
@@ -26,7 +26,9 @@ export const LaunchPadHeader = props => {
             SaleX Launchpad
           </h1>
           <h1 className='font-medium font-mont text-base text-white pt-2 leading-[20px]'>
-            DeFi Launchpad With Instant Listing And Liquidity Locking
+            {bannerSmallText
+              ? bannerSmallText
+              : 'DeFi Launchpad With Instant Listing And Liquidity Locking'}
           </h1>
         </div>
         <button
