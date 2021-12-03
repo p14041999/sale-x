@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 
 //custom
 import { primaryColor } from '../../styles/variables.module.scss';
-import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
+import {
+  LaunchPadHeader,
+  ToggleSwitch,
+} from '../../components/Launchpad/LaunchPad';
 
 // utils
 import { CONTRACT_INFO, REACTIONS } from '../../utils/data';
@@ -12,6 +15,16 @@ const index = () => {
   const router = useRouter();
   const [reaction, setReaction] = useState('');
   const [activeTab, setActiveTab] = useState('comments');
+  const [whitelistEnabled, setWhitelistEnabled] = React.useState(true);
+
+  const handleWhitelist = event => {
+    setWhitelistEnabled(event.target.checked);
+  };
+
+  // backend logic simulation
+  const [pokemon, setPokemon] = useState('first');
+
+  console.log(pokemon);
 
   return (
     <Fragment>
@@ -70,85 +83,156 @@ const index = () => {
               universe of utilization
             </p>
           </div>
-          <div className='flex-1 border-solid border-[#1A2B6B] border-[0.5px] rounded-[10px] py-6'>
-            <div className='flex flex-col justify-center items-center py-4 px-6 border-b-[0.5px] border-solid border-[#A9A9A9]'>
-              <h1 className='font-medium font-mont text-center text-lg text-[#474646] leading-[22px]'>
-                Sale Starts in:
-              </h1>
-              <h1 className='pt-2 text-center font-bold font-mont text-5xl text-custom-accentColor leading-[59px]'>
-                04:06:02:21
-              </h1>
-            </div>
-            <div className='flex justify-between gap-x-8 items-center pt-7 px-6'>
-              {[
-                { title: 'Your Contributed amount', value: '0000.00' },
-                { title: 'Your reserved token', value: '0000BABYPOKEMON' },
-              ].map((data, i) => (
-                <div
-                  key={i}
-                  className={`w-full rounded-[10px] bg-[#DEE6FF] p-[14px] `}
-                >
-                  <h1 className='font-semibold font-mont text-[12px] text-custom-primaryColor'>
-                    {data.title}
+          <div className='flex-1'>
+            {pokemon === 'second' && (
+              <div className='bg-[#FAFBFD] rounded-[10px] py-4 px-6 flex items-center justify-between mb-6'>
+                <div className='flex flex-col justify-center items-center'>
+                  <h1 className='font-medium font-mont text-center text-base text-[#474646] '>
+                    Sale Starts in:
                   </h1>
-                  <input
-                    readOnly
-                    value={data.value}
-                    className='w-full h-[46px] bg-[#fff] rounded-[10px] text-[12px] font-normal font-mont text-custom-primaryColor px-3 py-3 mt-2'
-                  />
+                  <h1 className='text-center font-bold font-mont text-2xl text-custom-accentColor '>
+                    04:06:02:21
+                  </h1>
                 </div>
-              ))}
+                <div>
+                  <h1 className='font-mont text-center pb-3 text-base text-[#000000] leading-[22px]'>
+                    80.065 / 1000 BNB Raised
+                  </h1>
+                  <div className='h-[5px] rounded-[31px] bg-[#DEDEDE] w-[220px] overflow-hidden'>
+                    <div className='h-full w-[50%] bg-[#13D274]'></div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className='border-solid border-[#1A2B6B] border-[0.5px] rounded-[10px] py-6'>
+              <div className='flex flex-col justify-center items-center py-4 px-6 border-b-[0.5px] border-solid border-[#A9A9A9]'>
+                {pokemon === 'first' && (
+                  <div>
+                    <h1 className='font-medium font-mont text-center text-lg text-[#474646] leading-[22px]'>
+                      Sale Starts in:
+                    </h1>
+                    <h1 className='pt-2 text-center font-bold font-mont text-5xl text-custom-accentColor leading-[59px]'>
+                      04:06:02:21
+                    </h1>
+                  </div>
+                )}
+
+                {pokemon === 'second' && (
+                  <div
+                    className='flex items-start gap-x-5
+                   justify-between'
+                  >
+                    <div className='flex-1'>
+                      <div className='rounded-[10px] bg-[#F6F7FC] px-6 h-[64px] flex justify-center items-center'>
+                        <h1 className='font-mont text-sm text-[#474646]'>
+                          1BNB=1000BABYPOKEMON
+                        </h1>
+                      </div>
+                      <h1 className='pt-2 font-mont font-medium text-[12px] text-[#474646]'>
+                        You will get 0HSN
+                      </h1>
+                    </div>
+                    <div className='flex-1'>
+                      <button className='w-full h-[64px] bg-custom-accentColor rounded-[10px] flex justify-center items-center'>
+                        <h1 className='font-mont font-bold text-sm text-white'>
+                          Contribute
+                        </h1>
+                      </button>
+                      <div className='flex justify-end items-center gap-x-1'>
+                        <h1 className='font-mont font-medium text-sm text-[#474646]'>
+                          Auto Claim
+                        </h1>
+
+                        {/* switch */}
+                        <ToggleSwitch
+                          whitelistEnabled={whitelistEnabled}
+                          handleWhitelist={handleWhitelist}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className='flex justify-between gap-x-8 items-center pt-7 px-6'>
+                {[
+                  {
+                    title: 'Your Contributed amount',
+                    value: '0000.00',
+                    pokemon: 'second',
+                  },
+                  {
+                    title: 'Your reserved token',
+                    value: '0000BABYPOKEMON',
+                    pokemon: 'third',
+                  },
+                ].map((data, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setPokemon('second')}
+                    className={`w-full rounded-[10px] bg-[#DEE6FF] p-[14px] `}
+                  >
+                    <h1 className='font-semibold font-mont text-[12px] text-custom-primaryColor'>
+                      {data.title}
+                    </h1>
+                    <input
+                      readOnly
+                      value={data.value}
+                      className='w-full h-[46px] bg-[#fff] rounded-[10px] text-[12px] font-normal font-mont text-custom-primaryColor px-3 py-3 mt-2'
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         {/*  */}
-        <div className='flex gap-x-5'>
-          <div className='w-[53%] py-5 border-t-[0.5px] border-solid border-[#606060]'>
-            <div className='flex flex-col justify-center items-center text-center  '>
-              <div className='px-8'>
-                <h1 className='font-mont text-sm text-[#000000] leading-[20px]'>
-                  Presale Address won't be displayed until tokens are deposited!
-                  Sending Money To a Sale without Deposited Tokens is very
-                  risky!
-                </h1>
-                <h1 className='font-medium font-mont text-[#000] py-4 text-sm'>
-                  Audit Link:
-                  <a
-                    href='https://'
-                    className='font-semibold text-custom-accentColor pl-5'
-                  >
-                    Hypersonic.finance
-                  </a>
-                </h1>
-                <h1 className='font-medium font-mont text-[#000] text-sm'>
-                  Token Address:
-                  <a
-                    href='https://'
-                    className='font-semibold text-custom-accentColor pl-5'
-                  >
-                    0x76e4CB2fcf7f931Fd750e93F443536Ee068d1cdE
-                  </a>
-                </h1>
-              </div>
-
-              <div className='bg-[#FFDDDD] py-[10px] px-11 mt-3 rounded-[5px]'>
-                <h1 className='font-mont font-medium text-[10px] text-[#C80707]'>
-                  Do not send BNB to the token address!
-                </h1>
-              </div>
-
-              {/* warning */}
-              <div className='flex items-center gap-x-3 pt-3'>
-                <img src='/assets/icons/warning-icon.svg' alt='' />
-                <h1 className='font-mont font-semibold text-[12px] text-[#000000]'>
-                  {' '}
-                  This Token uses a Custom Contract
-                </h1>
+        <div className='flex gap-x-5 pt-8'>
+          <div className='w-[53%]'>
+            <div className='flex flex-col justify-center items-center text-center'>
+              <div className='flex flex-col justify-center items-center text-center py-5 rounded-[10px] border-[0.5px] border-solid border-[#606060]'>
+                <div className='px-8'>
+                  <h1 className='font-mont text-sm text-[#000000] leading-[20px]'>
+                    Presale Address won't be displayed until tokens are
+                    deposited! Sending Money To a Sale without Deposited Tokens
+                    is very risky!
+                  </h1>
+                  <h1 className='font-medium font-mont text-[#000] py-4 text-sm'>
+                    Audit Link:
+                    <a
+                      href='https://'
+                      className='font-semibold text-custom-accentColor pl-5'
+                    >
+                      Hypersonic.finance
+                    </a>
+                  </h1>
+                  <h1 className='font-medium font-mont text-[#000] text-sm'>
+                    Token Address:
+                    <a
+                      href='https://'
+                      className='font-semibold text-custom-accentColor pl-5'
+                    >
+                      0x76e4CB2fcf7f931Fd750e93F443536Ee068d1cdE
+                    </a>
+                  </h1>
+                </div>
+                <div className='bg-[#FFDDDD] py-[10px] px-11 mt-3 rounded-[5px]'>
+                  <h1 className='font-mont font-medium text-[10px] text-[#C80707]'>
+                    Do not send BNB to the token address!
+                  </h1>
+                </div>
+                {/* warning */}
+                <div className='flex items-center gap-x-3 pt-3'>
+                  <img src='/assets/icons/warning-icon.svg' alt='' />
+                  <h1 className='font-mont font-semibold text-[12px] text-[#000000]'>
+                    {' '}
+                    This Token uses a Custom Contract
+                  </h1>
+                </div>
               </div>
 
               {/*  */}
-              <div className='w-full mt-10 border-[0.5px] border-solid border-[#1A2B6B] rounded-[10px]'>
+              <div className='w-full mt-7 border-[0.5px] border-solid border-[#1A2B6B] rounded-[10px]'>
                 <div className='border-b-[0.5px] border-solid border-[#D7D7D7] flex justify-center items-center text-center py-2 px-3'>
                   <h1 className='font-mont font-semibold text-[12px] text-custom-primaryColor'>
                     Contract Info

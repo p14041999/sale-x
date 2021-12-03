@@ -6,6 +6,7 @@ import { primaryColor } from '../../styles/variables.module.scss';
 import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
 import {
   LockedTokenCard,
+  LockOptionsModal,
   SaleLockTab,
 } from '../../components/SaleLock/SaleLock';
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../utils/data';
@@ -16,12 +17,17 @@ const index = () => {
   const [selectedVestingPeriod, setSelectedVestingPeriod] = useState(null);
   const [locker, setLocker] = useState(false);
   const [firstView, setFirstView] = useState(true);
+  const [disclaimer, setDisclaimer] = useState(true);
+  const [lockOptionsModal, setLockOptionsModal] = useState(false);
+  const [activeLockOption, setActiveLockOption] = useState('self');
 
+  const handleLockOptions = value => setActiveLockOption(value);
   const handleLocker = () => setLocker(!locker);
-
+  const handleDisclaimer = () => setDisclaimer(prevState => !prevState);
   const handleFirstView = () => setFirstView(!firstView);
-
   const handleActiveTab = value => setActiveTab(value);
+  const handleLockOptionsModal = () => setLockOptionsModal(!lockOptionsModal);
+
   return (
     <Fragment>
       <div className='py-7'>
@@ -198,7 +204,10 @@ const index = () => {
                       </div>
 
                       <div className='flex items-center gap-x-8 pt-6'>
-                        <button className='outline-none flex-1 h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'>
+                        <button
+                          onClick={handleLockOptionsModal}
+                          className='outline-none flex-1 h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
+                        >
                           <h1 className='font-mont font-bold text-sm text-white leading-6'>
                             Approve
                           </h1>
@@ -278,10 +287,10 @@ const index = () => {
 
               {!firstView && (
                 <div className='py-8 flex gap-x-6 w-full'>
-                  <div className='w-[45%] bg-white border-[0.5px] border-solid border-[#1A2B6B] rounded-[10px] py-5 px-4'>
+                  <div className='w-[40%] bg-white border-[0.5px] border-solid border-[#1A2B6B] rounded-[10px] py-5 px-4'>
                     <div className='w-full pb-3 border-b-[0.5px] border-solid border-[#A9A9A9]'>
                       <div className='w-[fit-content] p-1 bg-[#F6F7FC] rounded-[10px] flex gap-x-1'>
-                        <div className='border-r-[0.5px] p-1 border-solid border-[#606060]'>
+                        <div className='border-r-[0.5px] p-1 border-solid border-[#A9A9A9]'>
                           <h1 className='font-medium font-mont text-[12px] text-[#474646]'>
                             Owner
                           </h1>
@@ -318,13 +327,70 @@ const index = () => {
                       ))}
                     </div>
                   </div>
-                  <div className='flex-1'></div>
+                  <div className='flex-1'>
+                    <div
+                      onClick={handleDisclaimer}
+                      className='border-[0.5px] border-solid border-[#A9A9A9] bg-[#F6F7FC] rounded-[10px] py-4 pl-5 pr-5 w-full flex items-center'
+                    >
+                      <div className='flex items-center justify-between gap-x-10 pl-4 pr-4'>
+                        <h1 className='font-mont font-semibold text-sm text-custom-accentColor underline'>
+                          LP TOKEN Address
+                        </h1>
+                        <h1 className='font-mont font-semibold text-sm text-custom-accentColor underline'>
+                          WBNB Address
+                        </h1>
+                      </div>
+                      <div className='border-l-[0.5px] border-solid border-[#A9A9A9] pl-4'>
+                        <h1 className='font-mont text-lg font-medium text-[#474646]'>
+                          Timeline to next unlock
+                        </h1>
+                        <h1 className='pt-2 pb-1'>
+                          <span className='font-mont text-5xl font-bold text-custom-accentColor'>
+                            64
+                          </span>
+                          <span className='pl-4 font-mont text-lg font-semibold uppercase text-[#474646]'>
+                            DAYS
+                          </span>
+                        </h1>
+                        <h1 className='font-medium text-sm text-[#2C2C2C]'>
+                          5h:33m:22s
+                        </h1>
+                      </div>
+                    </div>
+                    <div className='mt-6 border-[0.5px] border-solid border-[#A9A9A9] bg-[#F6F7FC] rounded-[10px] py-5 px-7 w-full'>
+                      {disclaimer && (
+                        <div>
+                          <h1 className='font-mont font-semibold text-lg text-[#474646]'>
+                            Disclaimer
+                          </h1>
+                          <p className='font-mont text-sm text-[#E21010] leading-5 pt-3'>
+                            Please be aware that only the LP Tokens are locked
+                            in the contract. Circulating tokens are not locked
+                            here and any unlocked circulating tokens can be sold
+                            at any time to withdraw the underlying liquidity!
+                            Please always do strong research before investing in
+                            any products.
+                          </p>
+                        </div>
+                      )}
+
+                      {!disclaimer && <div>Vesting Table</div>}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
           </SaleLockTab>
         </div>
       </div>
+
+      {lockOptionsModal && (
+        <LockOptionsModal
+          handleToggle={handleLockOptionsModal}
+          activeLockOption={activeLockOption}
+          handleLockOptions={handleLockOptions}
+        />
+      )}
     </Fragment>
   );
 };

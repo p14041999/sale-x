@@ -11,6 +11,7 @@ const index = () => {
   const handleWhitelist = event => {
     setWhitelistEnabled(event.target.checked);
   };
+
   return (
     <Fragment>
       <div className='py-7'>
