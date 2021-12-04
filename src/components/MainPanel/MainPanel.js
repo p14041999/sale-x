@@ -17,7 +17,7 @@ const MainPanel = ({ children }) => {
     <main className='flex-1 px-5 py-5 lg:pl-7 xl:pl-10 lg:pr-5  h-screen overflow-auto'>
       {/* top section */}
       {/* mobile nav */}
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between lg:hidden'>
         <div className='logo'>
           <img src='/assets/icons/logo-m.svg' alt='' />
         </div>
@@ -134,6 +134,12 @@ const DropdownStyles = {
     fontWeight: 400,
     fontFamily: 'Montserrat',
     color: primaryColor,
+  }),
+  dropdownIndicator: styles => ({
+    ...styles,
+    fontWeight: 700,
+    fontFamily: 'Montserrat',
+    color: '#000000',
   }),
   control: (styles, state) => ({
     display: 'flex',

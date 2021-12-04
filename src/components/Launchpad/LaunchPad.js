@@ -56,6 +56,7 @@ export const ToggleSwitch = props => {
     width: 42,
     height: 26,
     padding: 0,
+
     '& .MuiSwitch-switchBase': {
       padding: 0,
       margin: 2,
@@ -116,12 +117,16 @@ export const ProgressBar = props => {
     height: 17,
     width: 284,
     borderRadius: 10,
+
     [`&.${linearProgressClasses.colorPrimary}`]: {
       backgroundColor: '#DCCFF854',
     },
     [`& .${linearProgressClasses.bar}`]: {
       borderRadius: 5,
       backgroundColor: '#13D274',
+    },
+    [theme.breakpoints.down('md')]: {
+      height: 9,
     },
   }));
   return <BorderLinearProgress variant='determinate' value={10} />;

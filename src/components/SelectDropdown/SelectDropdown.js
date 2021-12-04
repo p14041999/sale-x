@@ -31,12 +31,20 @@ const listingStyles = {
     fontWeight: 500,
     fontFamily: 'Montserrat',
     color: primaryColor,
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      fontSize: 12,
+    },
   }),
   placeholder: styles => ({
     ...styles,
     fontSize: '16px',
     color: '#393939',
     padding: 0,
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      fontSize: 12,
+    },
   }),
   control: (styles, state) => ({
     display: 'flex',
@@ -48,8 +56,13 @@ const listingStyles = {
     height: 64,
     border: '1px solid #474646',
     borderRadius: 10,
-    // width: 200,
     width: '100%',
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      height: 46,
+      padding: 0,
+      width: 130,
+    },
   }),
 };
 

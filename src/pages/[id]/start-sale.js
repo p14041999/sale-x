@@ -11,56 +11,7 @@ import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
 import SelectDropdown from '../../components/SelectDropdown/SelectDropdown';
 
 // utils
-import { EXCHANGE_OPTIONS } from '../../utils/data';
-
-const steps = [
-  {
-    label: 'Token Address',
-    description: `For each ad campaign that you create, you can control how much
-                you're willing to spend on clicks and conversions, which networks
-                and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: 'Presale Rate',
-    description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
-  },
-  {
-    label: 'Soft/Hard Cap',
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-  },
-  {
-    label: 'Soft/Hard Cap',
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-  },
-  {
-    label: 'Contribution Limits',
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-  },
-  {
-    label: 'Select Exchange for Listing',
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-  },
-  {
-    label: 'Exchange Liquidity(Change to exchange selected above)',
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-  },
-];
+import { EXCHANGE_OPTIONS } from '../../Utils/data';
 
 const index = () => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -85,15 +36,15 @@ const index = () => {
         {/* start sale */}
         <div className='pt-14'>
           <div>
-            <h1 className='font-bold font-mont text-[32px] leading-[39px] text-custom-primaryColor'>
+            <h1 className='font-bold font-mont text-2xl lg:text-3xl xl:text-[32px] lg:leading-[39px] text-custom-primaryColor'>
               Start Sale
             </h1>
-            <h1 className='font-mont text-base text-[#474646] pt-1'>
+            <h1 className='font-mont text-sm xl:text-base text-[#474646] pt-1'>
               Get started in just a few simple steps!
             </h1>
           </div>
-          <div className='py-12 px-8 rounded-[10px] bg-[#F6F7FC] mt-5 flex flex-col gap-y-8'>
-            <p className='font-mont text-base leading-6 text-[#000000]'>
+          <div className='hidden py-6 px-5 xl:py-12 xl:px-8 rounded-[10px] bg-[#F6F7FC] mt-5 lg:flex flex-col gap-y-8'>
+            <p className='font-mont text-sm xl:text-base leading-6 text-[#000000]'>
               Disclaimer: This process is entirely decentralized, we cannot be
               held responsible for incorrect entry of information or be held
               liable for anything related to your use of our platform. Please
@@ -102,19 +53,19 @@ const index = () => {
               regulations.
             </p>
 
-            <h1 className='font-mont text-base leading-6 text-[#000000]'>
+            <h1 className='font-mont text-sm xl:text-base xl:leading-6 text-[#000000]'>
               This is a beta version! We cannot guarantee there will be no bugs.
               Use at your own risk!
             </h1>
 
-            <h1 className='font-mont text-base leading-6 text-[#C80707]'>
+            <h1 className='font-mont text-sm xl:text-base leading-6 text-[#C80707]'>
               For tokens with burns, rebase or other special transfers please
               ensure you have a way to whitelist multiple addresses or turn off
               the special transfer events (By setting fees to 0 for example for
               the duration of the presale)
             </h1>
 
-            <h1 className='font-mont font-bold text-base leading-6 text-custom-accentColor'>
+            <h1 className='font-mont font-bold text-sm xl:text-base leading-6 text-custom-accentColor'>
               Current Fees: 1 BNB + 2% of Tokens Sold + 2% of BNB Raised
             </h1>
           </div>
@@ -125,40 +76,43 @@ const index = () => {
           <Stepper activeStep={activeStep} orientation='vertical'>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Token Address
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Enter your token address
                   </h1>
                   <input
                     type='text'
-                    className='w-[80%] outline-none pl-7 pr-5 bg-[#F6F7FC] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                    className='w-full lg:w-[80%] outline-none pl-7 pr-5 bg-[#F6F7FC] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                   />
 
                   <div className='pt-2 flex flex-col gap-y-2'>
-                    <h1 className='font-mont text-sm text-[#000000] leading-6'>
+                    <h1 className='font-mont text-[12px] lg:text-sm text-[#000000] leading-6'>
                       Token Name:
                     </h1>
-                    <h1 className='font-mont text-sm text-[#000000] leading-6'>
+                    <h1 className='font-mont text-[12px] lg:text-sm text-[#000000] leading-6'>
                       Token Symbol:
                     </h1>
-                    <h1 className='font-mont text-sm text-[#000000] leading-6'>
+                    <h1 className='font-mont text-[12px] lg:text-sm text-[#000000] leading-6'>
                       Token Symbol:
                     </h1>
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-4'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -168,30 +122,33 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Presale Rate
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Enter your presale price: (If I pay 1 BNB, how many tokens
                     do I get?)
                   </h1>
                   <input
                     type='text'
                     placeholder='Ex. 600'
-                    className='w-[80%] outline-none pl-7 pr-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                    className='w-full lg:w-[80%] outline-none pl-7 pr-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                   />
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -201,22 +158,22 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Soft/Hard Cap
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Enter your presale price: (If I pay 1 BNB, how many tokens
                     do I get?)
                   </h1>
 
-                  <div className='flex items-center gap-x-6 pt-3'>
+                  <div className='flex flex-col lg:flex-row items-center gap-6 pt-3'>
                     <div>
                       <label
                         htmlFor='soft-cap'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Soft Cap:
                       </label>
@@ -224,13 +181,13 @@ const index = () => {
                         id='soft-cap'
                         type='text'
                         placeholder='Ex. 600'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='hard-cap'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Hard Cap:
                       </label>
@@ -238,19 +195,22 @@ const index = () => {
                         id='hard-cap'
                         type='text'
                         placeholder='Ex. 600'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -260,22 +220,22 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Contribution Limits
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Enter the minimum and maximum amounts each wallet can
                     contribute: (min,max)
                   </h1>
 
-                  <div className='flex items-center gap-x-6 pt-3'>
+                  <div className='flex flex-col lg:flex-row items-center gap-6 pt-3'>
                     <div>
                       <label
                         htmlFor='soft-cap'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Minimum Contribution Limit:
                       </label>
@@ -283,13 +243,13 @@ const index = () => {
                         id='soft-cap'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='hard-cap'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Maximum Contribution Limit:
                       </label>
@@ -297,19 +257,22 @@ const index = () => {
                         id='hard-cap'
                         type='text'
                         placeholder='Ex. 0.3'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -319,31 +282,34 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Select Exchange
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Select exchange for token to be listed on
                   </h1>
 
-                  <div className='w-[184px] pt-3'>
+                  <div className='w-full lg:w-[184px] pt-3'>
                     <SelectDropdown
                       placeholder='Pancakeswap'
                       options={EXCHANGE_OPTIONS}
                     />
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -353,13 +319,13 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Exchange Liquidity
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Enter the percentage of raised funds that should be
                     allocated to Liquidity on Exchange (Min 51%, Max 100%, We
                     recommend {'>'} 70%)
@@ -370,18 +336,21 @@ const index = () => {
                       id='soft-cap'
                       type='text'
                       placeholder='Ex. 60'
-                      className='w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                      className='w-full lg:w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                     />
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -391,13 +360,13 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Exchange Listing Rate
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Enter the PancakeSwap listing price: (If I buy 1 BNB worth
                     on PancakeSwap how many tokens do I get? Usually this amount
                     is lower than presale rate to allow for a higher listing
@@ -409,18 +378,21 @@ const index = () => {
                       id='soft-cap'
                       type='text'
                       placeholder='Ex. 40'
-                      className='w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                      className='w-full lg:w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                     />
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -430,13 +402,13 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Audit link
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Enter audit url
                   </h1>
 
@@ -445,18 +417,21 @@ const index = () => {
                       id='soft-cap'
                       type='text'
                       placeholder=''
-                      className='w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                      className='w-full lg:w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                     />
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -466,13 +441,13 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Additional Information
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Please fill out the additional information below to display
                     it on your presale. (Information in this section is
                     optional, but a description and logo link is recommended)
@@ -487,7 +462,7 @@ const index = () => {
                     <div>
                       <label
                         htmlFor='logo-link'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Logo Link: (URL must end with a supported image
                         extension png, jpg, jpeg or gif)
@@ -496,13 +471,13 @@ const index = () => {
                         id='logo-link'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='website-link'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Website Link:
                       </label>
@@ -510,13 +485,13 @@ const index = () => {
                         id='website-link'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='github-link'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Github Link:
                       </label>
@@ -524,13 +499,13 @@ const index = () => {
                         id='github-link'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='twitter-link'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Twitter Link:
                       </label>
@@ -538,13 +513,13 @@ const index = () => {
                         id='twitter-link'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='reddit-link'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Reddit Link:
                       </label>
@@ -552,13 +527,13 @@ const index = () => {
                         id='reddit-link'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='telegram-link'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Telegram Link:
                       </label>
@@ -566,13 +541,13 @@ const index = () => {
                         id='telegram-link'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='project-desc'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Project Description:
                       </label>
@@ -580,13 +555,13 @@ const index = () => {
                         id='project-desc'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                     <div>
                       <label
                         htmlFor='update'
-                        className='font-mont font-medium text-sm text-custom-primaryColor'
+                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                       >
                         Any update you want to provide to participants:
                       </label>
@@ -594,19 +569,22 @@ const index = () => {
                         id='update'
                         type='text'
                         placeholder='Ex. 0.1'
-                        className='w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                       />
                     </div>
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -616,23 +594,23 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Timings
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#4A4A4A] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
                     Please set the start and end time for the following
                     parameters!
                   </h1>
 
                   <div className='pt-3 flex flex-col gap-4'>
-                    <div className='flex items-center gap-x-6 '>
+                    <div className='flex flex-col lg:flex-row items-center gap-x-6 '>
                       <div>
                         <label
                           htmlFor='Start Time'
-                          className='font-mont font-medium text-sm text-custom-primaryColor'
+                          className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                         >
                           Presale Start/End Time
                         </label>
@@ -640,13 +618,13 @@ const index = () => {
                           id='Start Time'
                           type='text'
                           placeholder='Start Time'
-                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                         />
                       </div>
                       <div>
                         <label
                           htmlFor='end-time'
-                          className='font-mont font-medium text-sm text-custom-primaryColor'
+                          className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                         >
                           Presale Start/End Time
                         </label>
@@ -654,7 +632,7 @@ const index = () => {
                           id='end-time'
                           type='text'
                           placeholder='End Time'
-                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                         />
                       </div>
                     </div>
@@ -662,7 +640,7 @@ const index = () => {
                       <div>
                         <label
                           htmlFor='Liquidity Lockup Time'
-                          className='font-mont font-medium text-sm text-custom-primaryColor'
+                          className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
                         >
                           Liquidity Lockup Time
                         </label>
@@ -670,20 +648,23 @@ const index = () => {
                           id='Liquidity Lockup Time'
                           type='text'
                           placeholder='Liquidity Lockup Time'
-                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-sm text-[#000000] font-medium'
+                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className='flex items-center gap-x-6 pt-6'>
+                  <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
-                      <h1 className='font-mont text-sm text-[#A9A9A9] leading-6'>
+                      <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
                     </button>
-                    <button onClick={handleNext} className='outline-none'>
-                      <h1 className='font-mont font-semibold underline text-sm text-custom-accentColor leading-6'>
+                    <button
+                      onClick={handleNext}
+                      className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
+                    >
+                      <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
                         Next
                       </h1>
                     </button>
@@ -693,18 +674,18 @@ const index = () => {
             </Step>
             <Step>
               <StepLabel>
-                <h1 className='font-medium font-mont text-base text-custom-primaryColor'>
+                <h1 className='font-medium font-mont text-sm lg:text-base text-custom-primaryColor'>
                   Finalize
                 </h1>
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-sm text-[#000000] leading-6'>
+                  <h1 className='font-mont text-[12px] lg:text-sm text-[#000000] leading-6'>
                     Review your details below then press submit to create your
                     presale on the DxSale <br /> deployer! Or press edit to go
                     back and edit information
                   </h1>
-                  <h1 className='font-mont font-semibold text-sm text-[#2F2F2F] pt-2 leading-6'>
+                  <h1 className='font-mont font-semibold text-[12px] lg:text-sm text-[#2F2F2F] pt-2 leading-6'>
                     Warning: Once submitted this information can never be
                     changed!
                   </h1>
@@ -738,7 +719,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='Token Name'
-                        className='w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                     <div>
@@ -746,7 +727,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='Presale Rate (Per BNB)'
-                        className='w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                     <div>
@@ -754,7 +735,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='Presale Rate (Per BNB)'
-                        className='w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                     <div>
@@ -766,13 +747,13 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Soft Cap:'
-                          className='w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                         <input
                           type='text'
                           readOnly
                           placeholder='Hard Cap:'
-                          className='w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -785,13 +766,13 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Min:'
-                          className='w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                         <input
                           type='text'
                           readOnly
                           placeholder='Max:'
-                          className='w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -804,13 +785,13 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Starts: 11 AUG 2021 at 00:41'
-                          className='w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[10px] lg:text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                         <input
                           type='text'
                           readOnly
                           placeholder='Ends: 11 AUG 2021 at 00:41'
-                          className='w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[10px] lg:text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -823,13 +804,13 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='%'
-                          className='w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                         <input
                           type='text'
                           readOnly
                           placeholder='Ends: 11 AUG 2021 at 00:41'
-                          className='w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -838,7 +819,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='PancakeSwap Rate (Per BNB)'
-                        className='w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                   </form>
@@ -846,17 +827,17 @@ const index = () => {
                   <div className='flex items-center gap-x-6 pt-11'>
                     <button
                       onClick={handleBack}
-                      className='outline-none w-[284px] h-[64px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
+                      className='outline-none w-[284px] h-[46px] lg:h-[64px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
                     >
-                      <h1 className='font-mont font-bold text-sm text-custom-accentColor leading-6'>
+                      <h1 className='font-mont font-bold text-[12px] lg:text-sm text-custom-accentColor leading-6'>
                         Edit
                       </h1>
                     </button>
                     <button
                       onClick={handleNext}
-                      className='outline-none w-[284px] h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
+                      className='outline-none w-[284px] h-[46px] lg:h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
                     >
-                      <h1 className='font-mont font-bold text-sm text-white leading-6'>
+                      <h1 className='font-mont font-bold text-[12px] lg:text-sm text-white leading-6'>
                         Submit
                       </h1>
                     </button>

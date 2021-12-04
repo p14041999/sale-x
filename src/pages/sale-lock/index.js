@@ -9,7 +9,7 @@ import {
   LockOptionsModal,
   SaleLockTab,
 } from '../../components/SaleLock/SaleLock';
-import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../utils/data';
+import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
 
 const index = () => {
   const [activeTab, setActiveTab] = useState('Lock Liquidity');
