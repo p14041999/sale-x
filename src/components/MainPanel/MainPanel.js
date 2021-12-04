@@ -1,13 +1,37 @@
+import React, { useState } from 'react';
+import Select from 'react-select';
+
+import { primaryColor } from '../../styles/variables.module.scss';
+
+// dummy
+const options = [
+  { value: '23eabghd34nrn3nejdks', label: '23eabghd34nrn3nejdks' },
+  { value: '23eabghd34nrn3nejdks', label: '23eabghd34nrn3nejdks' },
+  { value: '23eabghd34nrn3nejdks', label: '23eabghd34nrn3nejdks' },
+];
+
 const MainPanel = ({ children }) => {
+  const [selectedOption, setSelectedOption] = useState(null);
+
   return (
-    <main className='flex-1 pl-7 xl:pl-10 pr-5 py-5 h-screen overflow-auto'>
+    <main className='flex-1 px-5 py-5 lg:pl-7 xl:pl-10 lg:pr-5  h-screen overflow-auto'>
       {/* top section */}
       {/* mobile nav */}
       <div className='flex items-center justify-between'>
         <div className='logo'>
           <img src='/assets/icons/logo-m.svg' alt='' />
-
-          <div className='flex items-center gap-x-3'></div>
+        </div>
+        <div className='flex items-center gap-x-2'>
+          <Select
+            defaultValue={selectedOption}
+            placeholder='23eabghd34nrn3nejdks'
+            onChange={setSelectedOption}
+            options={options}
+            styles={DropdownStyles}
+          />
+          <button className='outline-none'>
+            <img src='/assets/icons/hamburger-menu.svg' alt='' />
+          </button>
         </div>
       </div>
 
@@ -50,6 +74,24 @@ const MainPanel = ({ children }) => {
 
       {/* main section */}
       {children}
+
+      <div className='lg:hidden py-6 flex flex-col items-center gap-y-4'>
+        <img src='/assets/icons/logo-m.svg' alt='' />
+        <div className='flex flex-col justify-center items-center gap-y-3'>
+          <a
+            href='https://'
+            className='font-mont font-semibold text-sm text-[#A9A9A9]'
+          >
+            Terms and Condition
+          </a>
+          <a
+            href='https://'
+            className='font-mont font-semibold text-sm text-[#A9A9A9]'
+          >
+            Privacy policy
+          </a>
+        </div>
+      </div>
     </main>
   );
 };
@@ -71,4 +113,37 @@ const PanelCard = props => {
       {children}
     </div>
   );
+};
+
+const DropdownStyles = {
+  indicatorSeparator: styles => ({
+    ...styles,
+    border: 'none',
+    display: 'none',
+  }),
+  input: styles => ({
+    ...styles,
+    fontSize: '12px',
+    fontWeight: 400,
+    fontFamily: 'Montserrat',
+    color: primaryColor,
+  }),
+  placeholder: styles => ({
+    ...styles,
+    fontSize: '12px',
+    fontWeight: 400,
+    fontFamily: 'Montserrat',
+    color: primaryColor,
+  }),
+  control: (styles, state) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 5px',
+    lineHeight: 1.25,
+    backgroundColor: '#DEE6FF',
+    border: 'none',
+    height: 39,
+    borderRadius: 5,
+    width: 190,
+  }),
 };

@@ -14,13 +14,13 @@ export const LaunchPadHeader = props => {
     <div className='w-full'>
       <button
         onClick={() => router.back()}
-        className='outline-none flex items-center gap-x-2'
+        className='outline-none hidden lg:flex items-center gap-x-2'
       >
         <img src='/assets/icons/arrow-left.svg' alt='' />
         <h1 className='font-mont font-semibold text-[#2C2C2C] text-sm'>Back</h1>
       </button>
 
-      <div className='launchpad-banner rounded-[10px] py-5 px-9 mt-7 flex justify-between items-center'>
+      <div className='launchpad-banner rounded-[10px] py-5 px-9 mt-3 lg:mt-7 flex justify-center lg:justify-between items-center text-center lg:text-left'>
         <div>
           <h1 className='font-bold font-mont text-base xl:text-xl text-white leading-[29px]'>
             SaleX Launchpad
@@ -33,7 +33,7 @@ export const LaunchPadHeader = props => {
         </div>
         <button
           onClick={() => router.push(route)}
-          className='w-[216px] h-[46px] rounded-[10px] bg-white justify-center items-center'
+          className='hidden lg:block w-[216px] h-[46px] rounded-[10px] bg-white justify-center items-center'
         >
           <h1 className='font-bold font-mont text-[12px] xl:text-sm text-custom-accentColor'>
             {btnText ? btnText : 'Start Sale'}

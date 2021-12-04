@@ -38,42 +38,42 @@ const index = () => {
         />
 
         {/* tabs and tab contents */}
-        <div className='pt-10'>
+        <div className='pt-8 lg:pt-10'>
           {/* tab */}
           <SaleLockTab activeTab={activeTab} handleActiveTab={handleActiveTab}>
             <div title='Lock Liquidity'>
-              <div className='py-16 flex flex-col items-center'>
-                <h1 className='font-semibold text-lg xl:text-2xl text-center font-mont text-custom-primaryColor leading-[29px]'>
+              <div className='py-8 lg:py-16 flex flex-col items-center'>
+                <h1 className='font-semibold text-base lg:text-lg xl:text-2xl text-center font-mont text-custom-primaryColor leading-[29px]'>
                   {locker
                     ? 'Salex lock Token Locker'
                     : 'Salex lock Liquidity Locker'}
                 </h1>
-                <h1 className='font-medium pt-1 xl:pt-5 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-40'>
+                <h1 className='font-medium pt-1 xl:pt-5 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-10 lg:px-40'>
                   Use the Salex lock Liquidity Locker to lock your LP tokens to
                   show your <br /> investors proof of locked liquidity!
                 </h1>
-                <div className='pt-8 w-[60%]'>
+                <div className='pt-8 w-full lg:w-[60%]'>
                   <div>
                     <h1
                       htmlFor='pair'
-                      className='font-mont text-left font-medium text-sm xl:text-base text-[#474646]'
+                      className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'
                     >
                       Enter Nan Pair Address
                     </h1>
                     <input
                       id='pair'
                       type='text'
-                      className='w-full block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[56px] xl:h-[64px] mt-2 rounded-[10px] text-[12px] xl:text-sm text-[#000000] font-medium'
+                      className='w-full block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] text-[12px] xl:text-sm text-[#000000] font-medium'
                     />
                   </div>
 
-                  <div className='bg-[#F1EAFF] mt-2 w-[fit-content] p-[8px] rounded-[10px]'>
-                    <h1 className='font-semibold font-mont text-[12px] text-custom-accentColor'>
+                  <div className='bg-[#F1EAFF] mt-2 w-[fit-content] p-2 lg:p-2 rounded-[2px] lg:rounded-[10px]'>
+                    <h1 className='font-semibold font-mont text-[8px] lg:text-[12px] text-custom-accentColor'>
                       Token Locker Fees 0.1 nan (Flat Rate)
                     </h1>
                   </div>
 
-                  <div className='pt-6 flex flex-col gap-y-3'>
+                  <div className='pt-9 lg:pt-6 flex flex-col gap-y-2 lg:gap-y-3'>
                     <h1 className='font-medium font-mont text-[12px] xl:text-sm text-[#000]'>
                       {locker
                         ? 'Token Info'
@@ -111,10 +111,10 @@ const index = () => {
                   {/* inputs */}
                   <div>
                     <div className='pt-8'>
-                      <h1 className='font-mont text-left font-medium text-sm xl:text-base text-[#474646]'>
+                      <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
                         Amount to lock
                       </h1>
-                      <div className='w-full bg-[#F6F7FC] h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
+                      <div className='w-full bg-[#F6F7FC] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
                         <input
                           id='pair'
                           type='text'
@@ -127,14 +127,14 @@ const index = () => {
                     </div>
                     <div className='pt-8'>
                       <div className='flex items-center justify-between'>
-                        <h1 className='font-mont text-left font-medium text-sm xl:text-base text-[#474646]'>
+                        <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
                           Liquidity Unlock time
                         </h1>
-                        <h1 className='font-mont text-left font-medium text-[12px] text-[#A9A9A9]'>
+                        <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
                           November 02, 2021
                         </h1>
                       </div>
-                      <div className='w-full bg-[#F6F7FC] h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between'>
+                      <div className='w-full bg-[#F6F7FC] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between'>
                         <input
                           id='pair'
                           type='text'
@@ -153,7 +153,7 @@ const index = () => {
 
                       {locker && (
                         <div className='pt-8'>
-                          <h1 className='font-mont text-left font-medium text-sm xl:text-base text-[#474646]'>
+                          <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
                             Select Vesting period
                           </h1>
                           <div className='mt-2 w-full'>
@@ -170,34 +170,34 @@ const index = () => {
 
                       <div className='pt-12 flex flex-col gap-y-3'>
                         <div className='flex items-center justify-between'>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-[#000000]'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
                             Service fee:
                           </h1>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-custom-accentColor'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-custom-accentColor'>
                             0.00696SSN
                           </h1>
                         </div>
                         <div className='flex items-center justify-between'>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-[#000000]'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
                             Total Lp Tokens
                           </h1>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-[#474646]'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
                             0.4555322222
                           </h1>
                         </div>
                         <div className='flex items-center justify-between'>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-[#000000]'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
                             Your Lp Tokens to be Locked:
                           </h1>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-[#474646]'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
                             0.00000/0.00000
                           </h1>
                         </div>
                         <div className='flex items-center justify-between'>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-[#000000]'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
                             Unlock date:
                           </h1>
-                          <h1 className='font-mont font-medium text-sm xl:text-base text-[#474646]'>
+                          <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
                             25 November, 2025
                           </h1>
                         </div>
@@ -206,7 +206,7 @@ const index = () => {
                       <div className='flex items-center gap-x-8 pt-6'>
                         <button
                           onClick={handleLockOptionsModal}
-                          className='outline-none flex-1 h-[56px] xl:h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
+                          className='outline-none flex-1 h-[46px] lg:h-[56px] xl:h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
                         >
                           <h1 className='font-mont font-bold text-[12px] xl:text-sm text-white leading-6'>
                             Approve
@@ -215,7 +215,7 @@ const index = () => {
                         {!locker && (
                           <button
                             onClick={() => handleLocker()}
-                            className='outline-none flex-1 h-[56px] xl:h-[64px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
+                            className='outline-none flex-1 h-[46px] lg:h-[56px] xl:h-[64px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
                           >
                             <h1 className='font-mont font-bold text-[12px] xl:text-sm text-custom-accentColor leading-6'>
                               Submit
@@ -250,15 +250,15 @@ const index = () => {
                     <input
                       type='text'
                       placeholder='Search outline-none by token address  (Ex 0xfhfk34j4j321...)'
-                      className='flex-1 h-[58px] xl:h-[67px] px-6 xl:pl-9 xl:pr-7 bg-custom-activeNavBgColor rounded-[73px] text-[12px] font-mont text-[#474646] w-[75%] xl:w-[65%]'
+                      className='flex-1 h-[46px] lg:h-[58px] xl:h-[67px] px-3 lg:px-6 xl:pl-9 xl:pr-7 bg-custom-activeNavBgColor rounded-[73px] text-[12px] font-mont text-[#474646] lg:w-[75%] xl:w-[65%]'
                     />
-                    <button className='outline-none rounded-[59px] bg-custom-accentColor w-[284px] h-[56px] xl:h-[64px] flex justify-center items-center'>
+                    <button className='outline-none rounded-[59px] bg-custom-accentColor w-[113px] lg:w-[284px] h-[46px] lg:h-[56px] xl:h-[64px] flex justify-center items-center'>
                       <h1 className='font-bold font-mont text-[12px] xl:text-sm text-white'>
                         Search
                       </h1>
                     </button>
                   </div>
-                  <div className='pt-14 grid grid-cols-3 gap-x-5 xl:gap-x-10'>
+                  <div className='pt-10 lg:pt-14 grid grid-col-1 lg:grid-cols-3 gap-7 lg:gap-5 xl:gap-10'>
                     {LOCKED_TOKENS.map((data, i) => (
                       <LockedTokenCard
                         {...data}
@@ -286,10 +286,10 @@ const index = () => {
               )}
 
               {!firstView && (
-                <div className='py-8 flex gap-x-6 w-full'>
-                  <div className='w-[40%] bg-white border-[0.5px] border-solid border-[#1A2B6B] rounded-[10px] py-5 px-4'>
+                <div className='py-8 lg:flex gap-x-6 w-full'>
+                  <div className='w-full mb-6 lg:mb-0 lg:w-[40%] bg-white border-[0.5px] border-solid border-[#1A2B6B] rounded-[10px] py-5 px-4'>
                     <div className='w-full pb-3 border-b-[0.5px] border-solid border-[#A9A9A9]'>
-                      <div className='w-[fit-content] overflow-hidden p-1 bg-[#F6F7FC] rounded-[10px] flex gap-x-1'>
+                      <div className='hidden w-[fit-content] overflow-hidden p-1 bg-[#F6F7FC] rounded-[10px] lg:flex gap-x-1'>
                         <div className='border-r-[0.5px] p-[2px] xl:p-1 border-solid border-[#A9A9A9]'>
                           <h1 className='font-medium font-mont text-[8px] xl:text-[12px] text-[#474646]'>
                             Owner
@@ -299,7 +299,7 @@ const index = () => {
                           0x76e4CB2fcf7f931Fd750e93F443536Ee068d1cdE
                         </h1>
                       </div>
-                      <div className='pt-2 xl:pt-4 pb-1 flex justify-between items-center'>
+                      <div className='lg:pt-2 xl:pt-4 pb-1 flex justify-between items-center'>
                         <div className='flex items-center gap-x-3'>
                           <img
                             src='/assets/images/owner.svg'
@@ -334,29 +334,29 @@ const index = () => {
                   <div className='flex-1'>
                     <div
                       onClick={handleDisclaimer}
-                      className='border-[0.5px] border-solid border-[#A9A9A9] bg-[#F6F7FC] rounded-[10px] py-3 xl:py-4 px-3 xl:px-5 w-full flex items-center'
+                      className='border-[0.5px] border-solid border-[#A9A9A9] bg-[#F6F7FC] rounded-[10px] py-5 lg:py-3 xl:py-4 px-3 xl:px-5 w-full flex flex-col-reverse lg:flex-row items-center'
                     >
-                      <div className='flex items-center justify-between gap-x-5 xl:gap-x-10 pl-4 pr-4'>
-                        <h1 className='font-mont font-semibold text-[10px] xl:text-sm text-custom-accentColor underline'>
+                      <div className='pt-6 lg:pt-0 flex items-center justify-between gap-x-5 xl:gap-x-10 pl-4 pr-4'>
+                        <h1 className=' font-mont font-semibold text-[12px] lg:text-[10px] xl:text-sm text-custom-accentColor underline'>
                           LP TOKEN Address
                         </h1>
-                        <h1 className='font-mont font-semibold text-[10px] xl:text-sm text-custom-accentColor underline'>
+                        <h1 className='font-mont font-semibold text-[12px] lg:text-[10px] xl:text-sm text-custom-accentColor underline'>
                           WBNB Address
                         </h1>
                       </div>
-                      <div className='border-l-[0.5px] border-solid border-[#A9A9A9] pl-4'>
-                        <h1 className='font-mont text-[12px] xl:text-lg font-medium text-[#474646]'>
+                      <div className='w-full flex lg:block flex-col justify-center items-center border-none lg:border-l-[0.5px] lg:border-solid border-[#A9A9A9] pl-4'>
+                        <h1 className='font-mont text-sm lg:text-[12px] xl:text-lg font-medium text-[#474646]'>
                           Timeline to next unlock
                         </h1>
                         <h1 className='pt-1 xl:pt-2 pb-1'>
-                          <span className='font-mont text-2xl xl:text-5xl font-bold text-custom-accentColor'>
+                          <span className='font-mont text-3xl lg:text-2xl xl:text-5xl font-bold text-custom-accentColor'>
                             64
                           </span>
-                          <span className='pl-4 font-mont text-[12px] xl:text-lg font-semibold uppercase text-[#474646]'>
+                          <span className='pl-1 lg:pl-4 font-mont text-sm lg:text-[12px] xl:text-lg font-semibold uppercase text-[#474646]'>
                             DAYS
                           </span>
                         </h1>
-                        <h1 className='font-medium text-[10px] xl:text-sm text-[#2C2C2C]'>
+                        <h1 className='font-medium text-sm lg:text-[10px] xl:text-sm text-[#2C2C2C]'>
                           5h:33m:22s
                         </h1>
                       </div>
@@ -413,12 +413,22 @@ const selectedUnlockStyles = {
     fontWeight: 500,
     fontFamily: 'Montserrat',
     color: primaryColor,
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      fontSize: 12,
+      color: '#000',
+    },
   }),
   placeholder: styles => ({
     ...styles,
     fontSize: '16px',
     color: '#393939',
     padding: 0,
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      fontSize: 12,
+      color: '#000',
+    },
   }),
   control: (styles, state) => ({
     display: 'flex',
@@ -430,6 +440,13 @@ const selectedUnlockStyles = {
     height: 52,
     borderRadius: 10,
     width: 139,
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      height: 38,
+      borderRadius: 5,
+      padding: 0,
+      width: 81,
+    },
   }),
 };
 
@@ -445,12 +462,22 @@ const vestingPeriodStyles = {
     fontWeight: 500,
     fontFamily: 'Montserrat',
     color: primaryColor,
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      fontSize: 10,
+      color: '#000',
+    },
   }),
   placeholder: styles => ({
     ...styles,
     fontSize: '14px',
     color: '#393939',
     padding: 0,
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      fontSize: 10,
+      color: '#000',
+    },
   }),
   control: (styles, state) => ({
     display: 'flex',
@@ -463,6 +490,12 @@ const vestingPeriodStyles = {
     borderRadius: 10,
     width: '100%',
     border: '0.5px solid #000248',
+    '@media only screen and (max-width: 1024px)': {
+      ...styles['@media only screen and (max-width: 1024px)'],
+      height: 46,
+      borderRadius: 5,
+      padding: 0,
+    },
   }),
 };
 
