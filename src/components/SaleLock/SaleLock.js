@@ -1,5 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { primaryColor, accentColor } from '../../styles/variables.module.scss';
+
+import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
 
 export const SaleLockTab = ({ activeTab, children, ...props }) => {
   return (
@@ -104,7 +106,7 @@ export const LockOptionsModal = props => {
   const { handleToggle, handleLockOptions, activeLockOption } = props;
   return (
     <div className='fixed top-0 left-0 w-full h-full bg-[#00000070] flex justify-center items-center'>
-      <div className='px-10 py-5 w-[350px] lg:w-[400px] xl:w-[550px] bg-white rounded-[21px]'>
+      <div className='px-10 py-5 w-[350px] lg:w-[400px] xl:w-[470px] bg-white rounded-[21px]'>
         <div className='w-full border-b-[0.5px] border-solid border-[#606060] py-3 flex items-center justify-center'>
           <h1 className='font-mont text-center font-semibold text-lg xl:text-2xl text-custom-primaryColor mx-auto -mr-5'>
             Lock Option
@@ -119,7 +121,7 @@ export const LockOptionsModal = props => {
         <div className='pt-10 pb-7 flex flex-col gap-y-5'>
           <div
             onClick={() => handleLockOptions('self')}
-            className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[56px] xl:h-[64px] border-[#A9A9A9] rounded-[10px] px-3 lg:px-7 flex items-center justify-between'
+            className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[56px] xl:h-[60px] border-[#A9A9A9] rounded-[10px] px-3 lg:px-7 flex items-center justify-between'
             style={{
               borderColor: activeLockOption === 'self' && accentColor,
               borderWidth: activeLockOption === 'self' && 2,
@@ -158,26 +160,173 @@ export const LockOptionsModal = props => {
             )}
           </div>
 
-          <div className='w-full xl:w-[90%] mx-auto'>
-            <label
-              htmlFor='new_owner'
-              className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'
-            >
-              Enter new owner address
-            </label>
-            <input
-              type='text'
-              className='outline-none flex-1 mt-1 h-[56px] xl:h-[67px] pl-5 xl:pl-9 pr-7 bg-custom-activeNavBgColor rounded-[10px] text-[12px] font-mont text-[#474646] w-full'
-            />
-          </div>
+          {activeLockOption === 'new_owner' && (
+            <div className='w-full xl:w-[90%] mx-auto'>
+              <label
+                htmlFor='new_owner'
+                className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'
+              >
+                Enter new owner address
+              </label>
+              <input
+                type='text'
+                className='outline-none flex-1 mt-1 h-[56px] xl:h-[67px] pl-5 xl:pl-9 pr-7 bg-custom-activeNavBgColor rounded-[10px] text-[12px] font-mont text-[#474646] w-full'
+              />
+            </div>
+          )}
 
-          <button className='outline-none mt-3 xl:mt-6 justify-center items-center bg-custom-accentColor hover:bg-opacity-90 mx-auto rounded-[10px] w-full xl:w-[284px] h-[56px] xl:h-[64px]'>
+          <button className='outline-none mt-3 xl:mt-6 justify-center items-center bg-custom-accentColor hover:bg-opacity-90 mx-auto rounded-[10px] w-full xl:w-[284px] h-[56px] xl:h-[60px]'>
             <h1 className='font-mont font-bold text-[12px] lg:text-sm text-white'>
               Lock tokens
             </h1>
           </button>
         </div>
       </div>
+    </div>
+  );
+};
+
+export const ManageLockedTabContent = props => {
+  const [firstView, setFirstView] = useState(true);
+  const [disclaimer, setDisclaimer] = useState(true);
+
+  const handleDisclaimer = () => setDisclaimer(prevState => !prevState);
+  const handleFirstView = () => setFirstView(!firstView);
+
+  return (
+    <div>
+      {firstView && (
+        <div>
+          <div className='w-full xl:w-3/4 flex items-center gap-x-3 pt-8'>
+            <input
+              type='text'
+              placeholder='Search outline-none by token address  (Ex 0xfhfk34j4j321...)'
+              className='flex-1 h-[46px] lg:h-[58px] xl:h-[67px] px-3 lg:px-6 xl:pl-9 xl:pr-7 bg-custom-activeNavBgColor rounded-[73px] text-[12px] font-mont text-[#474646] lg:w-[75%] xl:w-[65%]'
+            />
+            <button className='outline-none rounded-[59px] bg-custom-accentColor w-[113px] lg:w-[284px] h-[46px] lg:h-[56px] xl:h-[64px] flex justify-center items-center'>
+              <h1 className='font-bold font-mont text-[12px] xl:text-sm text-white'>
+                Search
+              </h1>
+            </button>
+          </div>
+          <div className='pt-10 lg:pt-14 grid grid-col-1 lg:grid-cols-3 gap-7 lg:gap-5 xl:gap-10'>
+            {LOCKED_TOKENS.map((data, i) => (
+              <LockedTokenCard {...data} handleFirstView={handleFirstView} />
+            ))}
+          </div>
+          {/* pagination */}
+          <div className='flex gap-x-8 items-center justify-center pt-12'>
+            {[...Array(4)].map((_, i) => (
+              <button
+                key={i}
+                className='outline-none font-semibold first:font-bold font-mont text-[12px] xl:text-sm text-[#A9A9A9] first:text-[#000]'
+              >
+                <h1 className=''>{i + 1}</h1>
+              </button>
+            ))}
+            <button className='outline-none'>
+              <h1 className='font-semibold font-mont text-[12px] xl:text-sm text-[#A9A9A9]'>
+                Next Page
+              </h1>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!firstView && (
+        <div className='py-8 lg:flex gap-x-6 w-full'>
+          <div className='w-full mb-6 lg:mb-0 lg:w-[40%] bg-white border-[0.5px] border-solid border-[#1A2B6B] rounded-[10px] py-5 px-4'>
+            <div className='w-full pb-3 border-b-[0.5px] border-solid border-[#A9A9A9]'>
+              <div className='hidden w-[fit-content] overflow-hidden p-1 bg-[#F6F7FC] rounded-[10px] lg:flex gap-x-1'>
+                <div className='border-r-[0.5px] p-[2px] xl:p-1 border-solid border-[#A9A9A9]'>
+                  <h1 className='font-medium font-mont text-[8px] xl:text-[12px] text-[#474646]'>
+                    Owner
+                  </h1>
+                </div>
+                <h1 className='font-medium font-mont text-[8px] xl:text-[12px] text-custom-accentColor p-1'>
+                  0x76e4CB2fcf7f931Fd750e93F443536Ee068d1cdE
+                </h1>
+              </div>
+              <div className='lg:pt-2 xl:pt-4 pb-1 flex justify-between items-center'>
+                <div className='flex items-center gap-x-3'>
+                  <img
+                    src='/assets/images/owner.svg'
+                    alt=''
+                    className='w-10 xl:w-auto'
+                  />
+                  <h1 className='font-semibold font-mont text-sm xl:text-2xl text-custom-primaryColor leading-[29px] uppercase'>
+                    ZBT/WBNB
+                  </h1>
+                </div>
+                <h1 className='font-mont font-semibold text-[10px] xl:text-sm text-custom-accentColor underline'>
+                  ZBT Address
+                </h1>
+              </div>
+            </div>
+            <div className='pt-6 pb-4 flex flex-col gap-y-3'>
+              {OWNER_LOCKED_TOKEN.map((data, i) => (
+                <div key={i} className='flex justify-between items-center'>
+                  <h1 className='font-medium font-mont text-[10px] xl:text-sm text-[#474646]'>
+                    {data.label}{' '}
+                  </h1>
+                  <h1 className='font-semibold font-mont text-[10px] xl:text-sm text-[#000000]'>
+                    {data.value}
+                  </h1>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className='flex-1'>
+            <div
+              onClick={handleDisclaimer}
+              className='border-[0.5px] border-solid border-[#A9A9A9] bg-[#F6F7FC] rounded-[10px] py-5 lg:py-3 xl:py-4 px-3 xl:px-5 w-full flex flex-col-reverse lg:flex-row items-center'
+            >
+              <div className='pt-6 lg:pt-0 flex items-center justify-between gap-x-5 xl:gap-x-10 pl-4 pr-4'>
+                <h1 className=' font-mont font-semibold text-[12px] lg:text-[10px] xl:text-sm text-custom-accentColor underline'>
+                  LP TOKEN Address
+                </h1>
+                <h1 className='font-mont font-semibold text-[12px] lg:text-[10px] xl:text-sm text-custom-accentColor underline'>
+                  WBNB Address
+                </h1>
+              </div>
+              <div className='w-full flex lg:block flex-col justify-center items-center border-none lg:border-l-[0.5px] lg:border-solid border-[#A9A9A9] pl-4'>
+                <h1 className='font-mont text-sm lg:text-[12px] xl:text-lg font-medium text-[#474646]'>
+                  Timeline to next unlock
+                </h1>
+                <h1 className='pt-1 xl:pt-2 pb-1'>
+                  <span className='font-mont text-3xl lg:text-2xl xl:text-5xl font-bold text-custom-accentColor'>
+                    64
+                  </span>
+                  <span className='pl-1 lg:pl-4 font-mont text-sm lg:text-[12px] xl:text-lg font-semibold uppercase text-[#474646]'>
+                    DAYS
+                  </span>
+                </h1>
+                <h1 className='font-medium text-sm lg:text-[10px] xl:text-sm text-[#2C2C2C]'>
+                  5h:33m:22s
+                </h1>
+              </div>
+            </div>
+            <div className='mt-6 border-[0.5px] border-solid border-[#A9A9A9] bg-[#F6F7FC] rounded-[10px] py-5 px-7 w-full'>
+              {disclaimer && (
+                <div>
+                  <h1 className='font-mont font-semibold text-sm xl:text-lg text-[#474646]'>
+                    Disclaimer
+                  </h1>
+                  <p className='font-mont text-[10px] xl:text-sm text-[#E21010] leading-5 pt-2 xl:pt-3'>
+                    Please be aware that only the LP Tokens are locked in the
+                    contract. Circulating tokens are not locked here and any
+                    unlocked circulating tokens can be sold at any time to
+                    withdraw the underlying liquidity! Please always do strong
+                    research before investing in any products.
+                  </p>
+                </div>
+              )}
+
+              {!disclaimer && <div>Vesting Table</div>}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
