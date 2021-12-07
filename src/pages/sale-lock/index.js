@@ -29,7 +29,7 @@ const index = () => {
 
   return (
     <Fragment>
-      <div className='py-7'>
+      <div className='py-6'>
         <button
           onClick={() => router.back()}
           className='outline-none hidden lg:flex items-center gap-x-2'
@@ -39,25 +39,30 @@ const index = () => {
             Back
           </h1>
         </button>
+
+        <h1 className='lg:hidden font-bold font-mont text-base text-custom-primaryColor'>
+          SaleX Lock
+        </h1>
         {/* tabs and tab contents */}
-        <div className='pt-8'>
+        <div className='pt-3 lg:pt-4'>
           {/* tab */}
           <SaleLockTab activeTab={activeTab} handleActiveTab={handleActiveTab}>
             <div title='Lock Liquidity'>
-              <div className='py-8 lg:py-16 flex flex-col items-center'>
-                <h1 className='font-semibold text-base lg:text-lg xl:text-2xl text-center font-mont text-custom-primaryColor leading-[29px]'>
-                  Salex lock Liquidity Locker
+              <div className='py-6 lg:py-16 flex flex-col lg:items-center'>
+                <h1 className='font-semibold text-base lg:text-lg xl:text-2xl text-left lg:text-center font-mont text-custom-primaryColor leading-[29px]'>
+                  <span className='hidden lg:inline'>Salex lock </span>{' '}
+                  Liquidity Locker
                 </h1>
-                <h1 className='font-medium pt-1 xl:pt-3 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-5 lg:px-40'>
+                <h1 className='font-medium pt-1 xl:pt-3 text-left lg:text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] pr-6 lg:px-40'>
                   Use the Salex lock Liquidity Locker to lock your LP tokens to
                   show your <br className='hidden lg:block' /> investors proof
                   of locked liquidity!
                 </h1>
-                <div className='pt-8 w-full lg:w-1/2'>
+                <div className='pt-6 lg:pt-8 w-full lg:w-1/2'>
                   <div>
                     <h1
                       htmlFor='pair'
-                      className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'
+                      className='font-mont text-left font-medium text-[12px] lg:text-sm  text-[#474646]'
                     >
                       Enter Nan Pair Address
                     </h1>
@@ -125,7 +130,7 @@ const index = () => {
                       <div>
                         <div className='pt-8'>
                           <div className='flex items-center justify-between'>
-                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
+                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm text-[#474646]'>
                               Amount to lock
                             </h1>
                             <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
@@ -145,7 +150,7 @@ const index = () => {
                         </div>
                         <div className='pt-8'>
                           <div className='flex items-center justify-between'>
-                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
+                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm  text-[#474646]'>
                               Liquidity Unlock time
                             </h1>
                             <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
@@ -233,7 +238,7 @@ const index = () => {
                 </div>
               </div>
             </div>
-            <ManageLockedTabContent title='Manage Locked Liquidity' />
+            <ManageLockedTabContent title='Manage Lock Liquidity' />
           </SaleLockTab>
         </div>
       </div>

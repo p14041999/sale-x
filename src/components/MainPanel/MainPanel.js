@@ -80,18 +80,18 @@ const MainPanel = ({ children }) => {
         {/* main section */}
         <Fragment>{children}</Fragment>
 
-        <div className='lg:hidden py-6 flex flex-col items-center gap-y-4'>
+        <div className='lg:hidden  lg:py-6 flex flex-col items-center gap-y-4'>
           <img src='/assets/icons/logo-m.svg' alt='' />
           <div className='flex flex-col justify-center items-center gap-y-3'>
             <a
               href='https://'
-              className='font-mont font-semibold text-sm text-[#A9A9A9]'
+              className='font-mont font-semibold text-[12px] text-[#A9A9A9]'
             >
               Terms and Condition
             </a>
             <a
               href='https://'
-              className='font-mont font-semibold text-sm text-[#A9A9A9]'
+              className='font-mont font-semibold text-[12px] text-[#A9A9A9]'
             >
               Privacy policy
             </a>

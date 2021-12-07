@@ -13,7 +13,7 @@ import {
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
 
 const index = () => {
-  const [activeTab, setActiveTab] = useState('Lock Liquidity');
+  const [activeTab, setActiveTab] = useState('Lock Token');
   const [selectedUnlockTime, setSelectedUnlockTime] = useState(null);
   const [selectedVestingPeriod, setSelectedVestingPeriod] = useState(null);
   const [lockOptionsModal, setLockOptionsModal] = useState(false);
@@ -24,7 +24,6 @@ const index = () => {
   const [addMoreVesting, setAddMoreVesting] = useState(1);
   const [activeManualVesting, setActiveManualVesting] = useState(0);
 
-  console.log('ACTIVE===>', activeManualVesting);
   const handleAddVesting = () => {
     setAddMoreVesting(addMoreVesting + 1);
   };
@@ -43,7 +42,7 @@ const index = () => {
 
   return (
     <Fragment>
-      <div className='py-7'>
+      <div className='py-6'>
         <button
           onClick={() => router.back()}
           className='outline-none hidden lg:flex items-center gap-x-2'
@@ -53,21 +52,26 @@ const index = () => {
             Back
           </h1>
         </button>
+
+        <h1 className='lg:hidden font-bold font-mont text-base text-custom-primaryColor'>
+          SaleX Lock
+        </h1>
         {/* tabs and tab contents */}
-        <div className='pt-8'>
+        <div className='pt-3 lg:pt-4'>
           {/* tab */}
           <SaleLockTab activeTab={activeTab} handleActiveTab={handleActiveTab}>
-            <div title='Lock Liquidity'>
-              <div className='py-8 lg:py-16 flex flex-col items-center'>
-                <h1 className='font-semibold text-base lg:text-lg xl:text-2xl text-center font-mont text-custom-primaryColor leading-[29px]'>
-                  Salex lock Token Locker
+            <div title='Lock Token'>
+              <div className='py-6 lg:py-16 flex flex-col lg:items-center'>
+                <h1 className='font-semibold text-base lg:text-lg xl:text-2xl text-left lg:text-center font-mont text-custom-primaryColor leading-[29px]'>
+                  <span className='hidden lg:inline'>Salex lock</span> Token
+                  Locker
                 </h1>
-                <h1 className='font-medium pt-1 xl:pt-3 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-5 lg:px-40'>
-                  Use the Salex lock Liquidity Locker to lock your LP tokens to
-                  show your <br className='hidden lg:block' /> investors proof
-                  of locked liquidity!
+                <h1 className='font-medium pt-1 xl:pt-3 text-left lg:text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] pr-6 lg:px-40'>
+                  Use the Salex lock Token Locker to lock your tokens and earn
+                  greater trust <br className='hidden lg:block' /> within your
+                  community!
                 </h1>
-                <div className='pt-8 w-full lg:w-1/2'>
+                <div className='pt-6 lg:pt-8 w-full lg:w-1/2'>
                   <div>
                     <h1
                       htmlFor='pair'
@@ -174,7 +178,7 @@ const index = () => {
                                   handleTokenRelease('release-all');
                                   setAutoVesting(null);
                                 }}
-                                className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[46px] border-[#A9A9A9] rounded-[10px] px-3 lg:px-6 flex items-center justify-between'
+                                className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[46px] border-[#A9A9A9] rounded-[10px] px-2 lg:px-6 flex items-center justify-between'
                                 style={{
                                   borderColor:
                                     tokenRelease === 'release-all' && '#000000',
@@ -183,15 +187,14 @@ const index = () => {
                                 }}
                               >
                                 <h1
-                                  className='font-mont text-[12px] text-[#434242]'
+                                  className={`font-mont text-[12px] text-[#434242] font-medium ${
+                                    tokenRelease === 'release-all' &&
+                                    'font-semibold lg:font-bold'
+                                  }`}
                                   style={{
                                     color:
                                       tokenRelease === 'release-all' &&
                                       '#000000',
-                                    fontWeight:
-                                      tokenRelease === 'release-all'
-                                        ? 700
-                                        : 500,
                                   }}
                                 >
                                   Release all at once
@@ -208,7 +211,7 @@ const index = () => {
                                   handleTokenRelease('vesting');
                                   setAutoVesting(true);
                                 }}
-                                className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[46px]  border-[#A9A9A9] rounded-[10px] px-3 lg:px-6 flex items-center justify-between'
+                                className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[46px]  border-[#A9A9A9] rounded-[10px] px-2 lg:px-6 flex items-center justify-between'
                                 style={{
                                   borderColor:
                                     tokenRelease === 'vesting' && '#000000',
@@ -216,12 +219,13 @@ const index = () => {
                                 }}
                               >
                                 <h1
-                                  className='font-mont font-medium text-[12px]  text-[#434242]'
+                                  className={`font-mont text-[12px] text-[#434242] font-medium ${
+                                    tokenRelease === 'release-all' &&
+                                    'font-semibold lg:font-bold'
+                                  }`}
                                   style={{
                                     color:
                                       tokenRelease === 'vesting' && '#000000',
-                                    fontWeight:
-                                      tokenRelease === 'vesting' ? 700 : 500,
                                   }}
                                 >
                                   Vesting
@@ -246,7 +250,7 @@ const index = () => {
                                   Vesting
                                 </h1>
                                 <h1
-                                  className='font-mont font-bold text-[12px] text-custom-accentColor underline'
+                                  className='font-mont hover:cursor-pointer font-bold text-[12px] text-custom-accentColor underline'
                                   onClick={() => setAutoVesting(!autoVesting)}
                                 >
                                   Switch to{' '}
@@ -286,13 +290,27 @@ const index = () => {
                                       Vesting period {i + 1}
                                     </label>
 
-                                    <div className='flex flex-col w-full lg:flex-row items-center gap-3 lg:gap-5'>
+                                    <div className='flex w-full items-center gap-3 lg:gap-5'>
+                                      {activeManualVesting === i && (
+                                        <button
+                                          onClick={() => {
+                                            handleRemoveVesting();
+                                            setActiveManualVesting(i - 1);
+                                          }}
+                                          className='outline-none lg:hidden'
+                                        >
+                                          <img
+                                            src='/assets/icons/minus.svg'
+                                            alt=''
+                                          />
+                                        </button>
+                                      )}
                                       <input
                                         type='text'
                                         placeholder='Days'
                                         className='outline-none w-[47%] bg-[#F6F7FC] px-5  placeholder-[#4A4A4A] rounded-[10px] h-[46px] text-[12px] text-[#000000] font-medium'
                                       />
-                                      <div className='hidden lg:block w-8 border-b-2 border-solid border-[#474646]'></div>
+                                      <div className=' w-8 border-b-2 border-solid border-[#474646]'></div>
                                       <input
                                         type='text'
                                         placeholder='% to release'
@@ -318,7 +336,7 @@ const index = () => {
                                                 handleRemoveVesting();
                                                 setActiveManualVesting(i - 1);
                                               }}
-                                              className='outline-none'
+                                              className='outline-none hidden lg:block'
                                             >
                                               <img
                                                 src='/assets/icons/minus.svg'
@@ -401,7 +419,7 @@ const index = () => {
               </div>
             </div>
 
-            <ManageLockedTabContent title='Manage Locked Liquidity' />
+            <ManageLockedTabContent title='Manage Locked Tokens' />
           </SaleLockTab>
         </div>
       </div>

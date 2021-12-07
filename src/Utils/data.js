@@ -160,6 +160,14 @@ export const LOCKED_TOKENS = [
     token_percent: '100',
     token_address: '23ea.....78ale1',
   },
+  {
+    locker: '64:06:02:21',
+    date: '11 Aug 2021',
+    time: '01:10',
+    amount: '60000000',
+    token_percent: '100',
+    token_address: '23ea.....78ale1',
+  },
 ];
 
 export const OWNER_LOCKED_TOKEN = [
