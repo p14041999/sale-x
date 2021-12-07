@@ -6,28 +6,40 @@ import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
 export const SaleLockTab = ({ activeTab, children, ...props }) => {
   return (
     <Fragment>
-      <div className='border border-solid border-custom-primaryColor rounded-[15px] h-[52px] lg:h-[64px] w-full flex justify-between overflow-hidden'>
-        {children.map((step, i) => (
-          <button
-            key={i}
-            onClick={() => props.handleActiveTab(step.props.title)}
-            className='h-full flex-1 flex justify-center items-center bg-custom-primaryColor'
-            style={{
-              backgroundColor:
-                activeTab === step.props.title ? primaryColor : 'white',
-            }}
-          >
-            <h1
-              className='font-mont text-[10px] lg:text-base xl:text-lg'
+      <div className='flex justify-between items-center'>
+        <div className='bg-[#F6F7FC] py-2 px-2 rounded-[10px] h-[52px] lg:h-[60px] w-[fit-content] flex justify-between items-center overflow-hidden'>
+          {children.map((step, i) => (
+            <button
+              key={i}
+              onClick={() => props.handleActiveTab(step.props.title)}
+              className='h-full whitespace-nowrap flex-1 flex justify-center items-center bg-custom-primaryColor rounded-md'
               style={{
-                color: activeTab === step.props.title ? 'white' : primaryColor,
-                fontWeight: activeTab === step.props.title ? 700 : 600,
+                backgroundColor:
+                  activeTab === step.props.title ? primaryColor : 'transparent',
+                padding:
+                  activeTab === step.props.title
+                    ? '0.25rem 2rem'
+                    : '0.25rem 1.5rem',
               }}
             >
-              {step.props.title}
-            </h1>
-          </button>
-        ))}
+              <h1
+                className='font-mont text-[10px] lg:text-sm'
+                style={{
+                  color:
+                    activeTab === step.props.title ? 'white' : primaryColor,
+                  fontWeight: activeTab === step.props.title ? 700 : 500,
+                }}
+              >
+                {step.props.title}
+              </h1>
+            </button>
+          ))}
+        </div>
+        <button className='rounded-[10px] h-[46px] w-[fit-content] px-4 border border-solid border-custom-accentColor'>
+          <h1 className='font-mont font-semibold text-[12px] text-custom-accentColor'>
+            Manage Locked Tokens
+          </h1>
+        </button>
       </div>
       {children.map(one => {
         if (one.props.title == activeTab) {

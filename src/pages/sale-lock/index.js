@@ -30,14 +30,17 @@ const index = () => {
   return (
     <Fragment>
       <div className='py-7'>
-        <LaunchPadHeader
-          route='/sale-lock'
-          bannerSmallText='View All Lockers In Salex lock'
-          btnText='Manage Token Locker'
-        />
-
+        <button
+          onClick={() => router.back()}
+          className='outline-none hidden lg:flex items-center gap-x-2'
+        >
+          <img src='/assets/icons/arrow-left.svg' alt='' />
+          <h1 className='font-mont font-semibold text-[#2C2C2C] text-sm'>
+            Back
+          </h1>
+        </button>
         {/* tabs and tab contents */}
-        <div className='pt-8 lg:pt-10'>
+        <div className='pt-8'>
           {/* tab */}
           <SaleLockTab activeTab={activeTab} handleActiveTab={handleActiveTab}>
             <div title='Lock Liquidity'>
@@ -45,12 +48,12 @@ const index = () => {
                 <h1 className='font-semibold text-base lg:text-lg xl:text-2xl text-center font-mont text-custom-primaryColor leading-[29px]'>
                   Salex lock Liquidity Locker
                 </h1>
-                <h1 className='font-medium pt-1 xl:pt-5 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-5 lg:px-40'>
+                <h1 className='font-medium pt-1 xl:pt-3 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-5 lg:px-40'>
                   Use the Salex lock Liquidity Locker to lock your LP tokens to
                   show your <br className='hidden lg:block' /> investors proof
                   of locked liquidity!
                 </h1>
-                <div className='pt-8 w-full lg:w-[60%]'>
+                <div className='pt-8 w-full lg:w-1/2'>
                   <div>
                     <h1
                       htmlFor='pair'
@@ -61,8 +64,13 @@ const index = () => {
                     <input
                       id='pair'
                       type='text'
-                      className='w-full block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] text-[12px] xl:text-sm text-[#000000] font-medium'
+                      className='w-full block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[46px] mt-2 rounded-[10px] text-[12px] xl:text-sm text-[#000000] font-medium'
                     />
+                  </div>
+                  <div className='bg-[#F1EAFF] mt-2 w-[fit-content] p-2 lg:p-2 rounded-[2px] lg:rounded-[10px]'>
+                    <h1 className='font-semibold font-mont text-[8px] lg:text-[12px] text-custom-accentColor'>
+                      Token Locker Fees 0.1 nan (Flat Rate)
+                    </h1>
                   </div>
 
                   {proceed && (
@@ -80,12 +88,6 @@ const index = () => {
 
                   {!proceed && (
                     <Fragment>
-                      <div className='bg-[#F1EAFF] mt-2 w-[fit-content] p-2 lg:p-2 rounded-[2px] lg:rounded-[10px]'>
-                        <h1 className='font-semibold font-mont text-[8px] lg:text-[12px] text-custom-accentColor'>
-                          Token Locker Fees 0.1 nan (Flat Rate)
-                        </h1>
-                      </div>
-
                       <div className='pt-9 lg:pt-10 flex flex-col gap-y-2 lg:gap-y-3'>
                         <h1 className='font-medium font-mont text-[12px] xl:text-sm text-[#000]'>
                           This Liquidity Pool Contains the Following Tokens
@@ -122,16 +124,21 @@ const index = () => {
                       {/* inputs */}
                       <div>
                         <div className='pt-8'>
-                          <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                            Amount to lock
-                          </h1>
-                          <div className='w-full bg-[#F6F7FC] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
+                          <div className='flex items-center justify-between'>
+                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
+                              Amount to lock
+                            </h1>
+                            <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
+                              9,000,000 SAFEMOON
+                            </h1>
+                          </div>
+                          <div className='w-full bg-[#F6F7FC] h-[46px]  mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
                             <input
                               id='pair'
                               type='text'
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <h1 className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-primaryColor'>
+                            <h1 className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-accentColor'>
                               Max
                             </h1>
                           </div>
@@ -145,13 +152,15 @@ const index = () => {
                               November 02, 2021
                             </h1>
                           </div>
-                          <div className='w-full bg-[#F6F7FC] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between'>
+                          <div className='w-full bg-[#F6F7FC] h-[46px] mt-2 rounded-[10px] flex items-center justify-between pr-4'>
                             <input
                               id='pair'
                               type='text'
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] rounded-tl-[10px] rounded-bl-[10px] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <div className='px-2 flex items-center'>
+
+                            <img src='/assets/icons/calendar.svg' alt='' />
+                            {/* <div className='px-2 flex items-center'>
                               <Select
                                 placeholder='Days'
                                 defaultValue={selectedUnlockTime}
@@ -159,7 +168,7 @@ const index = () => {
                                 onChange={setSelectedUnlockTime}
                                 styles={selectedUnlockStyles}
                               />
-                            </div>
+                            </div> */}
                           </div>
 
                           <div className='pt-12 flex flex-col gap-y-3'>
@@ -200,7 +209,7 @@ const index = () => {
                           <div className='flex items-center gap-x-8 pt-6'>
                             <button
                               onClick={handleLockOptionsModal}
-                              className='outline-none flex-1 h-[46px] lg:h-[56px] xl:h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
+                              className='outline-none flex-1 h-[46px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
                             >
                               <h1 className='font-mont font-bold text-[12px] xl:text-sm text-white leading-6'>
                                 Approve
@@ -210,7 +219,7 @@ const index = () => {
                               onClick={() =>
                                 router.push('/sale-lock/token_locker')
                               }
-                              className='outline-none flex-1 h-[46px] lg:h-[56px] xl:h-[64px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
+                              className='outline-none flex-1 h-[46px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
                             >
                               <h1 className='font-mont font-bold text-[12px] xl:text-sm text-custom-accentColor leading-6'>
                                 Submit
@@ -278,7 +287,7 @@ const selectedUnlockStyles = {
     lineHeight: 1.25,
     backgroundColor: 'white',
     border: 'none',
-    height: 52,
+    height: 36,
     borderRadius: 10,
     width: 139,
     '@media only screen and (max-width: 1024px)': {

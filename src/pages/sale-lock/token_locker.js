@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect, useRef } from 'react';
 import Select from 'react-select';
 
 // custom
-import { primaryColor } from '../../styles/variables.module.scss';
+import { primaryColor, accentColor } from '../../styles/variables.module.scss';
 import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
 import {
   LockedTokenCard,
@@ -18,24 +18,43 @@ const index = () => {
   const [selectedVestingPeriod, setSelectedVestingPeriod] = useState(null);
   const [lockOptionsModal, setLockOptionsModal] = useState(false);
   const [activeLockOption, setActiveLockOption] = useState('self');
+  const [tokenRelease, setTokenRelease] = useState('release-all');
   const [proceed, setProceed] = useState(true);
+  const [autoVesting, setAutoVesting] = useState(null);
+  const [addMoreVesting, setAddMoreVesting] = useState(1);
+  const [activeManualVesting, setActiveManualVesting] = useState(0);
 
+  console.log('ACTIVE===>', activeManualVesting);
+  const handleAddVesting = () => {
+    setAddMoreVesting(addMoreVesting + 1);
+  };
+  const handleRemoveVesting = () => {
+    if (addMoreVesting <= 1) {
+      return;
+    }
+
+    setAddMoreVesting(addMoreVesting - 1);
+  };
   const handleLockOptions = value => setActiveLockOption(value);
   const handleProceed = () => setProceed(false);
   const handleActiveTab = value => setActiveTab(value);
   const handleLockOptionsModal = () => setLockOptionsModal(!lockOptionsModal);
+  const handleTokenRelease = value => setTokenRelease(value);
 
   return (
     <Fragment>
       <div className='py-7'>
-        <LaunchPadHeader
-          route='/sale-lock'
-          bannerSmallText='View All Lockers In Salex lock'
-          btnText='Manage Token Locker'
-        />
-
+        <button
+          onClick={() => router.back()}
+          className='outline-none hidden lg:flex items-center gap-x-2'
+        >
+          <img src='/assets/icons/arrow-left.svg' alt='' />
+          <h1 className='font-mont font-semibold text-[#2C2C2C] text-sm'>
+            Back
+          </h1>
+        </button>
         {/* tabs and tab contents */}
-        <div className='pt-8 lg:pt-10'>
+        <div className='pt-8'>
           {/* tab */}
           <SaleLockTab activeTab={activeTab} handleActiveTab={handleActiveTab}>
             <div title='Lock Liquidity'>
@@ -43,23 +62,23 @@ const index = () => {
                 <h1 className='font-semibold text-base lg:text-lg xl:text-2xl text-center font-mont text-custom-primaryColor leading-[29px]'>
                   Salex lock Token Locker
                 </h1>
-                <h1 className='font-medium pt-1 xl:pt-5 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-5 lg:px-40'>
+                <h1 className='font-medium pt-1 xl:pt-3 text-center text-[12px] xl:text-sm font-mont text-[#474646] leading-[17px] px-5 lg:px-40'>
                   Use the Salex lock Liquidity Locker to lock your LP tokens to
                   show your <br className='hidden lg:block' /> investors proof
                   of locked liquidity!
                 </h1>
-                <div className='pt-8 w-full lg:w-[60%]'>
+                <div className='pt-8 w-full lg:w-1/2'>
                   <div>
                     <h1
                       htmlFor='pair'
-                      className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'
+                      className='font-mont text-left font-medium text-[12px] lg:text-sm  text-[#474646]'
                     >
                       Enter Nan Pair Address
                     </h1>
                     <input
                       id='pair'
                       type='text'
-                      className='w-full block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] text-[12px] xl:text-sm text-[#000000] font-medium'
+                      className='w-full block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[46px] mt-2 rounded-[10px] text-[12px] xl:text-sm text-[#000000] font-medium'
                     />
                   </div>
 
@@ -106,115 +125,243 @@ const index = () => {
                       {/* inputs */}
                       <div>
                         <div className='pt-8'>
-                          <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                            Amount to lock
-                          </h1>
-                          <div className='w-full bg-[#F6F7FC] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
+                          <div className='flex items-center justify-between'>
+                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm text-[#474646]'>
+                              Amount to lock
+                            </h1>
+                            <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
+                              9,000,000 SAFEMOON
+                            </h1>
+                          </div>
+                          <div className='w-full bg-[#F6F7FC] h-[46px]  mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
                             <input
                               id='pair'
                               type='text'
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <h1 className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-primaryColor'>
+                            <h1 className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-accentColor'>
                               Max
                             </h1>
                           </div>
                         </div>
                         <div className='pt-8'>
                           <div className='flex items-center justify-between'>
-                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                              Liquidity Unlock time
+                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm text-[#474646]'>
+                              Token Unlock time
                             </h1>
                             <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
                               November 02, 2021
                             </h1>
                           </div>
-                          <div className='w-full bg-[#F6F7FC] h-[46px] lg:h-[56px] xl:h-[64px] mt-2 rounded-[10px] flex items-center justify-between'>
+                          <div className='w-full bg-[#F6F7FC] h-[46px] mt-2 rounded-[10px] flex items-center justify-between pr-4'>
                             <input
                               id='pair'
                               type='text'
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] rounded-tl-[10px] rounded-bl-[10px] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <div className='px-2 flex items-center'>
-                              <Select
-                                placeholder='Days'
-                                defaultValue={selectedUnlockTime}
-                                options={LIQUIDITY_UNLOCK_TIME}
-                                onChange={setSelectedUnlockTime}
-                                styles={selectedUnlockStyles}
-                              />
-                            </div>
+
+                            <img src='/assets/icons/calendar.svg' alt='' />
                           </div>
 
+                          {/* method of token release */}
                           <div className='pt-8'>
-                            <h1 className='font-mont text-left font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                              Select Vesting period
+                            <h1 className='font-mont font-medium text-sm'>
+                              Method of Token Release
                             </h1>
-                            <div className='mt-2 w-full'>
-                              <Select
-                                placeholder='No vesting, all tokens will be released at unlock time'
-                                defaultValue={selectedVestingPeriod}
-                                options={VESTING_PERIOD}
-                                onChange={setSelectedVestingPeriod}
-                                styles={vestingPeriodStyles}
-                              />
-                            </div>
-
-                            <div className='pt-7 flex flex-col gap-5'>
-                              {[...Array(3)].map((_, i) => (
-                                <div>
-                                  <label
-                                    htmlFor=''
-                                    className='block text-[#474646] pb-2 font-medium font-mont text-sm'
-                                  >
-                                    Vesting period {i + 1}
-                                  </label>
-
-                                  <div className='flex flex-col w-full lg:flex-row items-center gap-3 lg:gap-5'>
-                                    <input
-                                      type='text'
-                                      placeholder='Days'
-                                      className='outline-none w-full bg-[#F6F7FC] px-5  placeholder-[#4A4A4A] rounded-[10px] h-[46px] text-[12px] xl:text-sm text-[#000000] font-medium'
-                                    />
-                                    <div className='hidden lg:block w-8 border-b-2 border-solid border-[#474646]'></div>
-                                    <input
-                                      type='text'
-                                      placeholder='% to release'
-                                      className='outline-none w-full bg-[#F6F7FC] px-5  placeholder-[#4A4A4A] rounded-[10px] h-[46px] text-[12px] xl:text-sm text-[#000000] font-medium'
-                                    />
-                                  </div>
-                                </div>
-                              ))}
+                            <div className='pt-2 flex items-center gap-x-4'>
+                              <div
+                                onClick={() => {
+                                  handleTokenRelease('release-all');
+                                  setAutoVesting(null);
+                                }}
+                                className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[46px] border-[#A9A9A9] rounded-[10px] px-3 lg:px-6 flex items-center justify-between'
+                                style={{
+                                  borderColor:
+                                    tokenRelease === 'release-all' && '#000000',
+                                  borderWidth:
+                                    tokenRelease === 'release-all' && 2,
+                                }}
+                              >
+                                <h1
+                                  className='font-mont text-[12px] text-[#434242]'
+                                  style={{
+                                    color:
+                                      tokenRelease === 'release-all' &&
+                                      '#000000',
+                                    fontWeight:
+                                      tokenRelease === 'release-all'
+                                        ? 700
+                                        : 500,
+                                  }}
+                                >
+                                  Release all at once
+                                </h1>
+                                {tokenRelease === 'release-all' && (
+                                  <img
+                                    src='/assets/icons/check-circle-black.svg'
+                                    alt=''
+                                  />
+                                )}
+                              </div>
+                              <div
+                                onClick={() => {
+                                  handleTokenRelease('vesting');
+                                  setAutoVesting(true);
+                                }}
+                                className='hover:cursor-pointer border-[0.5px] border-solid w-full xl:w-[90%] mx-auto h-[46px]  border-[#A9A9A9] rounded-[10px] px-3 lg:px-6 flex items-center justify-between'
+                                style={{
+                                  borderColor:
+                                    tokenRelease === 'vesting' && '#000000',
+                                  borderWidth: tokenRelease === 'vesting' && 2,
+                                }}
+                              >
+                                <h1
+                                  className='font-mont font-medium text-[12px]  text-[#434242]'
+                                  style={{
+                                    color:
+                                      tokenRelease === 'vesting' && '#000000',
+                                    fontWeight:
+                                      tokenRelease === 'vesting' ? 700 : 500,
+                                  }}
+                                >
+                                  Vesting
+                                </h1>
+                                {tokenRelease === 'vesting' && (
+                                  <img
+                                    src='/assets/icons/check-circle-black.svg'
+                                    alt=''
+                                  />
+                                )}
+                              </div>
                             </div>
                           </div>
 
-                          <div className='pt-12 flex flex-col gap-y-3'>
+                          <div>
+                            {autoVesting != null && (
+                              <div className='pt-4 pb-6 flex items-center justify-between'>
+                                <h1 className='font-mont font-semibold text-[12px] text-custom-primaryColor'>
+                                  {autoVesting != null && autoVesting
+                                    ? 'Auto'
+                                    : 'Manual'}{' '}
+                                  Vesting
+                                </h1>
+                                <h1
+                                  className='font-mont font-bold text-[12px] text-custom-accentColor underline'
+                                  onClick={() => setAutoVesting(!autoVesting)}
+                                >
+                                  Switch to{' '}
+                                  {autoVesting != null && !autoVesting
+                                    ? 'Auto'
+                                    : 'Manual'}{' '}
+                                  vesting
+                                </h1>
+                              </div>
+                            )}
+
+                            {autoVesting && (
+                              <>
+                                <h1 className='font-mont text-left font-medium text-[12px]  text-[#474646]'>
+                                  Select Vesting period
+                                </h1>
+                                <div className='mt-1 w-full'>
+                                  <Select
+                                    placeholder='No vesting, all tokens will be released at unlock time'
+                                    defaultValue={selectedVestingPeriod}
+                                    options={VESTING_PERIOD}
+                                    onChange={setSelectedVestingPeriod}
+                                    styles={vestingPeriodStyles}
+                                  />
+                                </div>
+                              </>
+                            )}
+
+                            {autoVesting != null && !autoVesting && (
+                              <div className='flex flex-col gap-3'>
+                                {[...Array(addMoreVesting)].map((_, i) => (
+                                  <div>
+                                    <label
+                                      htmlFor=''
+                                      className='block text-[#474646] pb-2 font-medium font-mont text-[12px]'
+                                    >
+                                      Vesting period {i + 1}
+                                    </label>
+
+                                    <div className='flex flex-col w-full lg:flex-row items-center gap-3 lg:gap-5'>
+                                      <input
+                                        type='text'
+                                        placeholder='Days'
+                                        className='outline-none w-[47%] bg-[#F6F7FC] px-5  placeholder-[#4A4A4A] rounded-[10px] h-[46px] text-[12px] text-[#000000] font-medium'
+                                      />
+                                      <div className='hidden lg:block w-8 border-b-2 border-solid border-[#474646]'></div>
+                                      <input
+                                        type='text'
+                                        placeholder='% to release'
+                                        className='outline-none w-[47%] bg-[#F6F7FC] px-5  placeholder-[#4A4A4A] rounded-[10px] h-[46px] text-[12px] text-[#000000] font-medium'
+                                      />
+                                      {activeManualVesting === i && (
+                                        <div className='flex flex-col gap-y-[2px] justify-center'>
+                                          <button
+                                            onClick={() => {
+                                              handleAddVesting();
+                                              setActiveManualVesting(i + 1);
+                                            }}
+                                            className='outline-none'
+                                          >
+                                            <img
+                                              src='/assets/icons/plus.svg'
+                                              alt=''
+                                            />
+                                          </button>
+                                          {activeManualVesting !== 0 && (
+                                            <button
+                                              onClick={() => {
+                                                handleRemoveVesting();
+                                                setActiveManualVesting(i - 1);
+                                              }}
+                                              className='outline-none'
+                                            >
+                                              <img
+                                                src='/assets/icons/minus.svg'
+                                                alt=''
+                                              />
+                                            </button>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className='pt-7 flex flex-col gap-y-3'>
                             <div className='flex items-center justify-between'>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#000000]'>
                                 Service fee:
                               </h1>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-custom-accentColor'>
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-custom-accentColor'>
                                 0.00696SSN
                               </h1>
                             </div>
                             <div className='flex items-center justify-between'>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#000000]'>
                                 Total Lp Tokens
                               </h1>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#474646]'>
                                 0.4555322222
                               </h1>
                             </div>
                             <div className='flex items-center justify-between'>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#000000]'>
                                 Your Lp Tokens to be Locked:
                               </h1>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#474646]'>
                                 0.00000/0.00000
                               </h1>
                             </div>
                             <div className='flex items-center justify-between'>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#000000]'>
                                 Unlock date:
                               </h1>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
@@ -234,7 +381,7 @@ const index = () => {
                             </button>
                           </div>
 
-                          <div className='pt-12'>
+                          <div className='pt-7'>
                             <h1 className='font-mont text-center font-medium text-[12px] text-[#E32E2E] leading-[18px]'>
                               For tokens with special transfers burns, tax or
                               other fees make sure the Salex lock address is
@@ -242,7 +389,7 @@ const index = () => {
                               you won't be able to withdraw!
                             </h1>
 
-                            <h1 className='text-[#4A4A4A] text-center pt-8 font-mont font-medium text-[12px] xl:text-sm'>
+                            <h1 className='text-[#4A4A4A] text-center pt-7 font-mont font-medium text-[12px] xl:text-sm'>
                               SaleXLock Address: nan
                             </h1>
                           </div>
@@ -308,7 +455,7 @@ const selectedUnlockStyles = {
     lineHeight: 1.25,
     backgroundColor: 'white',
     border: 'none',
-    height: 52,
+    height: 36,
     borderRadius: 10,
     width: 139,
     '@media only screen and (max-width: 1024px)': {
@@ -329,7 +476,7 @@ const vestingPeriodStyles = {
   }),
   input: styles => ({
     ...styles,
-    fontSize: '14px',
+    fontSize: '12px',
     fontWeight: 500,
     fontFamily: 'Montserrat',
     color: primaryColor,
@@ -341,7 +488,7 @@ const vestingPeriodStyles = {
   }),
   placeholder: styles => ({
     ...styles,
-    fontSize: '14px',
+    fontSize: '12px',
     color: '#393939',
     padding: 0,
     '@media only screen and (max-width: 1024px)': {
@@ -357,7 +504,7 @@ const vestingPeriodStyles = {
     lineHeight: 1.25,
     backgroundColor: 'white',
     border: 'none',
-    height: 64,
+    height: 46,
     borderRadius: 10,
     width: '100%',
     border: '0.5px solid #000248',
