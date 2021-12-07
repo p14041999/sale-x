@@ -185,3 +185,42 @@ export const OWNER_LOCKED_TOKEN = [
     `,
   },
 ];
+
+export const LAUNCH_PAD_CARD = [
+  {
+    btnText: 'Pending Start',
+    status: 'Sale Starts in:',
+    date: '04:06:02:21',
+    start: true,
+    success: false,
+    failed: false,
+    live: false,
+  },
+  {
+    btnText: 'Sale Success',
+    status: 'Presale Ended',
+    date: false,
+    start: false,
+    success: true,
+    failed: false,
+    live: false,
+  },
+  {
+    btnText: 'Sale Failed',
+    status: 'Presale Ended',
+    date: false,
+    start: false,
+    success: false,
+    failed: true,
+    live: false,
+  },
+  {
+    btnText: 'Presale Live',
+    status: 'Sale Ends in:',
+    date: '04:06:02:21',
+    start: false,
+    success: false,
+    failed: false,
+    live: true,
+  },
+];

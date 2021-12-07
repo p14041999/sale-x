@@ -3,18 +3,19 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
-import { Button } from '@mui/material';
 
 //custom
 import { primaryColor } from '../../styles/variables.module.scss';
 import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
 import SelectDropdown from '../../components/SelectDropdown/SelectDropdown';
+import Input from '../../components/Input/Input';
 
 // utils
 import { EXCHANGE_OPTIONS } from '../../Utils/data';
 
 const index = () => {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [disclaimer, setDisclaimer] = useState(false);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -34,45 +35,50 @@ const index = () => {
         <LaunchPadHeader route='/id/manage-sale' btnText='Manage Sale' />
 
         {/* start sale */}
-        <div className='pt-14'>
+        <div className='pt-5 lg:pt-10'>
           <div>
-            <h1 className='font-bold font-mont text-2xl lg:text-3xl xl:text-[32px] lg:leading-[39px] text-custom-primaryColor'>
+            <h1 className='font-semibold font-mont text-base lg:text-xl text-custom-primaryColor'>
               Start Sale
             </h1>
-            <h1 className='font-mont text-sm xl:text-base text-[#474646] pt-1'>
+            <h1 className='font-mont text-[12px] lg:text-sm text-[#474646]'>
               Get started in just a few simple steps!
             </h1>
           </div>
-          <div className='hidden py-6 px-5 xl:py-12 xl:px-8 rounded-[10px] bg-[#F6F7FC] mt-5 lg:flex flex-col gap-y-8'>
-            <p className='font-mont text-sm xl:text-base leading-6 text-[#000000]'>
-              Disclaimer: This process is entirely decentralized, we cannot be
-              held responsible for incorrect entry of information or be held
-              liable for anything related to your use of our platform. Please
-              ensure you enter all your details to the best accuracy possible
-              and that you are in compliance with your local laws and
-              regulations.
-            </p>
 
-            <h1 className='font-mont text-sm xl:text-base xl:leading-6 text-[#000000]'>
-              This is a beta version! We cannot guarantee there will be no bugs.
-              Use at your own risk!
+          <div className='lg:hidden flex justify-between items-center h-[46px] border-[0.5px] border-solid border-[#000] rounded-[10px] px-4 mt-4'>
+            <h1 className='font-mont font-semibold text-[#000] text-[12px]'>
+              SaleX Warning System
             </h1>
+            <img
+              src='/assets/icons/dropdown-arrow.svg'
+              alt=''
+              className='transform -rotate-90'
+            />
+          </div>
 
-            <h1 className='font-mont text-sm xl:text-base leading-6 text-[#C80707]'>
-              For tokens with burns, rebase or other special transfers please
-              ensure you have a way to whitelist multiple addresses or turn off
-              the special transfer events (By setting fees to 0 for example for
-              the duration of the presale)
-            </h1>
-
-            <h1 className='font-mont font-bold text-sm xl:text-base leading-6 text-custom-accentColor'>
+          <div className='hidden lg:flex items-center gap-x-8 pt-3'>
+            <h1 className='font-bold text-base font-mont text-custom-accentColor'>
               Current Fees: 1 BNB + 2% of Tokens Sold + 2% of BNB Raised
             </h1>
+
+            <div
+              onClick={() => setDisclaimer(!disclaimer)}
+              className='drop-shadow hover:cursor-pointer flex items-center gap-1 rounded-[10px] py-3 px-5'
+            >
+              <img
+                src='/assets/icons/warning-icon.svg'
+                alt=''
+                className='w-4'
+              />
+              <h1 className='font-semibold text-base text-[#000]'>
+                Check warning here
+              </h1>
+            </div>
           </div>
         </div>
 
         {/* multi step dropdown */}
-        <div className='pt-10'>
+        <div className='pt-5'>
           <Stepper activeStep={activeStep} orientation='vertical'>
             <Step>
               <StepLabel>
@@ -82,12 +88,9 @@ const index = () => {
               </StepLabel>
               <StepContent>
                 <div>
-                  <h1 className='font-mont text-[12px] lg:text-sm text-[#4A4A4A] leading-6'>
-                    Enter your token address
-                  </h1>
-                  <input
-                    type='text'
-                    className='w-full lg:w-[80%] outline-none pl-7 pr-5 bg-[#F6F7FC] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                  <Input
+                    label='Enter your token address'
+                    className='w-full lg:w-[50%]'
                   />
 
                   <div className='pt-2 flex flex-col gap-y-2'>
@@ -132,11 +135,8 @@ const index = () => {
                     Enter your presale price: (If I pay 1 BNB, how many tokens
                     do I get?)
                   </h1>
-                  <input
-                    type='text'
-                    placeholder='Ex. 600'
-                    className='w-full lg:w-[80%] outline-none pl-7 pr-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
-                  />
+
+                  <Input placeholder='Ex. 600' className='w-full lg:w-[50%]' />
 
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
@@ -170,32 +170,18 @@ const index = () => {
                   </h1>
 
                   <div className='flex flex-col lg:flex-row items-center gap-6 pt-3'>
-                    <div>
-                      <label
-                        htmlFor='soft-cap'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Soft Cap:
-                      </label>
-                      <input
-                        id='soft-cap'
-                        type='text'
+                    <div className='w-full lg:w-[30%]'>
+                      <Input
+                        label='Soft Cap:'
                         placeholder='Ex. 600'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                        className='w-full'
                       />
                     </div>
-                    <div>
-                      <label
-                        htmlFor='hard-cap'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Hard Cap:
-                      </label>
-                      <input
-                        id='hard-cap'
-                        type='text'
+                    <div className='w-full lg:w-[30%]'>
+                      <Input
+                        label='Hard Cap:'
                         placeholder='Ex. 600'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                        className='w-full'
                       />
                     </div>
                   </div>
@@ -232,32 +218,18 @@ const index = () => {
                   </h1>
 
                   <div className='flex flex-col lg:flex-row items-center gap-6 pt-3'>
-                    <div>
-                      <label
-                        htmlFor='soft-cap'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Minimum Contribution Limit:
-                      </label>
-                      <input
-                        id='soft-cap'
-                        type='text'
+                    <div className='w-full lg:w-[30%]'>
+                      <Input
+                        label=' Minimum Contribution Limit:'
                         placeholder='Ex. 0.1'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                        className='w-full'
                       />
                     </div>
-                    <div>
-                      <label
-                        htmlFor='hard-cap'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Maximum Contribution Limit:
-                      </label>
-                      <input
-                        id='hard-cap'
-                        type='text'
+                    <div className='w-full lg:w-[30%]'>
+                      <Input
+                        label=' Maximum Contribution Limit:'
                         placeholder='Ex. 0.3'
-                        className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                        className='w-full'
                       />
                     </div>
                   </div>
@@ -332,11 +304,9 @@ const index = () => {
                   </h1>
 
                   <div className='pt-3'>
-                    <input
-                      id='soft-cap'
-                      type='text'
-                      placeholder='Ex. 60'
-                      className='w-full lg:w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                    <Input
+                      placeholder='Ex. 0.6'
+                      className='w-full lg:w-[50%]'
                     />
                   </div>
 
@@ -374,12 +344,7 @@ const index = () => {
                   </h1>
 
                   <div className='pt-3'>
-                    <input
-                      id='soft-cap'
-                      type='text'
-                      placeholder='Ex. 40'
-                      className='w-full lg:w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
-                    />
+                    <Input placeholder='Ex. 40' className='w-full lg:w-[50%]' />
                   </div>
 
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
@@ -413,12 +378,7 @@ const index = () => {
                   </h1>
 
                   <div className='pt-3'>
-                    <input
-                      id='soft-cap'
-                      type='text'
-                      placeholder=''
-                      className='w-full lg:w-[60%] outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
-                    />
+                    <Input className='w-full lg:w-[50%]' />
                   </div>
 
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
@@ -460,116 +420,60 @@ const index = () => {
 
                   <div className='flex flex-col gap-4 pt-3'>
                     <div>
-                      <label
-                        htmlFor='logo-link'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Logo Link: (URL must end with a supported image
-                        extension png, jpg, jpeg or gif)
-                      </label>
-                      <input
-                        id='logo-link'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Logo Link: (URL must end with a supported image
+                      extension png, jpg, jpeg or gif)'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor='website-link'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Website Link:
-                      </label>
-                      <input
-                        id='website-link'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Website Link:'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor='github-link'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Github Link:
-                      </label>
-                      <input
-                        id='github-link'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Github Link:'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor='twitter-link'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Twitter Link:
-                      </label>
-                      <input
-                        id='twitter-link'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Twitter Link:'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor='reddit-link'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Reddit Link:
-                      </label>
-                      <input
-                        id='reddit-link'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Reddit Link:'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor='telegram-link'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Telegram Link:
-                      </label>
-                      <input
-                        id='telegram-link'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Telegram Link:'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor='project-desc'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Project Description:
-                      </label>
-                      <input
-                        id='project-desc'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Project Description:'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor='update'
-                        className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                      >
-                        Any update you want to provide to participants:
-                      </label>
-                      <input
-                        id='update'
-                        type='text'
-                        placeholder='Ex. 0.1'
-                        className='w-full lg:w-[60%] block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <Input
+                        label='Any update you want to provide to participants:'
+                        placeholder='Ex. 0.6'
+                        className='w-full lg:w-[50%]'
                       />
                     </div>
                   </div>
@@ -607,48 +511,27 @@ const index = () => {
 
                   <div className='pt-3 flex flex-col gap-4'>
                     <div className='flex flex-col lg:flex-row items-center gap-x-6 '>
-                      <div>
-                        <label
-                          htmlFor='Start Time'
-                          className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                        >
-                          Presale Start/End Time
-                        </label>
-                        <input
-                          id='Start Time'
-                          type='text'
-                          placeholder='Start Time'
-                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <div className='w-full lg:w-[30%]'>
+                        <Input
+                          label='Presale Start/End Time'
+                          placeholder='Ex. 0.6'
+                          className='w-full'
                         />
                       </div>
-                      <div>
-                        <label
-                          htmlFor='end-time'
-                          className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                        >
-                          Presale Start/End Time
-                        </label>
-                        <input
-                          id='end-time'
-                          type='text'
-                          placeholder='End Time'
-                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <div className='w-full pt-3 lg:pt-0 lg:w-[30%]'>
+                        <Input
+                          label='Presale Start/End Time'
+                          placeholder='Ex. 0.6'
+                          className='w-full'
                         />
                       </div>
                     </div>
                     <div className='flex items-center gap-x-6 '>
-                      <div>
-                        <label
-                          htmlFor='Liquidity Lockup Time'
-                          className='font-mont font-medium text-[12px] lg:text-sm text-custom-primaryColor'
-                        >
-                          Liquidity Lockup Time
-                        </label>
-                        <input
-                          id='Liquidity Lockup Time'
-                          type='text'
-                          placeholder='Liquidity Lockup Time'
-                          className='w-full outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[64px] mt-1 rounded-[10px] text-[12px] lg:text-sm text-[#000000] font-medium'
+                      <div className='w-full lg:w-[30%]'>
+                        <Input
+                          label='Liquidity Lockup Time'
+                          placeholder='Ex. 0.6'
+                          className='w-full'
                         />
                       </div>
                     </div>
@@ -719,7 +602,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='Token Name'
-                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                     <div>
@@ -727,7 +610,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='Presale Rate (Per BNB)'
-                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                     <div>
@@ -735,7 +618,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='Presale Rate (Per BNB)'
-                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                     <div>
@@ -753,7 +636,7 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Hard Cap:'
-                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -772,7 +655,7 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Max:'
-                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -791,7 +674,7 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Ends: 11 AUG 2021 at 00:41'
-                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[10px] lg:text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[10px] lg:text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -810,7 +693,7 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Ends: 11 AUG 2021 at 00:41'
-                          className='w-1/2 lg:w-[45%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                          className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
@@ -819,7 +702,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='PancakeSwap Rate (Per BNB)'
-                        className='w-full lg:w-[70%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
+                        className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                   </form>
@@ -827,7 +710,7 @@ const index = () => {
                   <div className='flex items-center gap-x-6 pt-11'>
                     <button
                       onClick={handleBack}
-                      className='outline-none w-[284px] h-[46px] lg:h-[64px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
+                      className='outline-none w-[284px] h-[46px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
                     >
                       <h1 className='font-mont font-bold text-[12px] lg:text-sm text-custom-accentColor leading-6'>
                         Edit
@@ -835,7 +718,7 @@ const index = () => {
                     </button>
                     <button
                       onClick={handleNext}
-                      className='outline-none w-[284px] h-[46px] lg:h-[64px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
+                      className='outline-none w-[284px] h-[46px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
                     >
                       <h1 className='font-mont font-bold text-[12px] lg:text-sm text-white leading-6'>
                         Submit
@@ -848,6 +731,41 @@ const index = () => {
           </Stepper>
         </div>
       </div>
+
+      {/* disclaimer modal */}
+      {disclaimer && (
+        <div
+          onClick={() => setDisclaimer(false)}
+          className='fixed top-0 left-0 w-full h-full z-50 bg-[#00000070] flex justify-center items-center'
+        >
+          <div className='w-[50%] mx-auto py-6 px-5 xl:py-12 xl:px-8 rounded-[10px] bg-[#F6F7FC] mt-5 lg:flex flex-col gap-y-4'>
+            <p className='font-mont text-sm xl:text-base leading-6 text-[#000000]'>
+              <img src='/assets/icons/warning-icon.svg' alt='' /> Disclaimer:
+              This process is entirely decentralized, we cannot be held
+              responsible for incorrect entry of information or be held liable
+              for anything related to your use of our platform. Please ensure
+              you enter all your details to the best accuracy possible and that
+              you are in compliance with your local laws and regulations.
+            </p>
+
+            <h1 className='font-mont text-sm xl:text-base xl:leading-6 text-[#000000]'>
+              This is a beta version! We cannot guarantee there will be no bugs.
+              Use at your own risk!
+            </h1>
+
+            <h1 className='font-mont text-sm xl:text-base leading-6 text-[#C80707]'>
+              For tokens with burns, rebase or other special transfers please
+              ensure you have a way to whitelist multiple addresses or turn off
+              the special transfer events (By setting fees to 0 for example for
+              the duration of the presale)
+            </h1>
+
+            <h1 className='font-mont font-bold text-sm xl:text-base leading-6 text-custom-accentColor'>
+              Current Fees: 1 BNB + 2% of Tokens Sold + 2% of BNB Raised
+            </h1>
+          </div>
+        </div>
+      )}
     </Fragment>
   );
 };

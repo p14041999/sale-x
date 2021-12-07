@@ -7,7 +7,7 @@ import SelectDropdown from '../components/SelectDropdown/SelectDropdown';
 import { LaunchPadHeader } from '../components/Launchpad/LaunchPad';
 
 // utils
-import { DIDO_DATA, LISTING_OPTIONS } from '../Utils/data';
+import { DIDO_DATA, LAUNCH_PAD_CARD, LISTING_OPTIONS } from '../Utils/data';
 
 const index = () => {
   const router = useRouter();
@@ -17,44 +17,43 @@ const index = () => {
         <LaunchPadHeader route='/id' />
 
         <section>
-          <div className='pt-10 flex flex-col lg:flex-row lg:items-center justify-between gap-x-8'>
+          <div className='pt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-x-8'>
             <div className='w-full lg:w-3/5'>
-              <h1 className='font-semibold text-center lg:text-left pb-2 lg:pb-0 font-mont text-base lg:text-sm xl:text-base text-[#282828] leading-[24px] lg:leading-[20px]'>
+              <h1 className='hidden lg:block font-bold text-left pb-2 lg:pb-0 font-mont text-base lg:text-sm xl:text-xl text-custom-primaryColor leading-[24px] lg:leading-[20px]'>
+                SaleX Launchpad
+              </h1>
+              <h1 className='font-semibold text-center lg:text-left lg:font-medium pt-[2px] lg:pb-0 font-mont text-sm text-custom-primaryColor lg:text-[#474646]'>
                 DeFi Launchpad With Instant Listing And Liquidity Locking
               </h1>
-              <div className='w-full flex items-center gap-x-3 py-3 lg:py-5'>
-                <input
-                  type='text'
-                  placeholder='Search outline-none by token address  (Ex 0xfhfk34j4j321...)'
-                  className='h-[46px] lg:h-[56px] xl:h-[67px] px-5 xl:pl-9 xl:pr-7 bg-custom-activeNavBgColor rounded-[73px] text-[12px] font-mont text-[#474646] w-3/5'
-                />
-                <button className='outline-none rounded-[59px] bg-custom-accentColor flex-1 h-[46px] lg:h-[56px] xl:h-[64px] flex justify-center items-center'>
-                  <h1 className='font-bold font-mont text-[12px] xl:text-sm text-white'>
-                    Search
-                  </h1>
-                </button>
-              </div>
             </div>
-            <div className='flex-1 flex py-2 lg:py-0 lg:justify-end'>
-              <div className='flex items-center gap-x-5'>
-                <h1 className='hidden lg:block font-mont font-medium text-base text-[#A9A9A9]'>
-                  Showing
+          </div>
+          <div className='py-5 flex flex-col-reverse lg:flex-row justify-between lg:items-center'>
+            <div className='w-[168px] pt-5 lg:pt-0'>
+              <SelectDropdown
+                placeholder='All Listings'
+                options={LISTING_OPTIONS}
+              />
+            </div>
+            <div className='w-full h-[46px] pl-5 rounded-[73px] xl:w-[42%] flex items-center gap-x-3 bg-[#F6F7FC]'>
+              <img src='/assets/icons/search.svg' alt='' />
+              <input
+                type='text'
+                placeholder='Search by token address (Ex 0xfhfk34j4j321...)'
+                className='flex-1 outline-none bg-[#F6F7FC] h-full text-[12px] font-mont text-[#000] placeholder-[#474646] '
+              />
+              <button className='outline-none rounded-[59px] bg-custom-accentColor w-[113px] lg:w-[126px] h-[42px] flex justify-center items-center'>
+                <h1 className='font-bold font-mont text-[12px] text-white'>
+                  Search
                 </h1>
-                <div className='w-[200px]'>
-                  <SelectDropdown
-                    placeholder='All Listings'
-                    options={LISTING_OPTIONS}
-                  />
-                </div>
-              </div>
+              </button>
             </div>
           </div>
 
           {/* cards */}
           <div className='pt-3  flex items-center flex-wrap xl:flex-nowrap justify-center gap-6'>
-            {[...Array(4)].map((_, i) => (
-              <div className='w-full lg:w-[45%] xl:w-[24.5%] bg-[#FAFBFD] lg:bg-[#F6F7FC82] border-[0.1px] border-solid border-[#FAFBFD] lg:border-none rounded-[20px] py-5 px-5'>
-                <div className='flex items-center gap-x-3 border-b-[0.5px] border-solid border-custom-primaryColor pb-6'>
+            {LAUNCH_PAD_CARD.map((data, i) => (
+              <div className='drop-shadow w-full lg:w-[45%] xl:w-[24.5%] bg-[#FFFFFF] border-[0.1px] border-solid border-[#FAFBFD] lg:border-none rounded-[20px] py-5 px-5'>
+                <div className='flex items-center gap-x-3 border-b-[0.5px] border-solid border-custom-primaryColor pb-4'>
                   <img src='/assets/images/dido-img.svg' alt='' />
                   <div>
                     <h1 className='font-mont font-semibold text-sm lg:text-[13px] leading-4 text-custom-primaryColor uppercase'>
@@ -64,10 +63,41 @@ const index = () => {
                       Diamond Doge
                     </h1>
                   </div>
+                  <div
+                    className='lg:hidden rounded-md py-2 px-3 ml-auto self-start'
+                    style={{
+                      background: data.start
+                        ? '#FFEDB3'
+                        : data.success
+                        ? '#5BD99B'
+                        : data.failed
+                        ? '#FFBCBC'
+                        : data.live
+                        ? '#DEE6FF'
+                        : '#FFEDB3',
+                    }}
+                  >
+                    <h1
+                      className='font-mont text-[10px] font-bold'
+                      style={{
+                        color: data.start
+                          ? '#FFA800'
+                          : data.success
+                          ? '#1A7E1E'
+                          : data.failed
+                          ? '#FF5656'
+                          : data.live
+                          ? '#375BD2'
+                          : '#FFA800',
+                      }}
+                    >
+                      {data.btnText}
+                    </h1>
+                  </div>
                 </div>
 
                 {/* table list */}
-                <div className='py-4 flex flex-col gap-y-3 lg:gap-y-5'>
+                <div className='py-4 flex flex-col gap-y-3'>
                   {DIDO_DATA.map((data, i) => (
                     <div key={i} className='flex justify-between items-center'>
                       <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
@@ -85,15 +115,25 @@ const index = () => {
                         SaleX Mint Verified
                       </h1>
                     </div>
-                    <h1 className='lg:hidden font-bold font-mont text-[12px] text-[#4CAF50]'>
-                      Sale Success
-                    </h1>
                   </div>
                 </div>
 
-                <button className='bg-custom-accentColor min-h-[46px] lg:bg-[#FFEDB3] rounded-[10px] w-full justify-center items-center px-3 py-3'>
+                <button
+                  onClick={() => router.push('/id')}
+                  className={`bg-custom-accentColor min-h-[46px] rounded-[10px] w-full justify-center items-center px-3 py-3 ${
+                    data.start
+                      ? 'lg:bg-[#FFEDB3]'
+                      : data.success
+                      ? 'lg:bg-[#5BD99B]'
+                      : data.failed
+                      ? 'lg:bg-[#FFBCBC]'
+                      : data.live
+                      ? 'lg:bg-[#DEE6FF]'
+                      : 'lg:bg-[#FFEDB3]'
+                  }`}
+                >
                   <h1 className='font-mont text-[12px] font-semibold text-[#000000]'>
-                    <span className='hidden lg:inline'>Pending Start</span>
+                    <span className='hidden lg:inline'>{data.btnText}</span>
                     <span className=' text-white lg:hidden'>View Details</span>
                   </h1>
                 </button>
@@ -101,8 +141,12 @@ const index = () => {
 
                 <div className='flex items-center justify-center w-full pt-4 pb-1'>
                   <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
-                    Sale Starts in:{' '}
-                    <span className='text-custom-accentColor'>04:06:02:21</span>
+                    {data.status}
+                    {data.date && (
+                      <span className='text-custom-accentColor'>
+                        {data.date}
+                      </span>
+                    )}
                   </h1>
                 </div>
               </div>

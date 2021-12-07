@@ -31,6 +31,8 @@ const Sidebar = () => {
     setSelected(index);
   };
 
+  console.log(router);
+
   return (
     <Fragment>
       <div className='sidebar hidden lg:block w-[20%] xl:w-[17%] h-screen pb-12 overflow-auto bg-custom-primaryColor'>
@@ -64,6 +66,9 @@ const Sidebar = () => {
           />
           <NavLink
             href='/'
+            href1='/id'
+            href2='/id/start-sale'
+            href3='/id/manage-sale'
             icon={<SaleLaunchIcon />}
             iconRight={<DropdownIcon />}
             title='SaleX Launch'
@@ -124,6 +129,7 @@ const Sidebar = () => {
           />
           <NavLink
             href='/sale-lock'
+            href1='/sale-lock/token_locker'
             icon={<SaleLockIcon />}
             iconRight={<DropdownIcon />}
             title='SaleX Lock'
@@ -227,6 +233,9 @@ export const MobileMenu = props => {
         />
         <NavLink
           href='/'
+          href1='/id'
+          href2='/id/start-sale'
+          href3='/id/manage-sale'
           icon={<SaleLaunchIcon />}
           iconRight={<DropdownIcon />}
           title='SaleX Launch'
@@ -300,6 +309,8 @@ export const MobileMenu = props => {
         />
         <NavLink
           href='/sale-lock'
+          href='/sale-lock'
+          href1='/sale-lock/token_locker'
           icon={<SaleLockIcon />}
           iconRight={<DropdownIcon />}
           title='SaleX Lock'
@@ -347,27 +358,36 @@ export const MobileMenu = props => {
 
 // custom components
 const NavLink = ({ icon, title, href, onClick, ...props }) => {
-  const { iconRight, children } = props;
+  const { iconRight, href1, href2, href3, children } = props;
   const router = useRouter();
+  const slug = router?.query?.id;
 
   console.log(router);
 
   return (
     <Fragment>
       <div
-        // onClick={() => {
-        //   href && router.push(href);
-        // }}
         onClick={onClick && onClick}
         className='hover:cursor-pointer flex items-center gap-x-5 py-3 px-9 lg:px-4 xl:py-5 h-[66px] lg:h-auto w-[264px] mx-auto lg:w-full xl:px-7 rounded-[10px] lg:rounded-none'
         style={{
-          backgroundColor: router.asPath === href && activeNavBgColor,
+          backgroundColor:
+            (router.asPath === href ||
+              router.asPath === href1 ||
+              router.asPath === href2 ||
+              router.asPath === href3) &&
+            activeNavBgColor,
         }}
       >
         <div
           className='w-5 xl:w-auto'
           style={{
-            color: router.asPath === href ? '#000248' : '#6D8FFF',
+            color:
+              router.asPath === href ||
+              router.asPath === href1 ||
+              router.asPath === href2 ||
+              router.asPath === href3
+                ? '#000248'
+                : '#6D8FFF',
           }}
         >
           {icon}
@@ -375,8 +395,18 @@ const NavLink = ({ icon, title, href, onClick, ...props }) => {
         <h1
           className='font-mont text-base lg:text-[12px] xl:text-sm font-semibold leading-5 text-custom-navLinkColor'
           style={{
-            color: router.asPath === href && activeNavLinkColor,
-            fontWeight: router.asPath === href && 700,
+            color:
+              (router.asPath === href ||
+                router.asPath === href1 ||
+                router.asPath === href2 ||
+                router.asPath === href3) &&
+              activeNavLinkColor,
+            fontWeight:
+              (router.asPath === href ||
+                router.asPath === href1 ||
+                router.asPath === href2 ||
+                router.asPath === href3) &&
+              700,
           }}
         >
           {title}
@@ -386,7 +416,13 @@ const NavLink = ({ icon, title, href, onClick, ...props }) => {
           <button
             className='outline-none justify-center items-center ml-auto'
             style={{
-              color: router.asPath === href ? '#000248' : '#fff',
+              color:
+                router.asPath === href ||
+                router.asPath === href1 ||
+                router.asPath === href2 ||
+                router.asPath === href3
+                  ? '#000248'
+                  : '#fff',
             }}
           >
             {iconRight}

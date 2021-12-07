@@ -3,6 +3,7 @@ import Select from 'react-select';
 
 import { primaryColor } from '../../styles/variables.module.scss';
 import { MobileMenu } from '../Sidebar.js/Sidebar';
+import { DropdownIcon } from '../SvgIcons/SvgIcons';
 
 // dummy
 const options = [
@@ -14,6 +15,7 @@ const options = [
 const MainPanel = ({ children }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [menuDrop, setMenuDrop] = useState(false);
 
   const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
 
@@ -26,14 +28,79 @@ const MainPanel = ({ children }) => {
           <div className='logo'>
             <img src='/assets/icons/logo-m.svg' alt='' />
           </div>
-          <div className='flex items-center gap-x-2'>
-            <Select
-              defaultValue={selectedOption}
-              placeholder='23eabghd34nrn3nejdks'
-              onChange={setSelectedOption}
-              options={options}
-              styles={DropdownStyles}
-            />
+          <div className='flex items-center gap-x-4'>
+            <div
+              className='relative z-40'
+              style={{
+                boxShadow: menuDrop && '0px 4px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <div
+                onClick={() => setMenuDrop(!menuDrop)}
+                className='p-2 w-[198px] h-[39px] flex items-center gap-x-3 rounded-[5px] bg-[#DEE6FF]'
+                style={{
+                  borderBottomLeftRadius: menuDrop && 0,
+                  borderBottomRightRadius: menuDrop && 0,
+                }}
+              >
+                <h1 className='font-mont text-[12px] text-custom-primaryColor'>
+                  23eabghd34nrn3nejdks
+                </h1>
+                <div className='text-[#000]'>
+                  <DropdownIcon />
+                </div>
+              </div>
+
+              <div
+                className={`w-full bg-[#DEE6FF] absolute z-40 px-3 overflow-hidden transition-all duration-150 ${
+                  menuDrop ? 'h-auto ease-in max-h-screen' : 'max-h-0 ease-out'
+                }`}
+                style={{
+                  borderBottomLeftRadius: menuDrop && 5,
+                  borderBottomRightRadius: menuDrop && 5,
+                  boxShadow: menuDrop && '0px 4px 4px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                <div className='w-full flex justify-between items-center h-[34px] bg-[#FFFFFF] rounded-[5px] px-3 py-3'>
+                  <input
+                    readOnly
+                    value='23eabghd34nrn3nejdkska....'
+                    className='w-full text-[12px] font-normal font-mont text-custom-primaryColor'
+                  />
+                  <button className='outline-none'>
+                    <img src='/assets/icons/copy-icon.svg' alt='' />
+                  </button>
+                </div>
+                <div className='py-5 flex flex-col gap-y-3'>
+                  <div className='flex items-center gap-x-3'>
+                    <h1 className='font-mont font-semibold text-[12px] text-custom-primaryColor'>
+                      BNB Balance
+                    </h1>
+                    <div className='flex-1 bg-white rounded-[5px] h-[32px] px-3 flex justify-center items-center'>
+                      <h1 className='font-mont text-[12px] text-custom-primaryColor'>
+                        0000.00
+                      </h1>
+                    </div>
+                  </div>
+                  <div className='flex items-center gap-x-3'>
+                    <h1 className='font-mont font-semibold text-[12px] text-custom-primaryColor'>
+                      SSN Balance
+                    </h1>
+                    <div className='flex-1 bg-white rounded-[5px] h-[32px] px-3 flex justify-center items-center'>
+                      <h1 className='font-mont text-[12px] text-custom-primaryColor'>
+                        0000.00
+                      </h1>
+                    </div>
+                  </div>
+
+                  <button className='h-[36px] w-full rounded-[5px] bg-custom-accentColor flex justify-center items-center'>
+                    <h1 className='font-mont font-bold text-white text-[12px]'>
+                      Buy SSN
+                    </h1>
+                  </button>
+                </div>
+              </div>
+            </div>
             <button className='outline-none' onClick={toggleMobileMenu}>
               <img src='/assets/icons/hamburger-menu.svg' alt='' />
             </button>
@@ -78,25 +145,26 @@ const MainPanel = ({ children }) => {
         </section>
 
         {/* main section */}
-        <Fragment>{children}</Fragment>
-
-        <div className='lg:hidden  lg:py-6 flex flex-col items-center gap-y-4'>
-          <img src='/assets/icons/logo-m.svg' alt='' />
-          <div className='flex flex-col justify-center items-center gap-y-3'>
-            <a
-              href='https://'
-              className='font-mont font-semibold text-[12px] text-[#A9A9A9]'
-            >
-              Terms and Condition
-            </a>
-            <a
-              href='https://'
-              className='font-mont font-semibold text-[12px] text-[#A9A9A9]'
-            >
-              Privacy policy
-            </a>
+        <Fragment>
+          {children}
+          <div className='lg:hidden lg:py-6 flex flex-col items-center gap-y-4'>
+            <img src='/assets/icons/logo-m.svg' alt='' />
+            <div className='flex flex-col justify-center items-center gap-y-3'>
+              <a
+                href='https://'
+                className='font-mont font-semibold text-[12px] text-[#A9A9A9]'
+              >
+                Terms and Condition
+              </a>
+              <a
+                href='https://'
+                className='font-mont font-semibold text-[12px] text-[#A9A9A9]'
+              >
+                Privacy policy
+              </a>
+            </div>
           </div>
-        </div>
+        </Fragment>
       </main>
 
       {/* mobile menu */}

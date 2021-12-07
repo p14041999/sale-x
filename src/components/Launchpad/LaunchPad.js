@@ -6,41 +6,96 @@ import LinearProgress, {
 } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 
+import { primaryColor, accentColor } from '../../styles/variables.module.scss';
+
 export const LaunchPadHeader = props => {
   const router = useRouter();
   const { route, btnText, bannerSmallText } = props;
 
   return (
-    <div className='w-full'>
+    <Fragment>
+      <h1 className='lg:hidden font-bold text-left font-mont text-custom-primaryColor leading-[24px] '>
+        SaleX Launchpad
+      </h1>
+
       <button
         onClick={() => router.back()}
-        className='outline-none hidden lg:flex items-center gap-x-2'
+        className='outline-none hidden mt-3 lg:flex items-center gap-x-2'
       >
         <img src='/assets/icons/arrow-left.svg' alt='' />
         <h1 className='font-mont font-semibold text-[#2C2C2C] text-sm'>Back</h1>
       </button>
 
-      <div className='launchpad-banner rounded-[10px] py-5 px-9 mt-3 lg:mt-7 flex justify-center lg:justify-between items-center text-center lg:text-left'>
-        <div>
-          <h1 className='font-bold font-mont text-base xl:text-xl text-white leading-[29px]'>
-            SaleX Launchpad
-          </h1>
-          <h1 className='font-medium font-mont text-[12px] xl:text-sm text-white xl:pt-1 leading-[20px]'>
-            {bannerSmallText
-              ? bannerSmallText
-              : 'DeFi Launchpad With Instant Listing And Liquidity Locking'}
-          </h1>
+      <div className='flex justify-between items-center pt-3 lg:pt-4'>
+        <div className='bg-[#F6F7FC] py-2 px-2 rounded-[10px] h-[56px] lg:h-[60px] w-full lg:w-[fit-content] flex justify-between items-center overflow-hidden'>
+          <button
+            onClick={() => router.push('/')}
+            className={`h-full whitespace-nowrap flex-1 flex justify-center items-center bg-custom-primaryColor rounded-md py-2 px-4 lg:px-6 ${
+              (router.asPath === '/' ||
+                router.asPath === '/id' ||
+                router.asPath === '/id/start-sale') &&
+              'py-2 px-4 lg:px-7'
+            }`}
+            style={{
+              backgroundColor:
+                router.asPath === '/' ||
+                router.asPath === '/id' ||
+                router.asPath === '/id/start-sale'
+                  ? primaryColor
+                  : 'transparent',
+            }}
+          >
+            <h1
+              className='font-mont text-[12px] lg:text-sm'
+              style={{
+                color:
+                  router.asPath === '/' ||
+                  router.asPath === '/id' ||
+                  router.asPath === '/id/start-sale'
+                    ? 'white'
+                    : primaryColor,
+                fontWeight:
+                  router.asPath === '/' ||
+                  router.asPath === '/id' ||
+                  router.asPath === '/id/start-sale'
+                    ? 700
+                    : 500,
+              }}
+            >
+              Listed Tokens
+            </h1>
+          </button>
+          <button
+            onClick={() => router.push('/id/manage-sale')}
+            className={`h-full whitespace-nowrap flex-1 flex justify-center items-center bg-custom-primaryColor rounded-md py-2 px-4 lg:px-6 ${
+              router.asPath === '/id/manage-sale' && 'py-2 px-4 lg:px-7'
+            }`}
+            style={{
+              backgroundColor:
+                router.asPath === '/id/manage-sale'
+                  ? primaryColor
+                  : 'transparent',
+            }}
+          >
+            <h1
+              className='font-mont text-[12px] lg:text-sm'
+              style={{
+                color:
+                  router.asPath === '/id/manage-sale' ? 'white' : primaryColor,
+                fontWeight: router.asPath === '/id/manage-sale' ? 700 : 500,
+              }}
+            >
+              Manage your Presale
+            </h1>
+          </button>
         </div>
-        <button
-          onClick={() => router.push(route)}
-          className='hidden lg:block w-[216px] h-[46px] rounded-[10px] bg-white justify-center items-center'
-        >
-          <h1 className='font-bold font-mont text-[12px] xl:text-sm text-custom-accentColor'>
-            {btnText ? btnText : 'Start Sale'}
+        <button className='hidden lg:block rounded-[10px] h-[46px] w-[fit-content] px-4 border border-solid border-custom-accentColor'>
+          <h1 className='font-mont font-semibold text-[12px] text-custom-accentColor'>
+            Create new Presale
           </h1>
         </button>
       </div>
-    </div>
+    </Fragment>
   );
 };
 
