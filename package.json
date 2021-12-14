@@ -9,11 +9,14 @@
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.2.2",
+    "@walletconnect/web3-provider": "^1.7.0",
     "next": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-select": "^5.2.1",
-    "sass": "^1.43.5"
+    "sass": "^1.43.5",
+    "web3": "^1.6.1",
+    "web3modal": "^1.9.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",

@@ -3,7 +3,11 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
+import Web3 from 'web3';
 
+import {LAUNCH_ABI} from '../../abis/launch-abi.json';
+import {TOKEN_ABI} from '../../abis/token-abi.json'
+import {RINKEBY} from '../../constants/constant.json';
 //custom
 import { primaryColor } from '../../styles/variables.module.scss';
 import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
@@ -12,12 +16,49 @@ import Input from '../../components/Input/Input';
 
 // utils
 import { EXCHANGE_OPTIONS } from '../../Utils/data';
+import { useAppContext } from '../../contexts/AppContext';
+import DateInput from '../../components/Input/Date';
 
 const index = () => {
+  const dropdownRef = React.createRef();
   const [activeStep, setActiveStep] = useState(0);
   const [disclaimer, setDisclaimer] = useState(false);
+  const [contract, setContract] = useState(null);
+  const [tokenContract,setTokenContract] = useState(null);
+  const app = useAppContext();
+  const [chainID,setChainID] = useState(4);
+  const [data,setData] = useState(null);
+  const [totalFee,setTotalFee] = useState(2000);
+  // Input field
+  const [tokenAddress,setTokenAddress] = useState(null);
+  const [rate,setRate] = useState(600);
+  const [softCap,setSoftCap] = useState(0.1);
+  const [hardCap,setHardCap] = useState(0.5);
+  const [minAmount,setMinAmount] = useState(0.005);
+  const [maxAmount,setMaxAmount] = useState(0.05);
+  const [selectedSwap,setSelectedSwap] = useState('Pancakeswap');
+
+  const [exchangeLiquidity,setExchangeLiquidity] = useState(70);
+  const [exchangeListingRate,setExchangeListingRate] = useState(400);
+  const [auditLink,setAuditLink] = useState("");
+  const [projectUpdate,setProjectUpdate] = useState("");
+  const [description,setDescription] = useState("");
+  const [telegramLink,setTelegramLink] = useState("");
+  const [redditLink,setRedditLink] = useState("");
+  const [twitterLink,setTwitterLink] = useState("");
+  const [githubLink,setGithubLink] = useState("");
+  const [websiteLink,setWebsiteLink] = useState("");
+  const [logoLink,setLogoLink] = useState("");
+  let d = new Date();
+
+  const [startDate,setStartDate] = useState(d.toLocaleDateString());
+  const [startDate2,setStartDate2] = useState(Date.now());
+  const [endDate,setEndDate] = useState(d.toLocaleDateString());
+  const [endDate2,setEndDate2] = useState(Date.now());
+  const [lockTime,setLockTime] = useState(90)
 
   const handleNext = () => {
+    // console.log(dropdownRef.selected);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
@@ -28,7 +69,58 @@ const index = () => {
   const handleReset = () => {
     setActiveStep(0);
   };
+  const handleCreate = ()=>{
+    
+  }
+  useEffect(async ()=>{
+    if(!window.ethereum.isConnected){
+      window.ethereum.enable().then(async e=>{
+        let web3 = new Web3(window.ethereum);
+        setChainID(await web3.eth.getChainId());
+      })
+    }else{
 
+    }
+    // if(chainID == 4){
+      let ExternalWeb3 = new Web3('https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
+      let LaunchContract = new ExternalWeb3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
+      let adminFee = await LaunchContract.methods.adminWalletFee().call();
+      let stakingFee = await LaunchContract.methods.stakingPoolFee().call();
+      let burnFee = await LaunchContract.methods.burnFee().call();
+      let totalFee = (Number(adminFee) + Number(stakingFee) + Number(burnFee))/(10**18);
+      setTotalFee(totalFee);
+      setContract(LaunchContract);
+      let TokenContract = new ExternalWeb3.eth.Contract(TOKEN_ABI,RINKEBY.TOKEN);
+      setTokenContract(TokenContract);
+    // }
+  },[chainID])
+  
+  const setLoading = (status)=>{
+
+  }
+
+  const getInfo = async (address)=>{
+    try{
+      setLoading(false)
+      if(chainID == 4){
+        let ExternalWeb3 = new Web3('https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
+        let customToken = new ExternalWeb3.eth.Contract(TOKEN_ABI,address);
+        let name = await customToken.methods.name().call();
+        let symbol = await customToken.methods.symbol().call();
+        let totalSupply = await customToken.methods.totalSupply().call();
+        let decimal = await customToken.methods.decimals().call();
+        let actualTotalSupply = Number(totalSupply)/(10**Number(decimal));
+        let TokenData = {
+          name,symbol,totalSupply:actualTotalSupply
+        } 
+        setLoading(false)
+        setData(TokenData);
+        console.log(TokenData)
+      }
+    }catch(e){
+      console.log("Invalid Address",e);
+    }
+  }
   return (
     <Fragment>
       <div className='py-7'>
@@ -58,7 +150,7 @@ const index = () => {
 
           <div className='hidden lg:flex items-center gap-x-8 pt-3'>
             <h1 className='font-bold text-base font-mont text-custom-accentColor'>
-              Current Fees: 1 BNB + 2% of Tokens Sold + 2% of BNB Raised
+              Current Fees: {totalFee} SSN + 2% of Tokens Sold + 2% of BNB Raised
             </h1>
 
             <div
@@ -89,19 +181,24 @@ const index = () => {
               <StepContent>
                 <div>
                   <Input
+                    value={tokenAddress}
+                    onChange={e=>{
+                      setTokenAddress(e.target.value);
+                      getInfo(e.target.value);
+                    }}
                     label='Enter your token address'
                     className='w-full lg:w-[50%]'
                   />
 
                   <div className='pt-2 flex flex-col gap-y-2'>
                     <h1 className='font-mont text-[12px] lg:text-sm text-[#000000] leading-6'>
-                      Token Name:
+                      Token Name: <strong>{data?.name}</strong>
                     </h1>
                     <h1 className='font-mont text-[12px] lg:text-sm text-[#000000] leading-6'>
-                      Token Symbol:
+                      Token Symbol: <strong>{data?.symbol}</strong>
                     </h1>
                     <h1 className='font-mont text-[12px] lg:text-sm text-[#000000] leading-6'>
-                      Token Symbol:
+                      Token Total Supply: <strong>{data?.totalSupply}</strong>
                     </h1>
                   </div>
 
@@ -136,7 +233,16 @@ const index = () => {
                     do I get?)
                   </h1>
 
-                  <Input placeholder='Ex. 600' className='w-full lg:w-[50%]' />
+                  <Input placeholder='Ex. 600'
+                        type="number"
+                        value={rate}
+                        onChange={
+                          e=>{
+                            setRate(e.target.value);
+                          }
+                        }
+                        className='w-full lg:w-[50%]' 
+                  />
 
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
@@ -174,14 +280,28 @@ const index = () => {
                       <Input
                         label='Soft Cap:'
                         placeholder='Ex. 600'
+                        type="number"
                         className='w-full'
+                        value={softCap}
+                        onChange={
+                          e=>{
+                            setSoftCap(e.target.value);
+                          }
+                        }
                       />
                     </div>
                     <div className='w-full lg:w-[30%]'>
                       <Input
                         label='Hard Cap:'
                         placeholder='Ex. 600'
+                        type="number"
                         className='w-full'
+                        value={hardCap}
+                        onChange={
+                          e=>{
+                            setHardCap(e.target.value);
+                          }
+                        }
                       />
                     </div>
                   </div>
@@ -222,14 +342,28 @@ const index = () => {
                       <Input
                         label=' Minimum Contribution Limit:'
                         placeholder='Ex. 0.1'
+                        type="number"
                         className='w-full'
+                        value={minAmount}
+                        onChange={
+                          e=>{
+                            setMinAmount(e.target.value);
+                          }
+                        }
                       />
                     </div>
                     <div className='w-full lg:w-[30%]'>
                       <Input
                         label=' Maximum Contribution Limit:'
                         placeholder='Ex. 0.3'
+                        type="number"
                         className='w-full'
+                        value={maxAmount}
+                        onChange={
+                          e=>{
+                            setMaxAmount(e.target.value);
+                          }
+                        }
                       />
                     </div>
                   </div>
@@ -268,6 +402,11 @@ const index = () => {
                     <SelectDropdown
                       placeholder='Pancakeswap'
                       options={EXCHANGE_OPTIONS}
+                      ref={dropdownRef}
+                      selected={selectedSwap}
+                      onSelectedChange={e=>{
+                        setSelectedSwap(e);
+                      }}
                     />
                   </div>
 
@@ -305,7 +444,11 @@ const index = () => {
 
                   <div className='pt-3'>
                     <Input
-                      placeholder='Ex. 0.6'
+                      placeholder='Ex. 70'
+                      value={exchangeLiquidity}
+                      onChange={e=>{
+                        setExchangeLiquidity(e.target.value)
+                      }}
                       className='w-full lg:w-[50%]'
                     />
                   </div>
@@ -344,7 +487,12 @@ const index = () => {
                   </h1>
 
                   <div className='pt-3'>
-                    <Input placeholder='Ex. 40' className='w-full lg:w-[50%]' />
+                    <Input placeholder='Ex. 400' className='w-full lg:w-[50%]' 
+                     value={exchangeListingRate}
+                     onChange={e=>{
+                       setExchangeListingRate(e.target.value);
+                     }}
+                    />
                   </div>
 
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
@@ -378,7 +526,12 @@ const index = () => {
                   </h1>
 
                   <div className='pt-3'>
-                    <Input className='w-full lg:w-[50%]' />
+                    <Input className='w-full lg:w-[50%]' 
+                      value={auditLink}
+                      onChange={e=>{
+                        setAuditLink(e.target.value);
+                      }}
+                    />
                   </div>
 
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
@@ -423,57 +576,89 @@ const index = () => {
                       <Input
                         label='Logo Link: (URL must end with a supported image
                       extension png, jpg, jpeg or gif)'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. https://example.com/logo.png'
                         className='w-full lg:w-[50%]'
+                        value={logoLink}
+                        onChange={e=>{
+                          setLogoLink(e.target.value);
+                        }}
                       />
                     </div>
                     <div>
                       <Input
                         label='Website Link:'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. https://www.example.com'
                         className='w-full lg:w-[50%]'
+                        value={websiteLink}
+                        onChange={e=>{
+                          setWebsiteLink(e.target.value);
+                        }}
                       />
                     </div>
                     <div>
                       <Input
                         label='Github Link:'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. https://github.com/hello-world/'
                         className='w-full lg:w-[50%]'
+                        value={githubLink}
+                        onChange={e=>{
+                          setGithubLink(e.target.value);
+                        }}
                       />
                     </div>
                     <div>
                       <Input
                         label='Twitter Link:'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. https://twitter.com/hello-world'
                         className='w-full lg:w-[50%]'
+                        value={twitterLink}
+                        onChange={e=>{
+                          setTwitterLink(e.target.value);
+                        }}
                       />
                     </div>
                     <div>
                       <Input
                         label='Reddit Link:'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. https://reddit.com/hello-world'
                         className='w-full lg:w-[50%]'
+                        value={redditLink}
+                        onChange={e=>{
+                          setRedditLink(e.target.value);
+                        }}
                       />
                     </div>
                     <div>
                       <Input
                         label='Telegram Link:'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. https://t.me/hello-world'
                         className='w-full lg:w-[50%]'
+                        value={telegramLink}
+                        onChange={e=>{
+                          setTelegramLink(e.target.value);
+                        }}
                       />
                     </div>
                     <div>
                       <Input
                         label='Project Description:'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. Some Big Decription'
                         className='w-full lg:w-[50%]'
+                        value={description}
+                        onChange={e=>{
+                          setDescription(e.target.value);
+                        }}
                       />
                     </div>
                     <div>
                       <Input
                         label='Any update you want to provide to participants:'
-                        placeholder='Ex. 0.6'
+                        placeholder='Ex. Project Update: New Feature Added'
                         className='w-full lg:w-[50%]'
+                        value={projectUpdate}
+                        onChange={e=>{
+                          setProjectUpdate(e.target.value);
+                        }}
                       />
                     </div>
                   </div>
@@ -512,26 +697,46 @@ const index = () => {
                   <div className='pt-3 flex flex-col gap-4'>
                     <div className='flex flex-col lg:flex-row items-center gap-x-6 '>
                       <div className='w-full lg:w-[30%]'>
-                        <Input
+                        <DateInput
                           label='Presale Start/End Time'
                           placeholder='Ex. 0.6'
                           className='w-full'
+                          // value={startDate}
+                          onChange={e=>{
+                            let x = e.target.value;
+                            let d = new Date(x);
+                            setStartDate(x);
+                            setStartDate2(d.getTime());
+                          }}
                         />
                       </div>
                       <div className='w-full pt-3 lg:pt-0 lg:w-[30%]'>
-                        <Input
+                        <DateInput
                           label='Presale Start/End Time'
                           placeholder='Ex. 0.6'
                           className='w-full'
+                          // value={endDate}
+                          onChange={e=>{
+                            let x = e.target.value;
+                            let d = new Date(x);
+                            setEndDate(x);
+                            setEndDate2(d.getTime());
+                          }}
                         />
                       </div>
                     </div>
                     <div className='flex items-center gap-x-6 '>
                       <div className='w-full lg:w-[30%]'>
                         <Input
-                          label='Liquidity Lockup Time'
-                          placeholder='Ex. 0.6'
+                          label='Liquidity Lockup Time (Days)'
+                          placeholder='Ex. 20'
                           className='w-full'
+                          value={lockTime}
+                          onChange={
+                            e=>{
+                              setLockTime(e.target.value);
+                            }
+                          }
                         />
                       </div>
                     </div>
@@ -597,29 +802,38 @@ const index = () => {
                   </ul>
 
                   <form className='pt-7 flex flex-col gap-y-4'>
+                    <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
+                        Name - SYMBOL
+                    </h1>
                     <div>
                       <input
                         type='text'
                         readOnly
                         placeholder='Token Name'
+                        value={`${data?.name} - ${data?.symbol}`}
                         className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
+                    <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
+                        Rate per BNB
+                    </h1>
                     <div>
                       <input
                         type='text'
                         readOnly
                         placeholder='Presale Rate (Per BNB)'
+                        value={rate}
                         className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
                     <div>
-                      <input
+                      {/* <input
                         type='text'
                         readOnly
-                        placeholder='Presale Rate (Per BNB)'
+                        placeholder='Exchange Rate (Per BNB)'
+                        value={exchangeListingRate}
                         className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
-                      />
+                      /> */}
                     </div>
                     <div>
                       <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
@@ -630,12 +844,14 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Soft Cap:'
+                          value={softCap}
                           className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                         <input
                           type='text'
                           readOnly
                           placeholder='Hard Cap:'
+                          value={hardCap}
                           className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
@@ -649,12 +865,14 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Min:'
+                          value={minAmount}
                           className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                         <input
                           type='text'
                           readOnly
                           placeholder='Max:'
+                          value={maxAmount}
                           className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
@@ -668,33 +886,36 @@ const index = () => {
                           type='text'
                           readOnly
                           placeholder='Starts: 11 AUG 2021 at 00:41'
+                          value={startDate}
                           className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[10px] lg:text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                         <input
                           type='text'
                           readOnly
                           placeholder='Ends: 11 AUG 2021 at 00:41'
+                          value={endDate}
                           className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[10px] lg:text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
                       </div>
                     </div>
                     <div>
                       <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
-                        PancakeSwap Liquidity
+                        PancakeSwap Liquidity / Listing Rate
                       </h1>
                       <div className='flex items-center pt-1'>
                         <input
                           type='text'
                           readOnly
                           placeholder='%'
+                          value={exchangeLiquidity}
                           className='w-1/2 lg:w-[25%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                         />
-                        <input
+                        {/* <input
                           type='text'
                           readOnly
                           placeholder='Ends: 11 AUG 2021 at 00:41'
                           className='w-1/2 lg:w-[30%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
-                        />
+                        /> */}
                       </div>
                     </div>
                     <div>
@@ -702,6 +923,7 @@ const index = () => {
                         type='text'
                         readOnly
                         placeholder='PancakeSwap Rate (Per BNB)'
+                        value={exchangeListingRate}
                         className='w-full lg:w-[50%] outline-none border-b-[0.5px] border-solid border-[#9F9F9F] text-[12px] font-mont leading-[15px] text-[#000000] placeholder-[#606060] py-2'
                       />
                     </div>
@@ -761,7 +983,7 @@ const index = () => {
             </h1>
 
             <h1 className='font-mont font-bold text-sm xl:text-base leading-6 text-custom-accentColor'>
-              Current Fees: 1 BNB + 2% of Tokens Sold + 2% of BNB Raised
+              Current Fees: {totalFee} SSN + 2% of Tokens Sold + 2% of BNB Raised
             </h1>
           </div>
         </div>

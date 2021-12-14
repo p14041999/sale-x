@@ -14,16 +14,6 @@ export const LISTING_OPTIONS = [
 
 export const EXCHANGE_OPTIONS = [
   { label: 'Pancakeswap', value: 'Pancakeswap' },
-  {
-    label: 'Admiral Container Lines',
-    value: 'ADMU',
-  },
-  { label: 'Alianca', value: 'ANRM' },
-  {
-    label: 'American President Lines (APL)',
-    value: 'APLU',
-  },
-  { label: 'Arkas', value: 'ARKU' },
 ];
 
 export const DIDO_DATA = [

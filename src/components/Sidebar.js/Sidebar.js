@@ -31,7 +31,7 @@ const Sidebar = () => {
     setSelected(index);
   };
 
-  console.log(router);
+  // console.log(router);
 
   return (
     <Fragment>

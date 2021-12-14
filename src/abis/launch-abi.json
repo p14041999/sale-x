@@ -1,0 +1,965 @@
+{
+    "LAUNCH_ABI": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_adminAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "SSN",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [],
+          "name": "adminWalletFee",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [],
+          "name": "burnFee",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "endedIcos",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "presaleAddress",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "isLive",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "owner",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "icoName",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "longDescription",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleSupply",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "liquiditySupply",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleStartTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleEndTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "listingOn",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "softCap",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "hardCap",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratePerBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "exchangeListingRateBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "lockLiquidity",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "burnLiquidity",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "liquidityLockTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "whiteListEnabled",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "whitelistLastDate",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct DataParam",
+                  "name": "data",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "feesBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "feesTokenAdmin",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "feesTokenStaking",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "StakingWalletAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "AdminWalletAddress",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Fees",
+                  "name": "fees",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ICOparam",
+              "name": "ico",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "icoList",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "presaleAddress",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "isLive",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "owner",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "icoName",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "longDescription",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleSupply",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "liquiditySupply",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleStartTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleEndTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "listingOn",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "softCap",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "hardCap",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratePerBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "exchangeListingRateBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "lockLiquidity",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "burnLiquidity",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "liquidityLockTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "whiteListEnabled",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "whitelistLastDate",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct DataParam",
+                  "name": "data",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "feesBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "feesTokenAdmin",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "feesTokenStaking",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "StakingWalletAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "AdminWalletAddress",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Fees",
+                  "name": "fees",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ICOparam",
+              "name": "ico",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "ongoingIcos",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "presaleAddress",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "isLive",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "owner",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "icoName",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "longDescription",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleSupply",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "liquiditySupply",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleStartTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "presaleEndTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "listingOn",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "softCap",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "hardCap",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratePerBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "exchangeListingRateBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "lockLiquidity",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "burnLiquidity",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "liquidityLockTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "whiteListEnabled",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "whitelistLastDate",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct DataParam",
+                  "name": "data",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "feesBNB",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "feesTokenAdmin",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "feesTokenStaking",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "StakingWalletAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "AdminWalletAddress",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Fees",
+                  "name": "fees",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ICOparam",
+              "name": "ico",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [],
+          "name": "stakingPoolFee",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newAdminWallet",
+              "type": "address"
+            }
+          ],
+          "name": "updateAdminWalletAddress",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newStakingPoolAddress",
+              "type": "address"
+            }
+          ],
+          "name": "updateStakingPoolAddress",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "icoName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "longDescription",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "presaleSupply",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "liquiditySupply",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "presaleStartTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "presaleEndTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "listingOn",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "softCap",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "hardCap",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "ratePerBNB",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "exchangeListingRateBNB",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "lockLiquidity",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "burnLiquidity",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "liquidityLockTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "whiteListEnabled",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "whitelistLastDate",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataParam",
+              "name": "newICOData",
+              "type": "tuple"
+            }
+          ],
+          "name": "createNewICO",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getOngoingICOs",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "presaleAddress",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "isLive",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "owner",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "factory",
+                      "type": "address"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "string",
+                          "name": "icoName",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "longDescription",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "tokenAddress",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "presaleSupply",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "liquiditySupply",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "presaleStartTime",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "presaleEndTime",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "listingOn",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "softCap",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "hardCap",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "ratePerBNB",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "exchangeListingRateBNB",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "minAmount",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "maxAmount",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "bool",
+                          "name": "lockLiquidity",
+                          "type": "bool"
+                        },
+                        {
+                          "internalType": "bool",
+                          "name": "burnLiquidity",
+                          "type": "bool"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "liquidityLockTime",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "bool",
+                          "name": "whiteListEnabled",
+                          "type": "bool"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "whitelistLastDate",
+                          "type": "uint256"
+                        }
+                      ],
+                      "internalType": "struct DataParam",
+                      "name": "data",
+                      "type": "tuple"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "feesBNB",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "feesTokenAdmin",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "feesTokenStaking",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "StakingWalletAddress",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "AdminWalletAddress",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct Fees",
+                      "name": "fees",
+                      "type": "tuple"
+                    }
+                  ],
+                  "internalType": "struct ICOparam",
+                  "name": "ico",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ICOBase[]",
+              "name": "",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "constant": true
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_adminWalletFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_stakingPoolFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_burnFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_ICOAdminWalletFees",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_ICOStakingPoolFees",
+              "type": "uint256"
+            }
+          ],
+          "name": "setupFees",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+    ]
+}

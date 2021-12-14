@@ -2,14 +2,20 @@ import 'tailwindcss/tailwind.css';
 import '../../public/assets/fonts/montserrat/fonts.css';
 import '../../public/assets/fonts/metropolis/fonts.css';
 import '../styles/global.scss';
-
+import {AppWrapper} from '../contexts/AppContext';
 import Layout from '../components/Layout/Layout';
+import { useEffect } from 'react';
 
 function MyApp({ Component, pageProps }) {
+  // useEffect(()=>{
+
+  // })
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <AppWrapper>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AppWrapper>
   );
 }
 

@@ -11,11 +11,14 @@ const options = [
   { value: '23eabghd34nrn3nejdks', label: '23eabghd34nrn3nejdks' },
   { value: '23eabghd34nrn3nejdks', label: '23eabghd34nrn3nejdks' },
 ];
+import { useAppContext } from '../../contexts/AppContext';
 
 const MainPanel = ({ children }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [menuDrop, setMenuDrop] = useState(false);
+
+  const app = useAppContext();
 
   const toggleMobileMenu = () => setMobileMenu(!mobileMenu);
 
@@ -44,7 +47,7 @@ const MainPanel = ({ children }) => {
                 }}
               >
                 <h1 className='font-mont text-[12px] text-custom-primaryColor'>
-                  23eabghd34nrn3nejdks
+                  {app.accountAddress}
                 </h1>
                 <div className='text-[#000]'>
                   <DropdownIcon />
@@ -64,7 +67,7 @@ const MainPanel = ({ children }) => {
                 <div className='w-full flex justify-between items-center h-[34px] bg-[#FFFFFF] rounded-[5px] px-3 py-3'>
                   <input
                     readOnly
-                    value='23eabghd34nrn3nejdkska....'
+                    value={app.accountAddress}
                     className='w-full text-[12px] font-normal font-mont text-custom-primaryColor'
                   />
                   <button className='outline-none'>
@@ -116,7 +119,7 @@ const MainPanel = ({ children }) => {
               className='w-full h-[46px] bg-[#FDFDFD] rounded-[10px] text-[12px] xl:text-sm font-normal font-mont text-custom-primaryColor px-3 py-3 mt-1'
             />
           </PanelCard>
-          <PanelCard title='BBN Balance' className='bg-[#F5F6F8] border-none'>
+          <PanelCard title='BNB Balance' className='bg-[#F5F6F8] border-none'>
             <input
               readOnly
               value='0000.00'
@@ -127,7 +130,7 @@ const MainPanel = ({ children }) => {
             <div className='w-full flex justify-between items-center h-[46px] bg-[#FDFDFD] rounded-[10px] px-3 py-3 mt-1'>
               <input
                 readOnly
-                value='23eabghd34nrn3nejdkska....'
+                value={app.accountAddress}
                 className='w-full text-[12px] font-normal font-mont text-custom-primaryColor'
               />
               <button className='outline-none'>
@@ -135,13 +138,21 @@ const MainPanel = ({ children }) => {
               </button>
             </div>
           </PanelCard>
+          {app.walletConnected?
+          <PanelCard title='BSC Network' className='bg-[#F5F6F8] border-none'>
+            <button className='outline-none bg-custom-accentColor w-full h-[46px] mt-2 rounded-[10px] justify-between items-center'>
+              <h1 className='font-mont font-bold text-white text-[12px] xl:text-sm'>
+                Buy SSN
+              </h1>
+            </button>
+          </PanelCard>:
           <PanelCard title='BSC Network' className='bg-[#F5F6F8] border-none'>
             <button className='outline-none bg-custom-accentColor w-full h-[46px] mt-2 rounded-[10px] justify-between items-center'>
               <h1 className='font-mont font-bold text-white text-[12px] xl:text-sm'>
                 Connect Wallet
               </h1>
             </button>
-          </PanelCard>
+          </PanelCard>}
         </section>
 
         {/* main section */}
