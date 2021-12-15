@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+// import "sweetalert2/dist"
 
 // custom
 import classes from '../styles/home.module.scss';

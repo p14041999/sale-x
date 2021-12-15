@@ -89,7 +89,9 @@ export const LaunchPadHeader = props => {
             </h1>
           </button>
         </div>
-        <button className='hidden lg:block rounded-[10px] h-[46px] w-[fit-content] px-4 border border-solid border-custom-accentColor'>
+        <button 
+        onClick={() => router.push('/id/start-sale')}
+        className='hidden lg:block rounded-[10px] h-[46px] w-[fit-content] px-4 border border-solid border-custom-accentColor'>
           <h1 className='font-mont font-semibold text-[12px] text-custom-accentColor'>
             Create new Presale
           </h1>

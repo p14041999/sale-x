@@ -4,6 +4,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
 import Web3 from 'web3';
+import Swal from 'sweetalert2'
 
 import {LAUNCH_ABI} from '../../abis/launch-abi.json';
 import {TOKEN_ABI} from '../../abis/token-abi.json'
@@ -18,8 +19,11 @@ import Input from '../../components/Input/Input';
 import { EXCHANGE_OPTIONS } from '../../Utils/data';
 import { useAppContext } from '../../contexts/AppContext';
 import DateInput from '../../components/Input/Date';
+import { switchChain } from '../../Utils/chain-util';
 
 const index = () => {
+  const [approved,setApproved] = useState(false);
+
   const dropdownRef = React.createRef();
   const [activeStep, setActiveStep] = useState(0);
   const [disclaimer, setDisclaimer] = useState(false);
@@ -29,8 +33,9 @@ const index = () => {
   const [chainID,setChainID] = useState(4);
   const [data,setData] = useState(null);
   const [totalFee,setTotalFee] = useState(2000);
+
   // Input field
-  const [tokenAddress,setTokenAddress] = useState(null);
+  const [tokenAddress,setTokenAddress] = useState("0x5D78cde7106732BC0B1CEF6C63637595C28DfCEb");
   const [rate,setRate] = useState(600);
   const [softCap,setSoftCap] = useState(0.1);
   const [hardCap,setHardCap] = useState(0.5);
@@ -57,6 +62,14 @@ const index = () => {
   const [endDate2,setEndDate2] = useState(Date.now());
   const [lockTime,setLockTime] = useState(90)
 
+  // Field Errors
+  const [tokenError,setTokenError] = useState("");
+  const [capError,setCapError] = useState("");
+  const [contributionError,setContributionError] = useState("");
+  const [liquidityError,setLiquidityError] = useState("");
+  const [listingError,setListingError] = useState("");
+  const [timingError,setTimingError] = useState("");
+
   const handleNext = () => {
     // console.log(dropdownRef.selected);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -69,9 +82,124 @@ const index = () => {
   const handleReset = () => {
     setActiveStep(0);
   };
-  const handleCreate = ()=>{
-    
+
+  const isValidAddress = (addr)=>{
+    try {
+      let web3 = new Web3('https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
+      web3.utils.toChecksumAddress(addr);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
+  const validateToken = (next)=>{
+    if(tokenAddress != null && tokenAddress != "" && isValidAddress(tokenAddress)){
+      if(data !=null){
+        if(next){
+          handleNext();
+          // new Swal("ERROR","Please enter valid token info or wait for fetch","error");
+        }
+      }else{
+        setTokenError("Invalid Token");
+        // new Swal("ERROR","Please enter valid token info or wait for fetch","error");
+      }
+    }
+  }
+  const validateCap = (data)=>{
+    console.log({
+      sc:Number(data.soft),
+      hc:Number(data.hard)
+    })
+    setHardCap(data.hard)
+    setSoftCap(data.soft)
+    if(Number(data.soft) <= 0){
+      setCapError("Value can't be Zero or Less!!");
+      return;
+    }
+    if(Number(data.hard) <= 0){
+      setCapError("Value can't be Zero or Less!!");
+      return;
+    }
+    if(Number(data.soft) >= Number(data.hard)){
+      setCapError("Soft Cap must be Lower!!");
+    }else{
+      setCapError("");
+    }
+  }
+  const handleCapNext = ()=>{
+    if(capError == ""){
+      handleNext();
+    }
+  }
+
+
+  // Validate Contribution
+  const validateContribution = (data)=>{
+    console.log({
+      sc:Number(data.soft),
+      hc:Number(data.hard)
+    })
+    setMaxAmount(data.hard)
+    setMinAmount(data.soft)
+    if(Number(data.soft) <= 0){
+      setContributionError("Value can't be Zero or Less!!");
+      return;
+    }
+    if(Number(data.hard) <= 0){
+      setContributionError("Value can't be Zero or Less!!");
+      return;
+    }
+    if(Number(data.soft) >= Number(data.hard)){
+      setContributionError("Min Contribution must be Lower!!");
+    }else{
+      setContributionError("");
+    }
+  }
+  const handleContributionNext = ()=>{
+    if(contributionError == ""){
+      handleNext();
+    }
+  }
+  const validateLiquidity = (value)=>{
+    setExchangeLiquidity(value);
+    if(Number(value) < 51){
+      setLiquidityError("Can't be Less than 51%");
+      return;
+    }
+    if(Number(value) > 98){
+      setLiquidityError("Can't be greater than 98%");
+      return;
+    }
+    setLiquidityError("");
+  }
+  const handleLiquidityNext = ()=>{
+    if(liquidityError == ""){
+      handleNext();
+    }
+  }
+  const validateListingRate = (value)=>{
+    setExchangeListingRate(value);
+    if(Number(value) > Number(rate)){
+      setListingError("Can't be greater than "+rate);
+      return;
+    }
+    setListingError("");
+  }
+  const handleListingNext = ()=>{
+    if(listingError == ""){
+      handleNext();
+    }
+  }
+  const handleTimingNext = ()=>{
+    if(startDate2 > endDate2){
+      setTimingError("Invalid period!!");
+      return;
+    }else{
+      setTimingError("");
+      handleNext();
+    }
+  }
+
   useEffect(async ()=>{
     if(!window.ethereum.isConnected){
       window.ethereum.enable().then(async e=>{
@@ -94,14 +222,16 @@ const index = () => {
       setTokenContract(TokenContract);
     // }
   },[chainID])
+
   
+
   const setLoading = (status)=>{
 
   }
 
   const getInfo = async (address)=>{
     try{
-      setLoading(false)
+      setLoading(true);
       if(chainID == 4){
         let ExternalWeb3 = new Web3('https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
         let customToken = new ExternalWeb3.eth.Contract(TOKEN_ABI,address);
@@ -113,12 +243,122 @@ const index = () => {
         let TokenData = {
           name,symbol,totalSupply:actualTotalSupply
         } 
-        setLoading(false)
+        setLoading(false);
         setData(TokenData);
-        console.log(TokenData)
+        setTokenError("");
+      console.log(TokenData)
       }
     }catch(e){
       console.log("Invalid Address",e);
+        setData(null);
+        setTokenError("Invalid Token");
+    }
+  }
+  const createObject = async ()=>{
+    let icoName = data.name + " ICO";
+    let longDescription = description;
+    let tokenAddress_ = tokenAddress;
+    let presaleSupply = Number(hardCap) * Number(rate);
+    let liquiditySupply = Number(exchangeLiquidity);
+    let presaleStartTime = Math.round(startDate2/1000);
+    let presaleEndTime = Math.round(endDate2/1000);
+    let listingOn = selectedSwap;
+    let softCap_ = softCap;
+    let hardCap_ = hardCap;
+    let ratePerBNB = rate;
+    let exchangeListingRateBNB = exchangeListingRate;
+    let minAmount_ = minAmount;
+    let maxAmount_ = maxAmount;
+    let lockLiquidity = true;
+    let burnLiquidity = false;
+    let liquidityLockTime = Number(lockTime);
+    let whiteListEnabled = false;
+    let whitelistLastDate = 0;
+    return [ icoName,
+     longDescription,
+     tokenAddress_,
+     presaleSupply,
+     liquiditySupply,
+     presaleStartTime,
+     presaleEndTime,
+     listingOn,
+     softCap_,
+     hardCap_,
+     ratePerBNB,
+     exchangeListingRateBNB,
+     minAmount_,
+     maxAmount_,
+     lockLiquidity,
+     burnLiquidity,
+     liquidityLockTime,
+     whiteListEnabled,
+     whitelistLastDate]
+  }
+  const getRequiredToken = ()=>{
+    let presaleAmount = Number(hardCap) * Number(rate);
+    let fee = presaleAmount * 0.02;
+    let liquidity = Number(hardCap) * Number(exchangeListingRate) *Number(exchangeLiquidity) / 100 ;
+    return (presaleAmount + fee + liquidity)
+  }
+  const handleCreate = async ()=>{
+    if(approved){
+      let web3 = new Web3(window.ethereum);
+      let chainId = await web3.eth.getChainId()
+      if(chainId != 4){
+        await switchChain();
+      }
+      let data = createObject();
+      let launchContract = new web3.eth.Contract(LAUNCH_ABI,"0x031Fbb360268511358F0956FD023BabE10445E67");
+      launchContract.methods.createNewICO(data).send({from:app.accountAddress}).on('transactionHash',hash=>{
+        new Swal("Submitted","Transaction Submitted!","success");
+      })
+    }else{
+      handleApprove();
+    }
+  }
+  const handleApprove = async ()=>{
+    try {
+      let web3 = app.web3;
+      let ssnToken = new web3.eth.Contract(TOKEN_ABI,RINKEBY.TOKEN);
+      let token  = new web3.eth.Contract(TOKEN_ABI,tokenAddress);
+      let allowance = await ssnToken.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
+      let allowance2 = await token.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
+      let balance = await ssnToken.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
+      let balance2 = await token.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
+      let totalTokenRequired = getRequiredToken();
+      if(totalTokenRequired <= balance2 && totalFee <= balance){
+        if(Number(web3.utils.fromWei(allowance,'ether')) > totalFee){
+          // setApproved(true);
+          if(Number(web3.utils.fromWei(allowance2,'ether')) > totalFee){
+              new Swal("Success","Token was approved previously!","success");
+              setApproved(true);
+          }else{
+            ssnToken.methods.approve(RINKEBY.LAUNCH,'1000000000000000000000000000000000000000000').send({from:app.accountAddress}).once('confirmation',()=>{
+              setApproved(true);
+              new Swal("Success","Successfully approved token!","success");
+            })
+          }
+        }else{
+          ssnToken.methods.approve(RINKEBY.LAUNCH,'1000000000000000000000000000000000000000000').send({from:app.accountAddress}).once('confirmation',()=>{
+            // setApproved(true);
+            if(Number(web3.utils.fromWei(allowance2,'ether')) > totalFee){
+                new Swal("Success","Successfully approved token!","success");
+                setApproved(true);
+            }else{
+                ssnToken.methods.approve(RINKEBY.LAUNCH,'1000000000000000000000000000000000000000000').send({from:app.accountAddress}).once('confirmation',()=>{
+                new Swal("Success","Successfully approved token!","success");
+                setApproved(true);
+              })
+            }
+          })
+        }
+      }else{
+        new Swal("Error","Don\'t have enough Balance!","success");
+        setApproved(false);
+      }
+    }catch(error){
+        new Swal("Error","Error while approving!","success");
+        setApproved(false);
     }
   }
   return (
@@ -188,6 +428,7 @@ const index = () => {
                     }}
                     label='Enter your token address'
                     className='w-full lg:w-[50%]'
+                    error={tokenError}
                   />
 
                   <div className='pt-2 flex flex-col gap-y-2'>
@@ -203,13 +444,13 @@ const index = () => {
                   </div>
 
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
-                    <button onClick={handleBack} className='outline-none'>
+                    {/* <button onClick={handleBack} className='outline-none'>
                       <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
                         Back
                       </h1>
-                    </button>
+                    </button> */}
                     <button
-                      onClick={handleNext}
+                      onClick={e=>validateToken(true)}
                       className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
                     >
                       <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
@@ -283,9 +524,11 @@ const index = () => {
                         type="number"
                         className='w-full'
                         value={softCap}
+                        error={capError}
                         onChange={
                           e=>{
-                            setSoftCap(e.target.value);
+                            // setSoftCap(e.target.value);
+                            validateCap({soft:e.target.value,hard:hardCap});
                           }
                         }
                       />
@@ -297,9 +540,11 @@ const index = () => {
                         type="number"
                         className='w-full'
                         value={hardCap}
+                        error={capError}
                         onChange={
                           e=>{
-                            setHardCap(e.target.value);
+                            // setHardCap(e.target.value).;
+                            validateCap({soft:softCap,hard:e.target.value});
                           }
                         }
                       />
@@ -313,7 +558,7 @@ const index = () => {
                       </h1>
                     </button>
                     <button
-                      onClick={handleNext}
+                      onClick={handleCapNext}
                       className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
                     >
                       <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
@@ -345,9 +590,11 @@ const index = () => {
                         type="number"
                         className='w-full'
                         value={minAmount}
+                        error={contributionError}
                         onChange={
                           e=>{
-                            setMinAmount(e.target.value);
+                            // setMinAmount(e.target.value);
+                            validateContribution({soft:e.target.value,hard:maxAmount})
                           }
                         }
                       />
@@ -359,9 +606,11 @@ const index = () => {
                         type="number"
                         className='w-full'
                         value={maxAmount}
+                        error={contributionError}
                         onChange={
                           e=>{
-                            setMaxAmount(e.target.value);
+                            // setMaxAmount(e.target.value);
+                            validateContribution({hard:e.target.value,soft:minAmount})
                           }
                         }
                       />
@@ -375,7 +624,7 @@ const index = () => {
                       </h1>
                     </button>
                     <button
-                      onClick={handleNext}
+                      onClick={handleContributionNext}
                       className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
                     >
                       <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
@@ -446,8 +695,9 @@ const index = () => {
                     <Input
                       placeholder='Ex. 70'
                       value={exchangeLiquidity}
+                      error={liquidityError}
                       onChange={e=>{
-                        setExchangeLiquidity(e.target.value)
+                        validateLiquidity(e.target.value)
                       }}
                       className='w-full lg:w-[50%]'
                     />
@@ -460,7 +710,7 @@ const index = () => {
                       </h1>
                     </button>
                     <button
-                      onClick={handleNext}
+                      onClick={handleLiquidityNext}
                       className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
                     >
                       <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
@@ -489,8 +739,9 @@ const index = () => {
                   <div className='pt-3'>
                     <Input placeholder='Ex. 400' className='w-full lg:w-[50%]' 
                      value={exchangeListingRate}
+                     error={listingError}
                      onChange={e=>{
-                       setExchangeListingRate(e.target.value);
+                       validateListingRate(e.target.value);
                      }}
                     />
                   </div>
@@ -502,7 +753,7 @@ const index = () => {
                       </h1>
                     </button>
                     <button
-                      onClick={handleNext}
+                      onClick={handleListingNext}
                       className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
                     >
                       <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
@@ -741,7 +992,7 @@ const index = () => {
                       </div>
                     </div>
                   </div>
-
+                  <p style={{fontSize:'11px',color:'red'}}>{timingError}</p>
                   <div className='flex justify-center lg:justify-start items-center gap-x-14 lg:gap-x-6 pt-4'>
                     <button onClick={handleBack} className='outline-none'>
                       <h1 className='font-mont font-semibold lg:font-normal text-[12px] lg:text-sm text-custom-accentColor lg:text-[#A9A9A9] leading-6'>
@@ -749,7 +1000,7 @@ const index = () => {
                       </h1>
                     </button>
                     <button
-                      onClick={handleNext}
+                      onClick={handleTimingNext}
                       className='outline-none p-2 rounded-[10px] bg-custom-accentColor h-[40px] w-[108px] lg:bg-transparent lg:p-0 lg:w-[fit-content]'
                     >
                       <h1 className='font-mont font-semibold lg:underline text-[12px] lg:text-sm text-white lg:text-custom-accentColor leading-6'>
@@ -938,14 +1189,24 @@ const index = () => {
                         Edit
                       </h1>
                     </button>
+                    {!approved?
                     <button
-                      onClick={handleNext}
+                      onClick={handleApprove}
+                      className='outline-none w-[284px] h-[46px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
+                    >
+                      <h1 className='font-mont font-bold text-[12px] lg:text-sm text-white leading-6'>
+                        Approve
+                      </h1>
+                    </button>
+                    :
+                    <button
+                      onClick={handleCreate}
                       className='outline-none w-[284px] h-[46px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
                     >
                       <h1 className='font-mont font-bold text-[12px] lg:text-sm text-white leading-6'>
                         Submit
                       </h1>
-                    </button>
+                    </button>}
                   </div>
                 </div>
               </StepContent>

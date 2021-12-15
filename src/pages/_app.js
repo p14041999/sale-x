@@ -5,6 +5,7 @@ import '../styles/global.scss';
 import {AppWrapper} from '../contexts/AppContext';
 import Layout from '../components/Layout/Layout';
 import { useEffect } from 'react';
+import "sweetalert2/src/sweetalert2.scss";
 
 function MyApp({ Component, pageProps }) {
   // useEffect(()=>{
