@@ -532,9 +532,9 @@ export const Sale = props => {
                   </div>
                   <div className='w-full lg:w-1/2'>
                     <div className='rounded-[10px] bg-[#F6F7FC] px-6 overflow-hidden h-[46px] flex lg:justify-center items-center'>
-                      <h1 className='font-mont text-[12px] lg:text-[10px] xl:text-[12px] text-[#474646]'>
-                        1BNB=1000BABYPOKEMON
-                      </h1>
+                      <input className='font-mont text-[12px] lg:text-[10px] xl:text-[12px] text-[#474646]'
+                        placeholder="1BNB=1000BABYPOKEMON"
+                      />
                     </div>
                     <h1 className='hidden lg:block pt-2 font-mont font-medium text-[10px] xl:text-[12px] text-[#474646]'>
                       You will get 0HSN

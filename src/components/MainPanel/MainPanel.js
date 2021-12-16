@@ -47,7 +47,7 @@ const MainPanel = ({ children }) => {
                 }}
               >
                 <h1 className='font-mont text-[12px] text-custom-primaryColor'>
-                  {app.accountAddress}
+                  {app?.accountAddress.substr(0,9)}...{app?.accountAddress.substr(35,7)}
                 </h1>
                 <div className='text-[#000]'>
                   <DropdownIcon />
