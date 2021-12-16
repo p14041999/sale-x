@@ -1,18 +1,48 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect,useState } from 'react';
 import {
   LaunchPadHeader,
   ToggleSwitch,
   ProgressBar,
 } from '../../components/Launchpad/LaunchPad';
 import Input from '../../components/Input/Input';
+import { useAppContext } from '../../contexts/AppContext';
+
+import {LAUNCH_ABI} from '../../abis/launch-abi.json';
+import {TOKEN_ABI} from '../../abis/token-abi.json';
+import {RINKEBY} from '../../constants/constant.json';
+import Web3 from 'web3';
 
 const index = () => {
   const [whitelistEnabled, setWhitelistEnabled] = React.useState(true);
-
+  const [tokenContract,setTokenContract] = useState(null);
   const handleWhitelist = event => {
     setWhitelistEnabled(event.target.checked);
   };
 
+  const app = useAppContext();
+
+  useEffect(async ()=>{
+    // let interval = setInterval(async ()=>{
+      try{
+      if(app.chainID == 4 && app.web3 && app.accountAddress != "0x0"){
+        let web3 = new Web3('https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161')
+        let contract = new web3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
+        // console.log(app.accountAddress)
+        let token_contract = new app.web3.eth.Contract(TOKEN_ABI,RINKEBY.TOKEN);
+        setTokenContract(token_contract);
+
+        let ico_contract = new app.web3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
+        setTokenContract(ico_contract);
+
+        
+        // },3000)
+        let icos = await contract.methods.getIcoCount("0x2Ef8ac6e2579780f56d295ABf661DBf400aF205D").call();
+        console.log(icos);
+      }
+    }catch(e){
+      console.log(e);
+    }
+  },[app]);
   return (
     <Fragment>
       <div className='py-7'>

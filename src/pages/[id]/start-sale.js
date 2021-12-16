@@ -258,17 +258,17 @@ const index = () => {
     let icoName = data.name + " ICO";
     let longDescription = description;
     let tokenAddress_ = tokenAddress;
-    let presaleSupply = Number(hardCap) * Number(rate);
-    let liquiditySupply = Number(exchangeLiquidity);
+    let presaleSupply = app.web3.utils.toWei((Number(hardCap) * Number(rate)).toString(),'ether');
+    let liquiditySupply = Number(exchangeLiquidity)*100;
     let presaleStartTime = Math.round(startDate2/1000);
     let presaleEndTime = Math.round(endDate2/1000);
     let listingOn = selectedSwap;
-    let softCap_ = softCap;
-    let hardCap_ = hardCap;
+    let softCap_ = app.web3.utils.toWei(softCap.toString(),'ether');
+    let hardCap_ = app.web3.utils.toWei(hardCap.toString(),'ether');
     let ratePerBNB = rate;
     let exchangeListingRateBNB = exchangeListingRate;
-    let minAmount_ = minAmount;
-    let maxAmount_ = maxAmount;
+    let minAmount_ = app.web3.utils.toWei(minAmount.toString(),'ether');
+    let maxAmount_ = app.web3.utils.toWei(maxAmount.toString(),'ether');
     let lockLiquidity = true;
     let burnLiquidity = false;
     let liquidityLockTime = Number(lockTime);
@@ -297,24 +297,30 @@ const index = () => {
   const getRequiredToken = ()=>{
     let presaleAmount = Number(hardCap) * Number(rate);
     let fee = presaleAmount * 0.02;
-    let liquidity = Number(hardCap) * Number(exchangeListingRate) *Number(exchangeLiquidity) / 100 ;
+    let liquidity = Number(hardCap) * Number(exchangeListingRate) * Number(exchangeLiquidity) / 100 ;
     return (presaleAmount + fee + liquidity)
   }
   const handleCreate = async ()=>{
-    if(approved){
-      let web3 = new Web3(window.ethereum);
-      let chainId = await web3.eth.getChainId()
-      if(chainId != 4){
-        await switchChain();
+    try{
+      if(approved){
+        let web3 = new Web3(window.ethereum);
+        let chainId = await web3.eth.getChainId()
+        if(chainId != 4){
+          await switchChain();
+        }
+        let data = await createObject();
+        let launchContract = new web3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
+        let gas = await launchContract.methods.createNewICO(data).estimateGas({from:app.accountAddress});
+        launchContract.methods.createNewICO(data).send({from:app.accountAddress}).on('confirmation',hash=>{
+          new Swal("Submitted","Transaction Submitted!","success");
+        })
+      }else{
+        handleApprove();
       }
-      let data = createObject();
-      let launchContract = new web3.eth.Contract(LAUNCH_ABI,"0x031Fbb360268511358F0956FD023BabE10445E67");
-      launchContract.methods.createNewICO(data).send({from:app.accountAddress}).on('transactionHash',hash=>{
-        new Swal("Submitted","Transaction Submitted!","success");
-      })
-    }else{
-      handleApprove();
+    }catch(e){
+      console.log(e);
     }
+
   }
   const handleApprove = async ()=>{
     try {
@@ -323,10 +329,11 @@ const index = () => {
       let token  = new web3.eth.Contract(TOKEN_ABI,tokenAddress);
       let allowance = await ssnToken.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
       let allowance2 = await token.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
-      let balance = await ssnToken.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
-      let balance2 = await token.methods.allowance(app.accountAddress,RINKEBY.LAUNCH).call();
+      let balance = await ssnToken.methods.balanceOf(app.accountAddress).call();
+      let balance2 = await token.methods.balanceOf(app.accountAddress).call();
       let totalTokenRequired = getRequiredToken();
       if(totalTokenRequired <= balance2 && totalFee <= balance){
+        console.log(balance2,balance);
         if(Number(web3.utils.fromWei(allowance,'ether')) > totalFee){
           // setApproved(true);
           if(Number(web3.utils.fromWei(allowance2,'ether')) > totalFee){
@@ -353,10 +360,12 @@ const index = () => {
           })
         }
       }else{
+        console.log(balance2,balance);
         new Swal("Error","Don\'t have enough Balance!","success");
         setApproved(false);
       }
     }catch(error){
+        console.log(error);
         new Swal("Error","Error while approving!","success");
         setApproved(false);
     }
