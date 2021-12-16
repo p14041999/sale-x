@@ -1,15 +1,7 @@
 export const LISTING_OPTIONS = [
-  { label: 'All Listings', value: 'All Listings' },
-  {
-    label: 'Admiral Container Lines',
-    value: 'ADMU',
-  },
-  { label: 'Alianca', value: 'ANRM' },
-  {
-    label: 'American President Lines (APL)',
-    value: 'APLU',
-  },
-  { label: 'Arkas', value: 'ARKU' },
+  { label: 'Ongoing ICOs', value: 'ongoing-ico' },
+  { label: 'Ended ICOs', value: 'ended-ico' }
+  
 ];
 
 export const EXCHANGE_OPTIONS = [

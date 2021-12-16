@@ -263,6 +263,7 @@ const index = () => {
     let presaleStartTime = Math.round(startDate2/1000);
     let presaleEndTime = Math.round(endDate2/1000);
     let listingOn = selectedSwap;
+    
     let softCap_ = app.web3.utils.toWei(softCap.toString(),'ether');
     let hardCap_ = app.web3.utils.toWei(hardCap.toString(),'ether');
     let ratePerBNB = rate;
@@ -282,6 +283,12 @@ const index = () => {
      presaleStartTime,
      presaleEndTime,
      listingOn,
+     logoLink,
+     auditLink,
+     telegramLink,
+     websiteLink,
+     githubLink,
+     twitterLink,
      softCap_,
      hardCap_,
      ratePerBNB,
@@ -311,14 +318,15 @@ const index = () => {
         let data = await createObject();
         let launchContract = new web3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
         let gas = await launchContract.methods.createNewICO(data).estimateGas({from:app.accountAddress});
-        launchContract.methods.createNewICO(data).send({from:app.accountAddress}).on('confirmation',hash=>{
-          new Swal("Submitted","Transaction Submitted!","success");
+        launchContract.methods.createNewICO(data).send({from:app.accountAddress}).once('confirmation',hash=>{
+          new Swal("Submitted","Transaction Completed!!","success");
         })
       }else{
         handleApprove();
       }
     }catch(e){
-      console.log(e);
+      // console.log(e);
+      console.log(e.code);
     }
 
   }

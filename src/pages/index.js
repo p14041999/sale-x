@@ -10,8 +10,33 @@ import { LaunchPadHeader } from '../components/Launchpad/LaunchPad';
 // utils
 import { DIDO_DATA, LAUNCH_PAD_CARD, LISTING_OPTIONS } from '../Utils/data';
 
+import {LAUNCH_ABI} from '../abis/launch-abi.json';
+import {TOKEN_ABI} from '../abis/token-abi.json'
+import {RINKEBY} from '../constants/constant.json';
+import { useAppContext } from '../contexts/AppContext';
+
 const index = () => {
   const router = useRouter();
+  const app = useAppContext();
+  const [dataFeed,setDataFeed] = useState(null);
+  const [tokenData,setTokenData] = useState(null);
+
+  useEffect(async ()=>{
+    if(app.chainID == 4 && app.accountAddress != '0x0' && app.web3){
+      let id = router.query.id;
+      let launchContract = new app.web3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
+      let data = await launchContract.methods.getAllOngoingICOs().call();
+      // console.log(data);
+      setDataFeed(data)
+    //   let tokenContract = new app.web3.eth.Contract(TOKEN_ABI,data.ico.data.tokenAddress);
+    //   let name_ = await tokenContract.methods.name().call();
+    //   let symbol_ = await tokenContract.methods.symbol().call();
+    //   let totalSupply_ = await tokenContract.methods.totalSupply().call();
+    //   let decimals = await tokenContract.methods.decimals().call();
+    //   let totalSupply = Number.parseInt(totalSupply_) / (10**Number(decimals));
+    //   setTokenData({name:name_,symbol:symbol_,totalSupply,decimals});
+    }
+  },[app])
   return (
     <Fragment>
       <div className='py-7'>
@@ -52,63 +77,89 @@ const index = () => {
 
           {/* cards */}
           <div className='pt-3  flex items-center flex-wrap xl:flex-nowrap justify-center gap-6'>
-            {LAUNCH_PAD_CARD.map((data, i) => (
+            {dataFeed?.map((dataIO, i) => (
               <div className='drop-shadow w-full lg:w-[45%] xl:w-[24.5%] bg-[#FFFFFF] border-[0.1px] border-solid border-[#FAFBFD] lg:border-none rounded-[20px] py-5 px-5'>
                 <div className='flex items-center gap-x-3 border-b-[0.5px] border-solid border-custom-primaryColor pb-4'>
-                  <img src='/assets/images/dido-img.svg' alt='' />
+                  <img src={dataIO.ico.data.logoLink} alt='' />
                   <div>
                     <h1 className='font-mont font-semibold text-sm lg:text-[13px] leading-4 text-custom-primaryColor uppercase'>
-                      Dido
+                      {dataIO.ico.data.icoName}
                     </h1>
                     <h1 className='font-mont text-[12px] lg:text-[11px] leading-3 pt-1 text-custom-primaryColor'>
-                      Diamond Doge
+                      Ends on {new Date(Number(dataIO.ico.data.presaleEndTime)*1000).toLocaleString()}
                     </h1>
                   </div>
                   <div
                     className='lg:hidden rounded-md py-2 px-3 ml-auto self-start'
-                    style={{
-                      background: data.start
-                        ? '#FFEDB3'
-                        : data.success
-                        ? '#5BD99B'
-                        : data.failed
-                        ? '#FFBCBC'
-                        : data.live
-                        ? '#DEE6FF'
-                        : '#FFEDB3',
-                    }}
+                    // style={{
+                    //   background: data.start
+                    //     ? '#FFEDB3'
+                    //     : data.success
+                    //     ? '#5BD99B'
+                    //     : data.failed
+                    //     ? '#FFBCBC'
+                    //     : data.live
+                    //     ? '#DEE6FF'
+                    //     : '#FFEDB3',
+                    // }}
                   >
                     <h1
                       className='font-mont text-[10px] font-bold'
-                      style={{
-                        color: data.start
-                          ? '#FFA800'
-                          : data.success
-                          ? '#1A7E1E'
-                          : data.failed
-                          ? '#FF5656'
-                          : data.live
-                          ? '#375BD2'
-                          : '#FFA800',
-                      }}
+                      // style={{
+                      //   color: data.start
+                      //     ? '#FFA800'
+                      //     : data.success
+                      //     ? '#1A7E1E'
+                      //     : data.failed
+                      //     ? '#FF5656'
+                      //     : data.live
+                      //     ? '#375BD2'
+                      //     : '#FFA800',
+                      // }}
                     >
-                      {data.btnText}
+                      {/* {data.btnText} */}
                     </h1>
                   </div>
                 </div>
 
                 {/* table list */}
                 <div className='py-4 flex flex-col gap-y-3'>
-                  {DIDO_DATA.map((data, i) => (
-                    <div key={i} className='flex justify-between items-center'>
-                      <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
-                        {data.label}
-                      </h1>
-                      <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
-                        {data.value}
-                      </h1>
-                    </div>
-                  ))}
+                  <div key={i} className='flex justify-between items-center'>
+                    <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
+                      {/* {dataIO.label} */}
+                      Soft Cap
+                    </h1>
+                    <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
+                      {Number(dataIO.ico.data.softCap)/10**18}
+                    </h1>
+                  </div>
+                  <div key={i} className='flex justify-between items-center'>
+                    <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
+                      {/* {dataIO.label} */}
+                      Hard Cap
+                    </h1>
+                    <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
+                      {Number(dataIO.ico.data.hardCap)/10**18}
+                    </h1>
+                  </div>
+                  <div key={i} className='flex justify-between items-center'>
+                    <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
+                      {/* {dataIO.label} */}
+                      Presale Supply
+                    </h1>
+                    <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
+                      {Number(dataIO.ico.data.presaleSupply)/10**18}
+                    </h1>
+                  </div>
+                  <div key={i} className='flex justify-between items-center'>
+                    <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
+                      {/* {dataIO.label} */}
+                      Liquidity %
+                    </h1>
+                    <h1 className='font-mont font-medium text-[12px] text-[#000000]'>
+                      {Number(dataIO.ico.data.liquiditySupply)/100}
+                    </h1>
+                  </div>
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-x-1'>
                       <img src='/assets/icons/verified-icon.svg' alt='' />
@@ -120,21 +171,22 @@ const index = () => {
                 </div>
 
                 <button
-                  onClick={() => router.push('/id')}
-                  className={`bg-custom-accentColor min-h-[46px] rounded-[10px] w-full justify-center items-center px-3 py-3 ${
-                    data.start
-                      ? 'lg:bg-[#FFEDB3]'
-                      : data.success
-                      ? 'lg:bg-[#5BD99B]'
-                      : data.failed
-                      ? 'lg:bg-[#FFBCBC]'
-                      : data.live
-                      ? 'lg:bg-[#DEE6FF]'
-                      : 'lg:bg-[#FFEDB3]'
-                  }`}
+                  onClick={() => router.push('/'+dataIO.ico.id)}
+                  className={`bg-custom-accentColor min-h-[46px] rounded-[10px] w-full justify-center items-center px-3 py-3 
+                  `}
+                  
+                  // data.start
+                  //   ? 'lg:bg-[#FFEDB3]'
+                  //   : data.success
+                  //   ? 'lg:bg-[#5BD99B]'
+                  //   : data.failed
+                  //   ? 'lg:bg-[#FFBCBC]'
+                  //   : data.live
+                  //   ? 'lg:bg-[#DEE6FF]'
+                  //   : 'lg:bg-[#FFEDB3]'
                 >
                   <h1 className='font-mont text-[12px] font-semibold text-[#000000]'>
-                    <span className='hidden lg:inline'>{data.btnText}</span>
+                    <span className='hidden lg:inline'>View Details</span>
                     <span className=' text-white lg:hidden'>View Details</span>
                   </h1>
                 </button>
@@ -142,12 +194,12 @@ const index = () => {
 
                 <div className='flex items-center justify-center w-full pt-4 pb-1'>
                   <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
-                    {data.status}
-                    {data.date && (
+                    {/* {data.status} */}
+                    {/* {data.date && ( */}
                       <span className='text-custom-accentColor'>
-                        {data.date}
+                        {/* {data.date} */}
                       </span>
-                    )}
+                    {/* )} */}
                   </h1>
                 </div>
               </div>

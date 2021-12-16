@@ -36,7 +36,7 @@ const index = () => {
 
         
         // },3000)
-        let icos = await contract.methods.getIcoCount("0x2Ef8ac6e2579780f56d295ABf661DBf400aF205D").call();
+        let icos = await contract.methods.getAllOngoingICOs().call();
         console.log(icos);
       }
     }catch(e){

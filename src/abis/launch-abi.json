@@ -172,6 +172,36 @@
                     "type": "string"
                   },
                   {
+                    "internalType": "string",
+                    "name": "logoLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "auditLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "telegramLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "websiteLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "githubLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "twitterLink",
+                    "type": "string"
+                  },
+                  {
                     "internalType": "uint256",
                     "name": "softCap",
                     "type": "uint256"
@@ -353,6 +383,36 @@
                     "type": "string"
                   },
                   {
+                    "internalType": "string",
+                    "name": "logoLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "auditLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "telegramLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "websiteLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "githubLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "twitterLink",
+                    "type": "string"
+                  },
+                  {
                     "internalType": "uint256",
                     "name": "softCap",
                     "type": "uint256"
@@ -531,6 +591,36 @@
                   {
                     "internalType": "string",
                     "name": "listingOn",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "logoLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "auditLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "telegramLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "websiteLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "githubLink",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "twitterLink",
                     "type": "string"
                   },
                   {
@@ -720,6 +810,36 @@
                 "type": "string"
               },
               {
+                "internalType": "string",
+                "name": "logoLink",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "auditLink",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "telegramLink",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "websiteLink",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "githubLink",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "twitterLink",
+                "type": "string"
+              },
+              {
                 "internalType": "uint256",
                 "name": "softCap",
                 "type": "uint256"
@@ -884,6 +1004,36 @@
                       {
                         "internalType": "string",
                         "name": "listingOn",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "logoLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "auditLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "telegramLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "websiteLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "githubLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "twitterLink",
                         "type": "string"
                       },
                       {
@@ -1069,6 +1219,36 @@
                         "type": "string"
                       },
                       {
+                        "internalType": "string",
+                        "name": "logoLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "auditLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "telegramLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "websiteLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "githubLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "twitterLink",
+                        "type": "string"
+                      },
+                      {
                         "internalType": "uint256",
                         "name": "softCap",
                         "type": "uint256"
@@ -1251,6 +1431,36 @@
                         "type": "string"
                       },
                       {
+                        "internalType": "string",
+                        "name": "logoLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "auditLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "telegramLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "websiteLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "githubLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "twitterLink",
+                        "type": "string"
+                      },
+                      {
                         "internalType": "uint256",
                         "name": "softCap",
                         "type": "uint256"
@@ -1351,6 +1561,224 @@
             "internalType": "struct ICOBase[]",
             "name": "",
             "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          }
+        ],
+        "name": "getAICO",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "presaleAddress",
+                "type": "address"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "uint256",
+                    "name": "id",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "bool",
+                    "name": "isLive",
+                    "type": "bool"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "factory",
+                    "type": "address"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "string",
+                        "name": "icoName",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "longDescription",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "address",
+                        "name": "tokenAddress",
+                        "type": "address"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "presaleSupply",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "liquiditySupply",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "presaleStartTime",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "presaleEndTime",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "listingOn",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "logoLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "auditLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "telegramLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "websiteLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "githubLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "string",
+                        "name": "twitterLink",
+                        "type": "string"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "softCap",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "hardCap",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "ratePerBNB",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "exchangeListingRateBNB",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "minAmount",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "maxAmount",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "bool",
+                        "name": "lockLiquidity",
+                        "type": "bool"
+                      },
+                      {
+                        "internalType": "bool",
+                        "name": "burnLiquidity",
+                        "type": "bool"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "liquidityLockTime",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "bool",
+                        "name": "whiteListEnabled",
+                        "type": "bool"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "whitelistLastDate",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct DataParam",
+                    "name": "data",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "uint256",
+                        "name": "feesBNB",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "feesTokenAdmin",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "feesTokenStaking",
+                        "type": "uint256"
+                      },
+                      {
+                        "internalType": "address",
+                        "name": "StakingWalletAddress",
+                        "type": "address"
+                      },
+                      {
+                        "internalType": "address",
+                        "name": "AdminWalletAddress",
+                        "type": "address"
+                      }
+                    ],
+                    "internalType": "struct Fees",
+                    "name": "fees",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct ICOparam",
+                "name": "ico",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct ICOBase",
+            "name": "",
+            "type": "tuple"
           }
         ],
         "stateMutability": "view",

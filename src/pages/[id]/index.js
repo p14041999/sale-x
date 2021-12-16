@@ -10,17 +10,41 @@ import {
 
 // utils
 import { CONTRACT_INFO, REACTIONS } from '../../Utils/data';
+import { useAppContext } from '../../contexts/AppContext';
+
+import {LAUNCH_ABI} from '../../abis/launch-abi.json';
+import {TOKEN_ABI} from '../../abis/token-abi.json'
+import {RINKEBY} from '../../constants/constant.json';
 
 const index = () => {
   const router = useRouter();
+  const [dataFeed,setDataFeed] = useState(null);
+  const [tokenData,setTokenData] = useState(null);
   const [reaction, setReaction] = useState('');
   const [activeTab, setActiveTab] = useState('comments');
-  const [whitelistEnabled, setWhitelistEnabled] = useState(true);
-
+  const [whitelistEnabled, setWhitelistEnabled] = useState(false);
+  const app = useAppContext();
   const handleWhitelist = event => {
     setWhitelistEnabled(event.target.checked);
   };
 
+  useEffect(async ()=>{
+    if(app.chainID == 4 && app.accountAddress != '0x0' && app.web3){
+      let id = router.query.id;
+      let launchContract = new app.web3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
+      let data = await launchContract.methods.getAICO(id).call();
+      console.log(data);
+      setDataFeed(data)
+      let tokenContract = new app.web3.eth.Contract(TOKEN_ABI,data.ico.data.tokenAddress);
+      let name_ = await tokenContract.methods.name().call();
+      let symbol_ = await tokenContract.methods.symbol().call();
+      let totalSupply_ = await tokenContract.methods.totalSupply().call();
+      let decimals = await tokenContract.methods.decimals().call();
+      let totalSupply = Number.parseInt(totalSupply_) / (10**Number(decimals));
+      setTokenData({name:name_,symbol:symbol_,totalSupply,decimals});
+      // setTokenData({name:name_,symbol:symbol_});
+    }
+  },[app])
   // backend logic simulation
   const [pokemon, setPokemon] = useState('first');
 
@@ -50,41 +74,35 @@ const index = () => {
             <div className='lg:flex justify-between items-center'>
               <div className='flex gap-x-4 lg:gap-x-2 xl:gap-x-4 items-center'>
                 <img
-                  src='/assets/images/pokemon-img.svg'
+                  src={dataFeed?.ico.data.logoLink}
                   alt=''
                   className='w-11'
                 />
                 <div>
                   <h1 className='font-semibold font-mont text-sm lg:text-[12px] xl:text-base text-custom-primaryColor leading-[22px]'>
-                    Babypokemon
+                    {tokenData?.symbol}
                   </h1>
                   <h1 className='font-normal font-mont text-[12px] lg:text-[12px] text-custom-primaryColor'>
-                    Baby Pokemon
+                    {tokenData?.name}
                   </h1>
                 </div>
               </div>
               <div className='hidden lg:block'>
-                <Socials />
+                <Socials data={dataFeed} />
               </div>
             </div>
 
             <p className='font-mont-font-normal text-[12px] lg:text-[10px] xl:text-[12px] text-[#474646] leading-6 pt-5 '>
-              Baby Pokemon Monsters are beautifully animated digital
-              collectibles with varying scarcities. Each one backed by a unique
-              NFT and can be unpacked by using $Baby Pokemon Our vision is best
-              described as three layers that are the building blocks for a
-              modern and sustainable collectibles ecosystem. The base is the
-              NFT-based decentralized ownership system supported by our Token
-              for utilization
+              {dataFeed?.ico.data.longDescription}
             </p>
 
             <div className='pt-5 lg:hidden'>
-              <Socials />
+              <Socials  data={dataFeed} />
             </div>
           </div>
 
           <div className='lg:hidden'>
-            <PresaleInfo />
+            <PresaleInfo  token={dataFeed?.ico.data.tokenAddress}/>
           </div>
           <Sale
             pokemon={pokemon}
@@ -102,7 +120,7 @@ const index = () => {
           <div className='w-full lg:w-[53%]'>
             <div className='flex flex-col justify-center items-center text-center'>
               <div className='hidden lg:block'>
-                <PresaleInfo />
+                <PresaleInfo  token={dataFeed?.ico.data.tokenAddress} />
               </div>
 
               {/*  */}
@@ -114,16 +132,118 @@ const index = () => {
                 </div>
 
                 <div className='lg:px-7 py-6 flex flex-col gap-y-4'>
-                  {CONTRACT_INFO.map((data, i) => (
                     <div className='flex justify-between items-center'>
                       <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
-                        {data.label}
+                        Sale ID
                       </h1>
                       <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
-                        {data.value}
+                        {dataFeed?.ico.id}
                       </h1>
                     </div>
-                  ))}
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Total Supply
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {tokenData?.totalSupply} {tokenData?.symbol}
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Presale Supply
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {Number(dataFeed?.ico.data.presaleSupply)/(10**Number(tokenData?.decimals))} {tokenData?.symbol}
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Liquidity Supply
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                      {Number(dataFeed?.ico.data.presaleSupply) * Number(dataFeed?.ico.data.liquiditySupply) / (10000*10**Number(tokenData?.decimals))} {tokenData?.symbol}
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Soft Cap
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {Number(dataFeed?.ico.data.softCap)/10**18} BNB
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Hard Cap
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {Number(dataFeed?.ico.data.hardCap)/10**18} BNB
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Presale Rate
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {dataFeed?.ico.data.ratePerBNB} {tokenData?.symbol} per BNB
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Minimum Contribution
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {Number(dataFeed?.ico.data.minAmount)/10**18} BNB
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Maximum Contribution
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {Number(dataFeed?.ico.data.maxAmount)/10**18} BNB
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Presale Start Time
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {(new Date(Number(dataFeed?.ico.data.presaleStartTime)*1000)).toLocaleString()}
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Presale End Time
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {(new Date(Number(dataFeed?.ico.data.presaleEndTime)*1000)).toLocaleString()}
+                      </h1>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        PancakeSwap Listing Rate
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {dataFeed?.ico.data.exchangeListingRateBNB}  {tokenData?.symbol} per BNB
+                      </h1>
+                    </div>
+                    {/* <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        PancakeSwap Liquidity %	
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {tokenData?.totalSupply}
+                      </h1>
+                    </div> */}
+                    {/* <div className='flex justify-between items-center'>
+                      <h1 className='font-mont font-medium text-[12px] text-custom-primaryColor'>
+                        Liquidity Unlock Date	
+                      </h1>
+                      <h1 className='font-mont font-normal text-[12px] text-[#606060]'>
+                        {tokenData?.totalSupply}
+                      </h1>
+                    </div> */}
                 </div>
               </div>
             </div>
@@ -276,11 +396,11 @@ const index = () => {
 
 export default index;
 
-export const Socials = () => {
+export const Socials = ({data}) => {
   return (
     <div className='flex gap-x-5 lg:gap-x-3 xl:gap-x-6 items-center'>
       <button className='outline-none'>
-        <a href='https://'>
+        <a target="_blank" href={data?.ico.data.twitterLink}>
           <img
             src='/assets/icons/twitter.svg'
             alt=''
@@ -289,7 +409,7 @@ export const Socials = () => {
         </a>
       </button>
       <button className='outline-none'>
-        <a href='https://'>
+        <a target="_blank" href={data?.ico.data.telegramLink}>
           <img
             src='/assets/icons/telegram.svg'
             alt=''
@@ -298,18 +418,18 @@ export const Socials = () => {
         </a>
       </button>
       <button className='outline-none'>
-        <a href='https://'>
+        <a target="_blank" href={data?.ico.data.websiteLink}>
           <img
-            src='/assets/icons/reddit.svg'
+            src='/assets/icons/globe.svg'
             alt=''
             className='w-6 lg:w-5 xl:w-4'
           />
         </a>
       </button>
       <button className='outline-none'>
-        <a href='https://'>
+        <a target="_blank" href={data?.ico.data.githubLink}>
           <img
-            src='/assets/icons/instagram.svg'
+            src='/assets/icons/github.svg'
             alt=''
             className='w-6 lg:w-5 xl:w-4'
           />
@@ -319,7 +439,7 @@ export const Socials = () => {
   );
 };
 
-export const PresaleInfo = () => {
+export const PresaleInfo = ({token}) => {
   return (
     <div className='lg:flex flex-col justify-center items-center text-center py-10 lg:py-5 lg:rounded-[10px] lg:border-[0.5px] border-solid border-[#1A2B6B]'>
       <div className='lg:px-4 xl:px-8'>
@@ -339,10 +459,10 @@ export const PresaleInfo = () => {
         <h1 className='font-medium font-mont text-[#000] text-sm pt-3 lg:pt-0 lg:text-[12px] xl:text-sm'>
           <span className='inline-block lg:inline'>Token Address:</span>
           <a
-            href='https://'
+            href={'https://rinkeby.etherscan.io/token/'+token}
             className='font-semibold text-custom-accentColor lg:pl-5 text-[12px]'
           >
-            0x76e4CB2fcf7f931Fd750e93F443536Ee068d1cdE
+            {token}
           </a>
         </h1>
       </div>
