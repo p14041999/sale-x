@@ -3,13 +3,13 @@ import {
   LaunchPadHeader,
   ToggleSwitch,
   ProgressBar,
-} from '../../components/Launchpad/LaunchPad';
-import Input from '../../components/Input/Input';
-import { useAppContext } from '../../contexts/AppContext';
+} from '../../../../components/Launchpad/LaunchPad';
+import Input from '../../../../components/Input/Input';
+import { useAppContext } from '../../../../contexts/AppContext';
 
-import {LAUNCH_ABI} from '../../abis/launch-abi.json';
-import {TOKEN_ABI} from '../../abis/token-abi.json';
-import {RINKEBY} from '../../constants/constant.json';
+import {LAUNCH_ABI} from '../../../../abis/launch-abi.json';
+import {TOKEN_ABI} from '../../../../abis/token-abi.json';
+import {RINKEBY} from '../../../../constants/constant.json';
 import Web3 from 'web3';
 
 const index = () => {

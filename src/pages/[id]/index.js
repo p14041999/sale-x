@@ -7,7 +7,7 @@ import {
   LaunchPadHeader,
   ToggleSwitch,
 } from '../../components/Launchpad/LaunchPad';
-
+import {ICO_ABI} from '../../abis/ico-abi.json';
 // utils
 import { CONTRACT_INFO, REACTIONS } from '../../Utils/data';
 import { useAppContext } from '../../contexts/AppContext';
@@ -15,19 +15,24 @@ import { useAppContext } from '../../contexts/AppContext';
 import {LAUNCH_ABI} from '../../abis/launch-abi.json';
 import {TOKEN_ABI} from '../../abis/token-abi.json'
 import {RINKEBY} from '../../constants/constant.json';
+import { updateLocal } from 'web3modal';
 
 const index = () => {
   const router = useRouter();
   const [dataFeed,setDataFeed] = useState(null);
   const [tokenData,setTokenData] = useState(null);
   const [reaction, setReaction] = useState('');
+  // input amount
+  const [amount,setAmount] = useState(0);
   const [activeTab, setActiveTab] = useState('comments');
   const [whitelistEnabled, setWhitelistEnabled] = useState(false);
   const app = useAppContext();
   const handleWhitelist = event => {
     setWhitelistEnabled(event.target.checked);
   };
-
+  const validateAmount = (e)=>{
+    console.log(e.target.value);
+  }
   useEffect(async ()=>{
     if(app.chainID == 4 && app.accountAddress != '0x0' && app.web3){
       let id = router.query.id;
@@ -109,6 +114,8 @@ const index = () => {
             setPokemon={setPokemon}
             whitelistEnabled={whitelistEnabled}
             handleWhitelist={handleWhitelist}
+            icoDetails = {dataFeed}
+            app={app}
           />
           <div className='pt-7 lg:hidden'>
             <UsefulLinks />
@@ -484,6 +491,55 @@ export const PresaleInfo = ({token}) => {
 };
 
 export const Sale = props => {
+
+  const [amount,setAmount] = useState(0);
+  const [error,setError] = useState("");
+  const [contributionAmount,setContributionAmount] = useState(0);
+
+  useEffect(async ()=>{
+    setAmount(props.icoData?.ico.data.minAmount)
+  },[props.icoData])
+  const validateAmount = (e)=>{
+    // props.web3
+    let value = e.target.value;
+    if(Number(props.icoData?.ico.data.maxAmount) < Number(value)){
+      setError("Amount Exxeds Max Contribution");
+    }else if(Number(props.icoData?.ico.data.minAmount) > Number(value)){
+      setError("Amount less than min Contribution");
+    }
+    setAmount(value);
+    console.log(error)
+    // buyTokens()
+    // console.log(props.icoDetails)
+  }
+  const refreshData = async ()=>{
+    if(props.app.web3 != null){
+      try{
+        let abi = new props.app.web3.eth.Contract(ICO_ABI,props.icoDetails?.presaleAddress);
+        let contAmount = await abi.methods.getUsersPurchase(props.app.accountAddress).call();
+        setContributionAmount(props.app.web3.utils.fromWei(contAmount));
+      }catch(e){
+        console.log(e);
+      }
+    }
+  }
+  const buyToken = async ()=>{
+      // amount
+      if(props.app.web3 != null){
+        try{
+
+          let abi = new props.app.web3.eth.Contract(ICO_ABI,props.icoDetails?.presaleAddress);
+          let x = await abi.methods.buyTokens().estimateGas({from:props.app.accountAddress,value:props.app.web3.utils.toWei(amount)})
+          console.log(x);
+          abi.methods.buyTokens().send({from:props.app.accountAddress,value:props.app.web3.utils.toWei(amount)}).once('confirmation',(e,r)=>{
+            console.log(r);
+          })
+        }catch(e){
+          console.log(e);
+        }
+      }
+      // abi.
+  }
   return (
     <div className='flex-1'>
       {(props.pokemon === 'live' || props.pokemon === 'failed') && (
@@ -533,6 +589,8 @@ export const Sale = props => {
                   <div className='w-full lg:w-1/2'>
                     <div className='rounded-[10px] bg-[#F6F7FC] px-6 overflow-hidden h-[46px] flex lg:justify-center items-center'>
                       <input className='font-mont text-[12px] lg:text-[10px] xl:text-[12px] text-[#474646]'
+                        value={amount}
+                        onChange={validateAmount}
                         placeholder="1BNB=1000BABYPOKEMON"
                       />
                     </div>
@@ -541,7 +599,9 @@ export const Sale = props => {
                     </h1>
                   </div>
                   <div className='flex-1 mt-5 lg:mt-0'>
-                    <button className='w-full h-[46px] bg-custom-accentColor rounded-[10px] flex justify-center items-center'>
+                    <button 
+                    onClick={buyToken}
+                    className='w-full h-[46px] bg-custom-accentColor rounded-[10px] flex justify-center items-center'>
                       <h1 className='font-mont font-bold text-[12px] lg:text-[10px] xl:text-[12px] xl:text-sm text-white'>
                         Contribute
                       </h1>
@@ -565,7 +625,7 @@ export const Sale = props => {
               {[
                 {
                   title: 'Your Contributed amount',
-                  value: '0000.00',
+                  value: contributionAmount,
                   pokemon: 'live',
                 },
                 {
