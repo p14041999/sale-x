@@ -362,7 +362,7 @@ const NavLink = ({ icon, title, href, onClick, ...props }) => {
   const router = useRouter();
   const slug = router?.query?.id;
 
-  console.log(router);
+  // console.log(router);
 
   return (
     <Fragment>

@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import Web3  from 'web3';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import Swal from 'sweetalert2';
+import { switchChain } from '../Utils/chain-util';
 
 const AppContext = createContext();
 
@@ -30,26 +32,93 @@ const providerOptions = {
     //     }
     //}*/
 };
+import TOKEN_ABI from '../abis/token-abi.json';
+import RINKEBY from '../constants/constant.json';
+
 export function AppWrapper({ children }) {
     const [walletConnected,settWalletConnected] = useState(false);
     const [accountAddress,setAccountAddress] = useState("0x0");
     const [chainID, setChainID] = useState(4);
     const [web3, setWeb3] = useState(null);
-
+    const [ethBal, setEthBal] = useState(0);
+    const [ssnBal, setSSNBal] = useState(0);
     useEffect(async ()=>{
         // if()
         await connectWallet();
     },[]);
-
-    async function connectWallet(){
-        let web3Modal = new Web3Modal({providerOptions});
-        const provider = await web3Modal.connect();
-        if(provider){
+    const updateBal = async ()=>{
+        let bal = await web3.eth.getBalance(accountAddress);
+        setEthBal(web3.utils.fromWei(bal));
+        let SSNContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,RINKEBY.RINKEBY.TOKEN);
+        let SSNBal = await SSNContract.methods.balanceOf(accountAddress);
+        setSSNBal(web3.utils.fromWei(SSNBal));
+    }
+    const connectWallet = async()=>{
+        let ethereum = window.ethereum;
+        if(ethereum){
+            const accounts = ethereum.request({ method: 'eth_requestAccounts' });;
+            const web3 = new Web3(ethereum);
+            let _chainId = Number.parseInt(ethereum.chainId.replace(/0x/g,''),16);
+            // let _chainId = 
             settWalletConnected(true);
-            const web3 = new Web3(provider);
             setWeb3(web3);
-            setAccountAddress(provider.selectedAddress);
-            setChainID(await web3.eth.getChainId());
+            setAccountAddress(ethereum.selectedAddress);
+            if(_chainId == 4){
+                updateBal();
+                setChainID(_chainId);
+            }else{
+                switchChain();
+            }
+            ethereum.on('accountsChanged', (accounts) => {
+                settWalletConnected(true);
+                setWeb3(web3);
+                setAccountAddress(ethereum.selectedAddress);
+                updateBal();
+                console.log(ethereum.chainId);
+            })
+            
+            ethereum.on('chainChanged', (chainId) => {
+                // Handle the new chain.
+                // Correctly handling chain changes can be complicated.
+                // We recommend reloading the page unless you have good reason not to.
+                // window.location.reload();
+                console.log("Chain: ",chainId);
+                if(chainId == 4){
+                    settWalletConnected(true);
+                    setWeb3(web3);
+                    setAccountAddress(ethereum.selectedAddress);
+                    updateBal();
+                    setChainID(chainId);
+                }else{
+                    switchChain()
+                }
+            });
+            ethereum.on('connect', async (data) => {
+                // Handle the new chain.
+                // Correctly handling chain changes can be complicated.
+                // We recommend reloading the page unless you have good reason not to.
+                // window.location.reload();
+                console.log("Connect",data);
+                // let chainId = data.chainId;
+        
+            });
+            ethereum.on('disconnect', async (data) => {
+                // Handle the new chain.
+                // Correctly handling chain changes can be complicated.
+                // We recommend reloading the page unless you have good reason not to.
+                // window.location.reload();
+                console.log("connection",data);
+                // let chainId = data.chainId;
+        
+            });
+            
+            // if(provider){
+                
+            // }else{
+            //     new Swal("Error","Unable to connect wallet!","error")
+            // }
+        }else{
+            new Swal("Error","Metamask not Installed!","error");
         }
     }
     let sharedState = {
@@ -57,7 +126,9 @@ export function AppWrapper({ children }) {
         walletConnected,
         accountAddress,
         chainID,
-        web3
+        web3,
+        ssnBal,
+        ethBal
     }
 
     return (

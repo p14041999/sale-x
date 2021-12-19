@@ -81,7 +81,7 @@ const MainPanel = ({ children }) => {
                     </h1>
                     <div className='flex-1 bg-white rounded-[5px] h-[32px] px-3 flex justify-center items-center'>
                       <h1 className='font-mont text-[12px] text-custom-primaryColor'>
-                        0000.00
+                        {app.ethBal}
                       </h1>
                     </div>
                   </div>
@@ -91,7 +91,7 @@ const MainPanel = ({ children }) => {
                     </h1>
                     <div className='flex-1 bg-white rounded-[5px] h-[32px] px-3 flex justify-center items-center'>
                       <h1 className='font-mont text-[12px] text-custom-primaryColor'>
-                        0000.00
+                        {app.ssnBal}
                       </h1>
                     </div>
                   </div>
@@ -115,14 +115,14 @@ const MainPanel = ({ children }) => {
           <PanelCard title='SSN Balance' className='bg-[#F5F6F8] border-none'>
             <input
               readOnly
-              value='0000.00'
+              value={app.ethBal}
               className='w-full h-[46px] bg-[#FDFDFD] rounded-[10px] text-[12px] xl:text-sm font-normal font-mont text-custom-primaryColor px-3 py-3 mt-1'
             />
           </PanelCard>
           <PanelCard title='BNB Balance' className='bg-[#F5F6F8] border-none'>
             <input
               readOnly
-              value='0000.00'
+              value={app.ssnBal}
               className='w-full h-[46px] bg-[#FDFDFD] rounded-[10px] text-[12px] xl:text-sm font-normal font-mont text-custom-primaryColor px-3 py-3 mt-1'
             />
           </PanelCard>

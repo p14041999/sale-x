@@ -3,17 +3,17 @@ import { useRouter } from 'next/router';
 // import "sweetalert2/dist"
 
 // custom
-import classes from '../styles/home.module.scss';
-import SelectDropdown from '../components/SelectDropdown/SelectDropdown';
-import { LaunchPadHeader } from '../components/Launchpad/LaunchPad';
+import classes from '../../../styles/home.module.scss';
+import SelectDropdown from '../../../components/SelectDropdown/SelectDropdown';
+import { LaunchPadHeader } from '../../../components/Launchpad/LaunchPad';
 
 // utils
-import { DIDO_DATA, LAUNCH_PAD_CARD, LISTING_OPTIONS } from '../Utils/data';
+import { DIDO_DATA, LAUNCH_PAD_CARD, LISTING_OPTIONS } from '../../../Utils/data';
 
-import {LAUNCH_ABI} from '../../abis/launch-abi.json';
-import {TOKEN_ABI} from '../../abis/token-abi.json'
-import {RINKEBY} from '../../constants/constant.json';
-import { useAppContext } from '../../contexts/AppContext';
+import {LAUNCH_ABI} from '../../../abis/launch-abi.json';
+import {TOKEN_ABI} from '../../../abis/token-abi.json'
+import {RINKEBY} from '../../../constants/constant.json';
+import { useAppContext } from '../../../contexts/AppContext';
 
 const index = () => {
   const router = useRouter();
@@ -26,8 +26,8 @@ const index = () => {
       let id = router.query.id;
       let launchContract = new app.web3.eth.Contract(LAUNCH_ABI,RINKEBY.LAUNCH);
       let data = await launchContract.methods.getAllOngoingICOs().call();
-      // console.log(data);
-      setDataFeed(data)
+      let l = data.filter(x=> x.ico.owner.toLowerCase() == app.accountAddress);
+      setDataFeed(l);
     //   let tokenContract = new app.web3.eth.Contract(TOKEN_ABI,data.ico.data.tokenAddress);
     //   let name_ = await tokenContract.methods.name().call();
     //   let symbol_ = await tokenContract.methods.symbol().call();
@@ -77,7 +77,10 @@ const index = () => {
 
           {/* cards */}
           <div className='pt-3  flex items-center flex-wrap xl:flex-nowrap justify-center gap-6'>
-            {dataFeed?.map((dataIO, i) => (
+            {console.log(dataFeed?.length)}
+            {dataFeed?.length < 1 ?<>
+              <h1>No ICO created by You!!</h1>
+            </>:dataFeed?.map((dataIO, i) => (
               <div className='drop-shadow w-full lg:w-[45%] xl:w-[24.5%] bg-[#FFFFFF] border-[0.1px] border-solid border-[#FAFBFD] lg:border-none rounded-[20px] py-5 px-5'>
                 <div className='flex items-center gap-x-3 border-b-[0.5px] border-solid border-custom-primaryColor pb-4'>
                   <img src={dataIO.ico.data.logoLink} alt='' />

@@ -20,7 +20,7 @@ const index = () => {
   const app = useAppContext();
   const [dataFeed,setDataFeed] = useState(null);
   const [tokenData,setTokenData] = useState(null);
-
+  // const [date,setDate] = useState(0);
   useEffect(async ()=>{
     if(app.chainID == 4 && app.accountAddress != '0x0' && app.web3){
       let id = router.query.id;
@@ -37,6 +37,20 @@ const index = () => {
     //   setTokenData({name:name_,symbol:symbol_,totalSupply,decimals});
     }
   },[app])
+  const getDifference = (tillTime)=>{
+    let _now = Math.round(Date.now()/1000);
+    let diff = tillTime - _now;
+    if(diff < 0){
+      diff = diff * (-1);
+    }
+    // console.log(diff);
+    
+    let hour = Math.floor(diff/3600);
+    diff = diff - (hour * 3600);
+    let min = Math.floor(diff/60);
+    diff = diff - (min*60);
+    return `${hour} Hour : ${min} Min : ${diff} Sec`;
+  }
   return (
     <Fragment>
       <div className='py-7'>
@@ -76,8 +90,35 @@ const index = () => {
           </div>
 
           {/* cards */}
-          <div className='pt-3  flex items-center flex-wrap xl:flex-nowrap justify-center gap-6'>
-            {dataFeed?.map((dataIO, i) => (
+          <div className='pt-3  flex items-center flex-wrap xl:flex-nowrap justify-center lg:justify-start gap-6'>
+            {dataFeed?.map((dataIO, i) => {
+              let date = 0;
+              let data = {
+                success:false,
+                failed:false,
+                start:false,
+                live:false,
+                date:0
+              }
+              let _now = Date.now();
+              if(Number.parseInt(dataIO.ico.data.presaleStartTime)*1000 < _now){
+                if(Number.parseInt(dataIO.ico.data.presaleEndTime)*1000 >= _now){
+                  data.live = true;
+                  setInterval(()=>{
+                    date = getDifference(Number.parseInt(dataIO.ico.data.presaleEndTime));
+                  },1000)
+                }else{
+                  // if()
+                  data.success = true;
+                }
+              }else{
+                data.start = true;
+                setInterval(()=>{
+                  date = getDifference(Number.parseInt(dataIO.ico.data.presaleStartTime));
+                },1000)
+              }
+              return (
+              
               <div className='drop-shadow w-full lg:w-[45%] xl:w-[24.5%] bg-[#FFFFFF] border-[0.1px] border-solid border-[#FAFBFD] lg:border-none rounded-[20px] py-5 px-5'>
                 <div className='flex items-center gap-x-3 border-b-[0.5px] border-solid border-custom-primaryColor pb-4'>
                   <img src={dataIO.ico.data.logoLink} alt='' />
@@ -86,36 +127,36 @@ const index = () => {
                       {dataIO.ico.data.icoName}
                     </h1>
                     <h1 className='font-mont text-[12px] lg:text-[11px] leading-3 pt-1 text-custom-primaryColor'>
-                      Ends on {new Date(Number(dataIO.ico.data.presaleEndTime)*1000).toLocaleString()}
+                      {/* Ends on {new Date(Number(dataIO.ico.data.presaleEndTime)*1000).toLocaleString()} */}
                     </h1>
                   </div>
                   <div
                     className='lg:hidden rounded-md py-2 px-3 ml-auto self-start'
-                    // style={{
-                    //   background: data.start
-                    //     ? '#FFEDB3'
-                    //     : data.success
-                    //     ? '#5BD99B'
-                    //     : data.failed
-                    //     ? '#FFBCBC'
-                    //     : data.live
-                    //     ? '#DEE6FF'
-                    //     : '#FFEDB3',
-                    // }}
+                    style={{
+                      background: data.start
+                        ? '#FFEDB3'
+                        : data.success
+                        ? '#5BD99B'
+                        : data.failed
+                        ? '#FFBCBC'
+                        : data.live
+                        ? '#DEE6FF'
+                        : '#FFEDB3',
+                    }}
                   >
                     <h1
                       className='font-mont text-[10px] font-bold'
-                      // style={{
-                      //   color: data.start
-                      //     ? '#FFA800'
-                      //     : data.success
-                      //     ? '#1A7E1E'
-                      //     : data.failed
-                      //     ? '#FF5656'
-                      //     : data.live
-                      //     ? '#375BD2'
-                      //     : '#FFA800',
-                      // }}
+                      style={{
+                        color: data.start
+                          ? '#FFA800'
+                          : data.success
+                          ? '#1A7E1E'
+                          : data.failed
+                          ? '#FF5656'
+                          : data.live
+                          ? '#375BD2'
+                          : '#FFA800',
+                      }}
                     >
                       {/* {data.btnText} */}
                     </h1>
@@ -173,41 +214,71 @@ const index = () => {
                 <button
                   onClick={() => router.push('/'+dataIO.ico.id)}
                   className={`bg-custom-accentColor min-h-[46px] rounded-[10px] w-full justify-center items-center px-3 py-3 
-                  `}
                   
-                  // data.start
-                  //   ? 'lg:bg-[#FFEDB3]'
-                  //   : data.success
-                  //   ? 'lg:bg-[#5BD99B]'
-                  //   : data.failed
-                  //   ? 'lg:bg-[#FFBCBC]'
-                  //   : data.live
-                  //   ? 'lg:bg-[#DEE6FF]'
-                  //   : 'lg:bg-[#FFEDB3]'
+                  
+                  ${data.start
+                    ? 'lg:bg-[#FFEDB3]'
+                    : data.success
+                    ? 'lg:bg-[#5BD99B]'
+                    : data.failed
+                    ? 'lg:bg-[#FFBCBC]'
+                    : data.live
+                    ? 'lg:bg-[#DEE6FF]'
+                    : 'lg:bg-[#FFEDB3]'}
+                  `}
                 >
                   <h1 className='font-mont text-[12px] font-semibold text-[#000000]'>
-                    <span className='hidden lg:inline'>View Details</span>
-                    <span className=' text-white lg:hidden'>View Details</span>
+                    <span className='hidden lg:inline'>
+                    {data.start
+                      ? 'Pending Start'
+                      : data.success
+                      ? 'Presale Completed'
+                      : data.failed
+                      ? 'Presale Failed'
+                      : data.live
+                      ? 'Presale Live'
+                      : 'Unknown'}
+                    </span>
+                    <span className=' text-white lg:hidden'>
+                    {data.start
+                      ? 'Pending Start'
+                      : data.success
+                      ? 'Presale Completed'
+                      : data.failed
+                      ? 'Presale Failed'
+                      : data.live
+                      ? 'Presale Live'
+                      : 'Unknown'}
+                    </span>
                   </h1>
                 </button>
                 <div className='bg-[#E4E4E4] rounded-[26px] h-1 w-full mt-3 lg:mt-2'></div>
 
                 <div className='flex items-center justify-center w-full pt-4 pb-1'>
                   <h1 className='font-mont font-medium text-[12px] text-[#474646]'>
+                  {data.start
+                    ? 'Starts in'
+                    : data.success
+                    ? 'Presale Completed'
+                    : data.failed
+                    ? 'Presale Failed'
+                    : data.live
+                    ? 'Sale Ends in'
+                    : 'Unknown'}
                     {/* {data.status} */}
-                    {/* {data.date && ( */}
+                    {date!=0 && (
                       <span className='text-custom-accentColor'>
-                        {/* {data.date} */}
+                        &nbsp;{date}
                       </span>
-                    {/* )} */}
+                    )}
                   </h1>
                 </div>
               </div>
-            ))}
+            )})}
           </div>
 
           {/* pagination */}
-          <div className='flex gap-x-8 pr-12 pb-6 lg:pb-0 lg:pr-0 items-center justify-end lg:justify-center pt-8'>
+          <div className='flex gap-x-8 pr-12 pb-6 lg:pb-0 lg:pr-0 items-center justify-end lg:justify-start pt-8'>
             {[...Array(4)].map((_, i) => (
               <button
                 key={i}
