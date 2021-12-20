@@ -45,72 +45,86 @@ export function AppWrapper({ children }) {
     useEffect(async ()=>{
         // if()
         await connectWallet();
+
     },[]);
     const updateBal = async ()=>{
-        let bal = await web3.eth.getBalance(accountAddress);
-        setEthBal(web3.utils.fromWei(bal));
-        let SSNContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,RINKEBY.RINKEBY.TOKEN);
-        let SSNBal = await SSNContract.methods.balanceOf(accountAddress);
-        setSSNBal(web3.utils.fromWei(SSNBal));
+        try{
+            // if(accountAddress != "0x0"){
+                let web3 = new Web3(window.ethereum);
+                console.log("accountrunning")
+                let bal = await web3.eth.getBalance(window.ethereum.selectedAddress);
+                setEthBal(web3.utils.fromWei(bal));
+                console.log(bal)
+                let SSNContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,RINKEBY.RINKEBY.TOKEN);
+                let SSNBal = await SSNContract.methods.balanceOf(window.ethereum.selectedAddress).call();
+                console.log(SSNBal);
+                setSSNBal(web3.utils.fromWei(SSNBal));
+            // }
+        }catch(e){
+            console.log("Error:",e);
+        }
     }
     const connectWallet = async()=>{
         let ethereum = window.ethereum;
         if(ethereum){
-            const accounts = ethereum.request({ method: 'eth_requestAccounts' });;
-            const web3 = new Web3(ethereum);
-            let _chainId = Number.parseInt(ethereum.chainId.replace(/0x/g,''),16);
-            // let _chainId = 
-            settWalletConnected(true);
-            setWeb3(web3);
-            setAccountAddress(ethereum.selectedAddress);
-            if(_chainId == 4){
-                updateBal();
-                setChainID(_chainId);
-            }else{
-                switchChain();
-            }
-            ethereum.on('accountsChanged', (accounts) => {
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });;
+            if(accounts){
+
+                const web3 = new Web3(ethereum);
+                let _chainId = Number.parseInt(ethereum.chainId.replace(/0x/g,''),16);
+                // let _chainId = 
                 settWalletConnected(true);
                 setWeb3(web3);
                 setAccountAddress(ethereum.selectedAddress);
-                updateBal();
-                console.log(ethereum.chainId);
-            })
-            
-            ethereum.on('chainChanged', (chainId) => {
-                // Handle the new chain.
-                // Correctly handling chain changes can be complicated.
-                // We recommend reloading the page unless you have good reason not to.
-                // window.location.reload();
-                console.log("Chain: ",chainId);
-                if(chainId == 4){
+                if(_chainId == 4){
+                    await updateBal();
+                    setChainID(_chainId);
+                }else{
+                    switchChain();
+                }
+                ethereum.on('accountsChanged', async (accounts) => {
                     settWalletConnected(true);
                     setWeb3(web3);
                     setAccountAddress(ethereum.selectedAddress);
-                    updateBal();
-                    setChainID(chainId);
-                }else{
-                    switchChain()
-                }
-            });
-            ethereum.on('connect', async (data) => {
-                // Handle the new chain.
-                // Correctly handling chain changes can be complicated.
-                // We recommend reloading the page unless you have good reason not to.
-                // window.location.reload();
-                console.log("Connect",data);
-                // let chainId = data.chainId;
-        
-            });
-            ethereum.on('disconnect', async (data) => {
-                // Handle the new chain.
-                // Correctly handling chain changes can be complicated.
-                // We recommend reloading the page unless you have good reason not to.
-                // window.location.reload();
-                console.log("connection",data);
-                // let chainId = data.chainId;
-        
-            });
+                    await updateBal();
+                    console.log(ethereum.chainId);
+                })
+                
+                ethereum.on('chainChanged', async (chainId) => {
+                    // Handle the new chain.
+                    // Correctly handling chain changes can be complicated.
+                    // We recommend reloading the page unless you have good reason not to.
+                    // window.location.reload();
+                    console.log("Chain: ",chainId);
+                    if(chainId == 4){
+                        settWalletConnected(true);
+                        setWeb3(web3);
+                        setAccountAddress(ethereum.selectedAddress);
+                        await updateBal();
+                        setChainID(chainId);
+                    }else{
+                        switchChain()
+                    }
+                });
+                ethereum.on('connect', async (data) => {
+                    // Handle the new chain.
+                    // Correctly handling chain changes can be complicated.
+                    // We recommend reloading the page unless you have good reason not to.
+                    // window.location.reload();
+                    console.log("Connect",data);
+                    // let chainId = data.chainId;
+                    
+                });
+                ethereum.on('disconnect', async (data) => {
+                    // Handle the new chain.
+                    // Correctly handling chain changes can be complicated.
+                    // We recommend reloading the page unless you have good reason not to.
+                    // window.location.reload();
+                    console.log("connection",data);
+                    // let chainId = data.chainId;
+                    
+                });
+            }
             
             // if(provider){
                 
