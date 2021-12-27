@@ -2,8 +2,11 @@ import React, { useState, Fragment } from 'react';
 import { primaryColor, accentColor } from '../../styles/variables.module.scss';
 
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
+import { useAppContext } from '../../contexts/AppContext';
 
 export const SaleLockTab = ({ activeTab, children, ...props }) => {
+  const app = useAppContext();
+
   return (
     <Fragment>
       <div className='flex justify-between items-center'>
@@ -113,7 +116,7 @@ export const LockedTokenCard = props => {
 };
 
 export const LockOptionsModal = props => {
-  const { handleToggle, handleLockOptions, activeLockOption } = props;
+  const { handleToggle, handleLockOptions, activeLockOption, handleSubmit, newOwner } = props;
   return (
     <div className='fixed top-0 left-0 w-full h-full bg-[#00000070] flex justify-center items-center'>
       <div className='px-10 py-5 w-[350px] lg:w-[400px] xl:w-[450px] bg-white rounded-[21px]'>
@@ -180,12 +183,13 @@ export const LockOptionsModal = props => {
               </label>
               <input
                 type='text'
+                onChange={newOwner}
                 className='outline-none flex-1 mt-1 h-[46px] pl-5 xl:pl-9 pr-7 bg-custom-activeNavBgColor rounded-[10px] text-[12px] font-mont text-[#474646] w-full'
               />
             </div>
           )}
 
-          <button className='outline-none mt-3 xl:mt-6 justify-center items-center bg-custom-accentColor hover:bg-opacity-90 mx-auto rounded-[10px] w-full xl:w-[284px] h-[46px]'>
+          <button onClick={handleSubmit} className='outline-none mt-3 xl:mt-6 justify-center items-center bg-custom-accentColor hover:bg-opacity-90 mx-auto rounded-[10px] w-full xl:w-[284px] h-[46px]'>
             <h1 className='font-mont font-bold text-[12px] text-white'>
               Lock tokens
             </h1>

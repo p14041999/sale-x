@@ -1,7 +1,8 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
-
+import Web3  from 'web3';
+import {TokenTimelock} from '../../abis/TokenTimelock.json';
 // custom
 import { primaryColor } from '../../styles/variables.module.scss';
 import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
@@ -12,8 +13,14 @@ import {
   SaleLockTab,
 } from '../../components/SaleLock/SaleLock';
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
+import  DateTime from '../../components/Input/Date';
+import { borderRight } from '@mui/system';
+import { useAppContext } from '../../contexts/AppContext';
+import {RINKEBY} from '../../constants/constant.json';
 
 const index = () => {
+  const [dataFeed,setDataFeed] = useState(null);
+
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('Lock Liquidity');
   const [selectedUnlockTime, setSelectedUnlockTime] = useState(null);
@@ -21,11 +28,62 @@ const index = () => {
   const [lockOptionsModal, setLockOptionsModal] = useState(false);
   const [activeLockOption, setActiveLockOption] = useState('self');
   const [proceed, setProceed] = useState(true);
-
+  const app = useAppContext();
   const handleProceed = () => setProceed(false);
   const handleLockOptions = value => setActiveLockOption(value);
   const handleActiveTab = value => setActiveTab(value);
   const handleLockOptionsModal = () => setLockOptionsModal(!lockOptionsModal);
+  let inputSec = 0;
+  function setMax(){
+    lockValue='9000000'
+    document.getElementById('lockAmount').value=lockValue;
+    document.getElementById('lockPreview').value=lockValue;
+
+  }
+  var lockValue= 0;
+  var lockDate="";
+  function setLockValue(e){
+      lockValue=e.target.value;
+      document.getElementById('lockPreview').value=lockValue;
+  }
+
+  function setDate(e){
+
+    lockDate = e.target.value;
+  }
+
+  async function handleSubmit (){
+    let ts = Date.now();
+    let lockSec = new Date(lockDate);
+    inputSec =  Math.round((lockSec.getTime())/1000);
+    // let tokenAddress = "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4";
+    // let web3 = new Web3(window.ethereum);
+    // await window.ethereum.enable();
+    // let as = JSON.parse(TokenTimelock);
+    // const lockContract = new web3.eth.Contract(as.deploy({data: 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99, arguments: [ tokenAddress, app.accountAddress, inputSec]}), app.accountAddress);
+    // let rs = lockContract.methods.releaseTime().call();
+    // console.log(rs);
+
+
+
+  }
+  // useEffect(async ()=>{
+  //   if(app.chainID == 4 && app.accountAddress != '0x0' && app.web3){
+
+  //     let launchContract = new app.web3.eth.Contract(JSON.parse(Userinfo),RINKEBY.LAUNCH);
+  //     let data = await launchContract.methods.UserBalance(app.accountAddress).call();
+  //     console.log(data);
+  //     setDataFeed(data)
+  //   //   let tokenContract = new app.web3.eth.Contract(TOKEN_ABI,data.ico.data.tokenAddress);
+  //   //   let name_ = await tokenContract.methods.name().call();
+  //   //   let symbol_ = await tokenContract.methods.symbol().call();
+  //   //   let totalSupply_ = await tokenContract.methods.totalSupply().call();
+  //   //   let decimals = await tokenContract.methods.decimals().call();
+  //   //   let totalSupply = Number.parseInt(totalSupply_) / (10**Number(decimals));
+  //   //   setTokenData({name:name_,symbol:symbol_,totalSupply,decimals});
+  //   }
+  // });
+  
 
   return (
     <Fragment>
@@ -139,13 +197,17 @@ const index = () => {
                           </div>
                           <div className='w-full bg-[#F6F7FC] h-[46px]  mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
                             <input
-                              id='pair'
+                              id='lockAmount'
                               type='text'
+                              defaultValue= {lockValue}
+                              onChange={setLockValue}
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <h1 className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-accentColor'>
+                            <div onClick={setMax} ><h1
+                            className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-accentColor'>
                               Max
                             </h1>
+                            </div>
                           </div>
                         </div>
                         <div className='pt-8'>
@@ -159,12 +221,14 @@ const index = () => {
                           </div>
                           <div className='w-full bg-[#F6F7FC] h-[46px] mt-2 rounded-[10px] flex items-center justify-between pr-4'>
                             <input
-                              id='pair'
+                              id='date'
                               type='text'
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] rounded-tl-[10px] rounded-bl-[10px] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
+                            
+                            <DateTime onChange={setDate} />
 
-                            <img src='/assets/icons/calendar.svg' alt='' />
+
                             {/* <div className='px-2 flex items-center'>
                               <Select
                                 placeholder='Days'
@@ -198,8 +262,13 @@ const index = () => {
                                 Your Lp Tokens to be Locked:
                               </h1>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                                0.00000/0.00000
+                              <input id="lockPreview" disabled className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
+                              defaultValue={lockValue} 
+                              />
                               </h1>
+                              
+                             
+                             
                             </div>
                             <div className='flex items-center justify-between'>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
@@ -221,9 +290,7 @@ const index = () => {
                               </h1>
                             </button>
                             <button
-                              onClick={() =>
-                                router.push('/sale-lock/token_locker')
-                              }
+                              onClick={handleSubmit}
                               className='outline-none flex-1 h-[46px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
                             >
                               <h1 className='font-mont font-bold text-[12px] xl:text-sm text-custom-accentColor leading-6'>
@@ -252,6 +319,7 @@ const index = () => {
       )}
     </Fragment>
   );
+  
 };
 
 export default index;
@@ -264,6 +332,7 @@ const selectedUnlockStyles = {
   }),
   input: styles => ({
     ...styles,
+    // textAlign: 'right',
     fontSize: '14px',
     fontWeight: 500,
     fontFamily: 'Montserrat',
