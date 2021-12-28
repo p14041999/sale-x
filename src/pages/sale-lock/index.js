@@ -2,7 +2,6 @@ import React, { useState, Fragment, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
 import Web3  from 'web3';
-import {TokenTimelock} from '../../abis/TokenTimelock.json';
 // custom
 import { primaryColor } from '../../styles/variables.module.scss';
 import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
@@ -17,10 +16,11 @@ import  DateTime from '../../components/Input/Date';
 import { borderRight } from '@mui/system';
 import { useAppContext } from '../../contexts/AppContext';
 import {RINKEBY} from '../../constants/constant.json';
+import TOKEN_ABI from '../../abis/token-abi.json';
 
 const index = () => {
   const [dataFeed,setDataFeed] = useState(null);
-
+  var lpLock = require('../../abis/lp-abi.json');
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('Lock Liquidity');
   const [selectedUnlockTime, setSelectedUnlockTime] = useState(null);
@@ -28,28 +28,92 @@ const index = () => {
   const [lockOptionsModal, setLockOptionsModal] = useState(false);
   const [activeLockOption, setActiveLockOption] = useState('self');
   const [proceed, setProceed] = useState(true);
+  const [lpAddress, setLpAddress] = useState("");
+  const [totalSupply, setTotalSupply] = useState(0);
+  const [balance, setBalance] = useState(0);
+  const [symbol, setSymbol] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [lockDate, setLockDate]=useState("");
+
+  const [token0, setToken0] = useState({
+    address : "",
+    name : "",
+  });const [token1, setToken1] = useState({
+    address : "",
+    name : "",
+  });
+  
+
   const app = useAppContext();
-  const handleProceed = () => setProceed(false);
   const handleLockOptions = value => setActiveLockOption(value);
   const handleActiveTab = value => setActiveTab(value);
   const handleLockOptionsModal = () => setLockOptionsModal(!lockOptionsModal);
   let inputSec = 0;
-  function setMax(){
-    lockValue='9000000'
-    document.getElementById('lockAmount').value=lockValue;
-    document.getElementById('lockPreview').value=lockValue;
 
+  const handleProceed = async ()=>{
+    try{
+      var adr=document.getElementById('lpAddress').value;
+      setLpAddress(adr);
+      
+        // if(accountAddress != "0x0"){
+            let web3 = new Web3(window.ethereum);
+            // let bal = await web3.eth.getBalance(window.ethereum.selectedAddress);
+            // setEthBal(web3.utils.fromWei(bal));
+            // console.log(bal)
+            let lpContract = new web3.eth.Contract(lpLock,adr);
+            
+
+            // setToken0({...token0, address: await lpContract.methods.token0().call(), name: await tkContract.methods.name().call() });
+            // setToken1({...token0, address: await lpContract.methods.token1().call(), name: await tkContract.methods.name().call() });
+
+            let token0Adr = await lpContract.methods.token0().call();
+            let tk0Contract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,token0Adr);
+            let token0Name = await tk0Contract.methods.name().call();
+            let token1Adr = await lpContract.methods.token1().call();
+            let tk1Contract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,token1Adr);
+            let token1Name = await tk1Contract.methods.name().call();
+
+            setToken0({...token0, address: token0Adr, name: token0Name});
+            setToken1({...token1, address: token1Adr, name: token1Name});
+
+            setTotalSupply(await lpContract.methods.totalSupply().call());
+            setBalance(await lpContract.methods.balanceOf(app.accountAddress).call());
+            setSymbol(await lpContract.methods.symbol().call());
+
+            setProceed(false);
+            document.getElementById("errAdr").innerHTML = "";
+            // setTokenName(await lpContract.methods.name().call());
+
+        
+            
+       
+          // setSSNBal(web3.utils.fromWei(SSNBal));
+        // }
+
+}catch(er){
+  document.getElementById("errAdr").innerHTML = "Invalid Address";
+  console.log(er)
   }
-  var lockValue= 0;
-  var lockDate="";
-  function setLockValue(e){
-      lockValue=e.target.value;
-      document.getElementById('lockPreview').value=lockValue;
-  }
+}
+
+function handleAmount(e){
+  setAmount(e.target.value);
+
+}
+
+
+async function setMax(){
+
+
+  document.getElementById('lockAmount').value=balance;
+}
+  
 
   function setDate(e){
-
-    lockDate = e.target.value;
+    console.log("inside date "+e.target.value);
+    let lockSec = new Date(e.target.value).getTime();
+    setLockDate(String(new Date(lockSec)));
+    
   }
 
   async function handleSubmit (){
@@ -125,15 +189,22 @@ const index = () => {
                       Enter Nan Pair Address
                     </h1>
                     <input
-                      id='pair'
+                      id='lpAddress'
                       type='text'
                       className='w-full block outline-none px-5 bg-[#F6F7FC] placeholder-[#4A4A4A] h-[46px] mt-2 rounded-[10px] text-[12px] xl:text-sm text-[#000000] font-medium'
                     />
                   </div>
+                  <div className='pt-2'>
                   <div className='bg-[#F1EAFF] mt-2 w-[fit-content] p-2 lg:p-2 rounded-[2px] lg:rounded-[10px]'>
                     <h1 className='font-semibold font-mont text-[8px] lg:text-[12px] text-custom-accentColor'>
                       Token Locker Fees 0.1 nan (Flat Rate)
                     </h1>
+                          </div>
+                            <h1 id="errAdr" className='font-mont text-center font-medium text-[12px] text-[#E32E2E] leading-[18px]'>
+                              
+                            </h1>
+
+                            
                   </div>
 
                   {proceed && (
@@ -157,29 +228,29 @@ const index = () => {
                         </h1>
                         <h1 className='font-medium font-mont text-[12px] xl:text-sm text-[#606060]'>
                           <span className='text-custom-accentColor underline'>
-                            Healthcare Heroes Project
+                            {token0.name}
                           </span>
                           &nbsp; &nbsp; {'-'} &nbsp; &nbsp;
                           <span className='font-normal text-[#606060] underline'>
-                            0x83c0...822e
+                            {token0.address}
                           </span>
                         </h1>
                         <h1 className='font-medium font-mont text-[12px] xl:text-sm text-[#606060]'>
                           <span className='text-custom-accentColor underline'>
-                            Wrapped Ether
+                            {token1.name}
                           </span>
                           &nbsp; &nbsp; {'-'} &nbsp; &nbsp;
                           <span className='font-normal text-[#606060] underline'>
-                            0xC02a...6Cc2
+                            {token1.address}
                           </span>
                         </h1>
                         <h1 className='font-medium font-mont text-[12px] xl:text-sm text-[#606060]'>
                           <span className='text-custom-accentColor underline'>
-                            LP Token Supply
+                          LP Token Supply
                           </span>
                           &nbsp; &nbsp; {'-'} &nbsp; &nbsp;
                           <span className='font-normal text-[#606060] underline'>
-                            334664.0106
+                          {totalSupply}
                           </span>
                         </h1>
                       </div>
@@ -192,15 +263,14 @@ const index = () => {
                               Amount to lock
                             </h1>
                             <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
-                              9,000,000 SAFEMOON
+                              {balance+" "+symbol} 
                             </h1>
                           </div>
                           <div className='w-full bg-[#F6F7FC] h-[46px]  mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
                             <input
                               id='lockAmount'
                               type='text'
-                              defaultValue= {lockValue}
-                              onChange={setLockValue}
+                              onChange={handleAmount}
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
                             <div onClick={setMax} ><h1
@@ -216,7 +286,6 @@ const index = () => {
                               Liquidity Unlock time
                             </h1>
                             <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]'>
-                              November 02, 2021
                             </h1>
                           </div>
                           <div className='w-full bg-[#F6F7FC] h-[46px] mt-2 rounded-[10px] flex items-center justify-between pr-4'>
@@ -254,17 +323,15 @@ const index = () => {
                                 Total Lp Tokens
                               </h1>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                                0.4555322222
+                                {totalSupply}
                               </h1>
                             </div>
                             <div className='flex items-center justify-between'>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
                                 Your Lp Tokens to be Locked:
                               </h1>
-                              <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                              <input id="lockPreview" disabled className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
-                              defaultValue={lockValue} 
-                              />
+                              <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#474646]'>
+                                {amount}/{balance}
                               </h1>
                               
                              
@@ -272,10 +339,10 @@ const index = () => {
                             </div>
                             <div className='flex items-center justify-between'>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#000000]'>
-                                Unlock date:
+                              Unlock date:
                               </h1>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm xl:text-base text-[#474646]'>
-                                25 November, 2025
+                              {lockDate}
                               </h1>
                             </div>
                           </div>
@@ -290,7 +357,6 @@ const index = () => {
                               </h1>
                             </button>
                             <button
-                              onClick={handleSubmit}
                               className='outline-none flex-1 h-[46px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
                             >
                               <h1 className='font-mont font-bold text-[12px] xl:text-sm text-custom-accentColor leading-6'>

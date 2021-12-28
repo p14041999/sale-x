@@ -3,6 +3,7 @@ import Select from 'react-select';
 import Web3  from 'web3';
 import  DateTime from '../../components/Input/Date';
 import { useAppContext } from '../../contexts/AppContext';
+import TOKEN_ABI from '../../abis/token-abi.json';
 import RINKEBY from '../../constants/constant.json';
 // import {TokenTimelock} from '../../abis/TokenTimelock.json';
 
@@ -140,7 +141,7 @@ const newOwner = (e) =>{
 
             let _totalSupply = await lpContract.methods.totalSupply().call();
             let decimals = await lpContract.methods.decimals().call();
-            bal = (Number.parseInt(bal) / (10**Number(decimals)));
+            // bal = (Number.parseInt(bal) / (10**Number(decimals)));
             setBalance(bal);
               console.log(decimals);
 
@@ -271,7 +272,7 @@ const newOwner = (e) =>{
                           </span>
                           &nbsp; &nbsp; {'-'} &nbsp; &nbsp;
                           <span className='font-normal text-[#606060] underline'>
-                            334664.0106
+                            {totalSupply}
                           </span>
                         </h1>
                       </div>
