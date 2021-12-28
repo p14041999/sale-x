@@ -20,6 +20,9 @@ import {
 } from '../../components/SaleLock/SaleLock';
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
 
+export const lockData = [];
+
+
 const index = () => {
   var TokenTimelock = require('../../abis/TokenTimelock.json');
   const app = useAppContext();
@@ -86,10 +89,27 @@ const newOwner = (e) =>{
     // await window.ethereum.enable();
     // let as = JSON.parse(TokenTimelock);
     // let rs = lockContract.methods.releaseTime().call();
-
-
-
   }
+  async function viewLock (){
+    let web3 = new Web3(window.ethereum);
+    let viewContract = new web3.eth.Contract(TokenTimelock, RINKEBY.RINKEBY.LOCK);
+    let length = parseInt(await viewContract.methods.lockLength(app.accountAddress).call());
+    for(let i = 0; i<length; i++){
+      // console.log(length + "here" +i);
+      // let tokena = await viewContract.methods.amount(app.accountAddress, i).call();
+      // console.log('Token:'+tokena);
+      lockData.push({
+        token: await viewContract.methods.token(app.accountAddress, i).call(),
+        beneficiary: await viewContract.methods.beneficiary(app.accountAddress, i).call(),
+        releaseTime: await viewContract.methods.releaseTime(app.accountAddress, i).call(),
+        amount: await viewContract.methods.amount(app.accountAddress, i).call(),
+
+       })
+    }
+
+    console.log(lockData);
+  }
+
 
   function handleVest (e) {
     setVestPeriod(e.value);
@@ -297,7 +317,7 @@ const newOwner = (e) =>{
                               onChange={handleAmount}
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <div onClick={setMax} ><h1
+                            <div onClick={viewLock} ><h1
                             className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-accentColor'>
                               Max
                             </h1>

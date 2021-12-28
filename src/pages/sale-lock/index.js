@@ -371,7 +371,8 @@ async function setMax(){
                 </div>
               </div>
             </div>
-            <ManageLockedTabContent title='Manage Lock Liquidity' />
+            <ManageLockedTabContent 
+            title='Manage Lock Liquidity' />
           </SaleLockTab>
         </div>
       </div>

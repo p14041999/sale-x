@@ -3,6 +3,7 @@ import { primaryColor, accentColor } from '../../styles/variables.module.scss';
 
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
 import { useAppContext } from '../../contexts/AppContext';
+import { lockData } from '../../pages/sale-lock/token_locker';
 
 export const SaleLockTab = ({ activeTab, children, ...props }) => {
   const app = useAppContext();
@@ -54,13 +55,17 @@ export const SaleLockTab = ({ activeTab, children, ...props }) => {
 export const LockedTokenCard = props => {
   const {
     locker,
-    date,
-    time,
+    releaseTime,
     amount,
     token_percent,
-    token_address,
+    token,
     handleFirstView,
   } = props;
+  let rTime = new Date(releaseTime*1000);
+  // console.log(rTime.toDateString());
+  let date = rTime.toDateString();
+  let time = rTime.toTimeString();
+  
   return (
     <div
       onClick={handleFirstView}
@@ -108,7 +113,7 @@ export const LockedTokenCard = props => {
           Token Address:
         </h1>
         <h1 className='font-mont font-bold text-sm xl:text-base text-custom-accentColor pt-1'>
-          {token_address}
+          {token}
         </h1>
       </div>
     </div>
@@ -234,7 +239,7 @@ export const ManageLockedTabContent = props => {
             </button>
           </div>
           <div className='pt-10 lg:pt-7 flex items-center flex-wrap xl:flex-nowrap justify-center gap-6'>
-            {LOCKED_TOKENS.map((data, i) => (
+            {lockData.map((data, i) => (
               <div className='w-full lg:w-[45%] xl:w-[24.5%]'>
                 <LockedTokenCard {...data} handleFirstView={handleFirstView} />
               </div>
