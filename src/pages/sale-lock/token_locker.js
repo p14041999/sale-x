@@ -21,7 +21,7 @@ import {
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
 
 export const lockData = [];
-
+export const tokenData = [];
 
 const index = () => {
   var TokenTimelock = require('../../abis/TokenTimelock.json');
@@ -48,10 +48,17 @@ const index = () => {
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
   const [symbol, setSymbol] = useState("");
+  const [firstView, setFirstView] = useState(true);
+  const [index, setIndex] = useState(null);
+  const [decimals, setDecimals] = useState(0);
+  const [defaultDate, setDefaultDate] = useState("");
+  
+
 const newOwner = (e) =>{
   setDiffOwner(e.target.value);
 }
   const handleSubmit = async(e) => {
+    if(amount<=balance){
     console.log("inside submit")
     let date = new Date(lockDate);
     let inputDate = Math.floor(date.getTime()/1000);
@@ -71,10 +78,10 @@ const newOwner = (e) =>{
     if(vestPeriod<=amount){
       let web3 = new Web3(window.ethereum);
       let lockContract = new web3.eth.Contract(TokenTimelock, RINKEBY.RINKEBY.LOCK);
-      await lockContract.methods.lock(tokenAddress, beneficiary, inputDate, amount, vestPeriod ).send({from: app.accountAddress});
+      await lockContract.methods.lock(tokenAddress, beneficiary, inputDate, String(amount), vestPeriod ).send({from: app.accountAddress});
 
     }
-
+  }
 
     // console.log(TokenTimelock.abi);
     // let lockContract = new web3.eth.Contract(TokenTimelock, RINKEBY.RINKEBY.LOCK).deploy(
@@ -90,26 +97,7 @@ const newOwner = (e) =>{
     // let as = JSON.parse(TokenTimelock);
     // let rs = lockContract.methods.releaseTime().call();
   }
-  async function viewLock (){
-    let web3 = new Web3(window.ethereum);
-    let viewContract = new web3.eth.Contract(TokenTimelock, RINKEBY.RINKEBY.LOCK);
-    let length = parseInt(await viewContract.methods.lockLength(app.accountAddress).call());
-    for(let i = 0; i<length; i++){
-      // console.log(length + "here" +i);
-      // let tokena = await viewContract.methods.amount(app.accountAddress, i).call();
-      // console.log('Token:'+tokena);
-      lockData.push({
-        token: await viewContract.methods.token(app.accountAddress, i).call(),
-        beneficiary: await viewContract.methods.beneficiary(app.accountAddress, i).call(),
-        releaseTime: await viewContract.methods.releaseTime(app.accountAddress, i).call(),
-        amount: await viewContract.methods.amount(app.accountAddress, i).call(),
-
-       })
-    }
-
-    console.log(lockData);
-  }
-
+  
 
   function handleVest (e) {
     setVestPeriod(e.value);
@@ -125,7 +113,7 @@ const newOwner = (e) =>{
     setAddMoreVesting(addMoreVesting - 1);
   };
   function handleAmount(e){
-    setAmount(e.target.value);
+    setAmount(Number.parseInt(e.target.value) * (10**Number(decimals)));
 
   }
 
@@ -140,6 +128,7 @@ const newOwner = (e) =>{
   }
 
   const handleProceed = async ()=>{
+    
     try{
       var adr=document.getElementById('lpAddress').value;
       setTokenAddress(adr);
@@ -160,12 +149,13 @@ const newOwner = (e) =>{
             setProceed(false);
 
             let _totalSupply = await lpContract.methods.totalSupply().call();
-            let decimals = await lpContract.methods.decimals().call();
-            // bal = (Number.parseInt(bal) / (10**Number(decimals)));
+            let dec = await lpContract.methods.decimals().call();
+            setDecimals(dec);
+            // bal = (Number.parseInt(bal) / (10**Number(dec)));
             setBalance(bal);
-              console.log(decimals);
+              console.log(dec);
 
-              _totalSupply = (Number.parseInt(_totalSupply) / (10**Number(decimals)))
+              _totalSupply = (Number.parseInt(_totalSupply) / (10**Number(dec)))
               setTotalSupply(_totalSupply);
               document.getElementById("errAdr").innerHTML = "";
 
@@ -178,19 +168,68 @@ const newOwner = (e) =>{
   document.getElementById("errAdr").innerHTML = "Invalid Address";
   console.log(er)
 }
+let now = new Date();
+  
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  setDefaultDate(now.toISOString().slice(0,16));
   }
-  // async function handleProceed(e) {
 
-  //     let web3 = new Web3(window.ethereum);
-  //     await window.ethereum.enable();
+  const handleFirstView = async(i) =>{
+    setIndex(i);
+    if(i!== null){
 
-  //     let lpContract = new web3.eth.Contract(JSON.parse(TOKEN_ABI.TOKEN_ABI),RINKEBY.RINKEBY.TOKEN);
-  //     let lpBal = await lpContract.methods.balanceOf(tokenAddress).call();
-  //     console.log(lpBal);
-  // }
+      let web3 = new Web3(window.ethereum);
+      let detailsContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,lockData[i].token)
+      tokenData.length= 0;
+      
+      tokenData.push({
+        tokenName: await detailsContract.methods.name().call(),
+        tokenAdr: lockData[i].token,
+        tokenBalance: await detailsContract.methods.totalSupply().call(),
+        lockedTokens: lockData[i].amount,
+        unlockDate: lockData[i].releaseTime,
+      })
+      setFirstView(false);
 
+    }
+    else{
+      setFirstView(true);
+    }
+    
+  }
 
-  const handleActiveTab = value => setActiveTab(value);
+  const handleActiveTab = async (value) => {
+    if(value!=="Lock Token"){
+      let web3 = new Web3(window.ethereum);
+      let viewContract = new web3.eth.Contract(TokenTimelock, RINKEBY.RINKEBY.LOCK);
+      let length = parseInt(await viewContract.methods.lockLength(app.accountAddress).call());
+      
+      if(lockData.length!=length){
+        
+        lockData.length = 0;
+        for(let i = 0; i<length; i++){
+          let tokenAdr = await viewContract.methods.token(app.accountAddress, i).call();
+          let lpContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,tokenAdr);
+        // console.log(length + "here" +i);
+        // let tokena = await viewContract.methods.amount(app.accountAddress, i).call();
+        // console.log('Token:'+tokena);
+          lockData.push({
+          token: tokenAdr,
+          beneficiary: await viewContract.methods.beneficiary(app.accountAddress, i).call(),
+          releaseTime: await viewContract.methods.releaseTime(app.accountAddress, i).call(),
+          amount: Number.parseInt(await viewContract.methods.amount(app.accountAddress, i).call())/(10**Number(Number.parseInt(await lpContract.methods.decimals().call()))),
+          index: i
+          
+        })
+        
+      }
+    }
+    handleFirstView(null);
+    console.log(lockData);
+    
+  }
+  setActiveTab(value);
+  }
   function handleLockOptionsModal () {
     setLockOptionsModal(!lockOptionsModal);
 
@@ -241,7 +280,7 @@ const newOwner = (e) =>{
                       htmlFor='pair'
                       className='font-mont text-left font-medium text-[12px] lg:text-sm  text-[#474646]'
                     >
-                      Enter Nan Pair Address
+                      Enter Token Address
                     </h1>
                     <input
                       id='lpAddress'
@@ -305,7 +344,7 @@ const newOwner = (e) =>{
                               Amount to lock
                             </h1>
                             <h1 className='font-mont text-left font-medium text-[10px] lg:text-[12px] text-[#A9A9A9]' id='maxlockAmount'>
-{balance} {" "+symbol}
+{Number.parseInt(balance) / (10**Number(decimals))} {" "+symbol}
                             </h1>
                           </div>
                           <div className='w-full bg-[#F6F7FC] h-[46px]  mt-2 rounded-[10px] flex items-center justify-between overflow-hidden'>
@@ -317,7 +356,7 @@ const newOwner = (e) =>{
                               onChange={handleAmount}
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <div onClick={viewLock} ><h1
+                            <div onClick={setMax} ><h1
                             className='font-mont pr-4 font-bold text-[12px] xl:text-sm text-custom-accentColor'>
                               Max
                             </h1>
@@ -338,7 +377,9 @@ const newOwner = (e) =>{
                               type='text'
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] rounded-tl-[10px] rounded-bl-[10px] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
-                            <DateTime onChange={setDate} />
+                            <DateTime 
+                            defaultValue={defaultDate}
+                            onChange={setDate} />
 
                           </div>
 
@@ -550,7 +591,7 @@ const newOwner = (e) =>{
                                 Your Lp Tokens to be Locked:
                               </h1>
                               <h1 className='font-mont font-medium text-[12px] lg:text-sm  text-[#474646]'>
-                                {amount}/{balance}
+                                {Number.parseInt(amount) / (10**Number(decimals))}/{Number.parseInt(balance) / (10**Number(decimals))}
                               </h1>
                             </div>
                             <div className='flex items-center justify-between'>
@@ -595,7 +636,9 @@ const newOwner = (e) =>{
               </div>
             </div>
 
-            <ManageLockedTabContent title='Manage Locked Tokens' />
+            <ManageLockedTabContent title='Manage Locked Tokens'
+            firstView = {firstView}
+            handleFirstView= {handleFirstView} />
           </SaleLockTab>
         </div>
       </div>

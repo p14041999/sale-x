@@ -8,7 +8,7 @@ import { LaunchPadHeader } from '../../components/Launchpad/LaunchPad';
 import {
   LockedTokenCard,
   LockOptionsModal,
-  ManageLockedTabContent,
+  LpManageLockedTabContent,
   SaleLockTab,
 } from '../../components/SaleLock/SaleLock';
 import { LOCKED_TOKENS, OWNER_LOCKED_TOKEN } from '../../Utils/data';
@@ -17,8 +17,26 @@ import { borderRight } from '@mui/system';
 import { useAppContext } from '../../contexts/AppContext';
 import {RINKEBY} from '../../constants/constant.json';
 import TOKEN_ABI from '../../abis/token-abi.json';
-
+import ShortUniqueId from 'short-unique-id';
+export const lpData = [{
+  lpName: 'await detailsContract.methods.name().call()',
+  token0: 'token0',
+  token1: 'token1',
+  lpAdr: 'lpLockData[i].token',
+  lpBalance: 'await detailsContract.methods.totalSupply().call()',
+  lockedAmount: 'lpLockData[i].amount',
+  unlockDate: 'lpLockData[i].releaseTime',
+}];
+export const lpLockData = [{
+  token: 'tokenAdr',
+  beneficiary: 'await viewContract.methods.beneficiary(app.accountAddress, i).call()',
+  releaseTime: 'await viewContract.methods.releaseTime(app.accountAddress, i).call()',
+  amount: 'Number.parseInt(await viewContract.methods.amount(app.accountAddress, i).call())/(10**Number(Number.parseInt(await lpContract.methods.decimals().call())))',
+  index: 'i'
+}];
 const index = () => {
+  var LpTimelock = require('../../abis/LpTimelock.json');
+
   const [dataFeed,setDataFeed] = useState(null);
   var lpLock = require('../../abis/lp-abi.json');
   const router = useRouter();
@@ -34,6 +52,11 @@ const index = () => {
   const [symbol, setSymbol] = useState("");
   const [amount, setAmount] = useState(0);
   const [lockDate, setLockDate]=useState("");
+  const [decimals, setDecimals] = useState(0);
+  const [inputSec, setInputSec] = useState(0);
+  const [index, setIndex] = useState(null);
+  const [firstView, setFirstView] = useState(true);
+  const [defaultDate, setDefaultDate] = useState("");
 
   const [token0, setToken0] = useState({
     address : "",
@@ -46,9 +69,55 @@ const index = () => {
 
   const app = useAppContext();
   const handleLockOptions = value => setActiveLockOption(value);
-  const handleActiveTab = value => setActiveTab(value);
   const handleLockOptionsModal = () => setLockOptionsModal(!lockOptionsModal);
-  let inputSec = 0;
+
+  const handleSubmit = async(e) => {
+    if(amount<=balance){
+    console.log("inside submit")
+    let date = new Date(lockDate);
+    let inputDate = Math.floor(date.getTime()/1000);
+    setInputSec(inputDate);
+
+    console.log(inputDate);
+    let beneficiary = "";
+    if(diffOwner!==""){
+      beneficiary = diffOwner;
+    }
+    else{
+      beneficiary = app.accountAddress;
+    }
+    console.log("diff"+diffOwner);
+    console.log("token "+lpAddress);
+    const uid = new ShortUniqueId({ length: 8 });
+    let web3 = new Web3(window.ethereum);
+    let lockContract = new web3.eth.Contract(LpTimelock, RINKEBY.RINKEBY.LPLOCK);
+    await lockContract.methods.lock(lpAddress, token0, token1, Date.now()+"_"+uid, beneficiary, inputDate, String(amount) ).send({from: app.accountAddress});
+    
+  }
+}
+  const handleApprove = async(e) => {
+    if(amount<=balance){
+    console.log("inside submit")
+    let date = new Date(lockDate);
+    let inputDate = Math.floor(date.getTime()/1000);
+    setInputSec(inputDate);
+
+    console.log(inputDate);
+    let beneficiary = "";
+    if(diffOwner!==""){
+      beneficiary = diffOwner;
+    }
+    else{
+      beneficiary = app.accountAddress;
+    }
+    console.log("diff"+diffOwner);
+    console.log("token "+lpAddress);
+    let web3 = new Web3(window.ethereum);
+    let lockContract = new web3.eth.Contract(LpTimelock, RINKEBY.RINKEBY.LPLOCK);
+    await lockContract.methods.lpApprove(lpAddress, beneficiary, String(amount)).call();
+    }
+  }
+
 
   const handleProceed = async ()=>{
     try{
@@ -94,6 +163,10 @@ const index = () => {
   document.getElementById("errAdr").innerHTML = "Invalid Address";
   console.log(er)
   }
+  let now = new Date();
+  
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  setDefaultDate(now.toISOString().slice(0,16));
 }
 
 function handleAmount(e){
@@ -116,20 +189,63 @@ async function setMax(){
     
   }
 
-  async function handleSubmit (){
-    let ts = Date.now();
-    let lockSec = new Date(lockDate);
-    inputSec =  Math.round((lockSec.getTime())/1000);
-    // let tokenAddress = "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4";
-    // let web3 = new Web3(window.ethereum);
-    // await window.ethereum.enable();
-    // let as = JSON.parse(TokenTimelock);
-    // const lockContract = new web3.eth.Contract(as.deploy({data: 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99, arguments: [ tokenAddress, app.accountAddress, inputSec]}), app.accountAddress);
-    // let rs = lockContract.methods.releaseTime().call();
-    // console.log(rs);
+  
+  const handleFirstView = async(i) =>{
+    setIndex(i);
+    if(i!== null){
 
+      // let web3 = new Web3(window.ethereum);
+      // let detailsContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,lpLockData[i].token)
+      // lpData.length= 0;
+      
+      // lpData.push({
+      //   lpName: await detailsContract.methods.name().call(),
+      //   token0: token0,
+      //   token1: token1,
+      //   lpAdr: lpLockData[i].token,
+      //   lpBalance: await detailsContract.methods.totalSupply().call(),
+      //   lockedAmount: lpLockData[i].amount,
+      //   unlockDate: lpLockData[i].releaseTime,
+      // })
+      setFirstView(false);
 
-
+    }
+    else{
+      setFirstView(true);
+    }
+    
+  }
+  const handleActiveTab = async (value) => {
+  //   if(value!=="Lock Token"){
+  //     let web3 = new Web3(window.ethereum);
+  //     let viewContract = new web3.eth.Contract(LpTimelock, RINKEBY.RINKEBY.LOCK);
+  //     let length = parseInt(await viewContract.methods.lockLength(app.accountAddress).call());
+      
+  //     if(lpLockData.length!=length){
+        
+  //       lpLockData.length = 0;
+  //       for(let i = 0; i<length; i++){
+  //         let tokenAdr = await viewContract.methods.token(app.accountAddress, i).call();
+  //         let lpContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI,tokenAdr);
+  //       // console.log(length + "here" +i);
+  //       // let tokena = await viewContract.methods.amount(app.accountAddress, i).call();
+  //       // console.log('Token:'+tokena);
+  //         lpLockData.push({
+  //         token: tokenAdr,
+  //         beneficiary: await viewContract.methods.beneficiary(app.accountAddress, i).call(),
+  //         releaseTime: await viewContract.methods.releaseTime(app.accountAddress, i).call(),
+  //         amount: Number.parseInt(await viewContract.methods.amount(app.accountAddress, i).call())/(10**Number(Number.parseInt(await lpContract.methods.decimals().call()))),
+  //         index: i
+          
+  //       })
+        
+  //     }
+  //   }
+  //   console.log(lpLockData);
+    
+  // }
+  handleFirstView(null);
+  setActiveTab(value);
   }
   // useEffect(async ()=>{
   //   if(app.chainID == 4 && app.accountAddress != '0x0' && app.web3){
@@ -138,16 +254,20 @@ async function setMax(){
   //     let data = await launchContract.methods.UserBalance(app.accountAddress).call();
   //     console.log(data);
   //     setDataFeed(data)
-  //   //   let tokenContract = new app.web3.eth.Contract(TOKEN_ABI,data.ico.data.tokenAddress);
+  //   //   let tokenContract = new app.web3.eth.Contract(TOKEN_ABI,data.ico.data.lpAddress);
   //   //   let name_ = await tokenContract.methods.name().call();
   //   //   let symbol_ = await tokenContract.methods.symbol().call();
   //   //   let totalSupply_ = await tokenContract.methods.totalSupply().call();
   //   //   let decimals = await tokenContract.methods.decimals().call();
   //   //   let totalSupply = Number.parseInt(totalSupply_) / (10**Number(decimals));
-  //   //   setTokenData({name:name_,symbol:symbol_,totalSupply,decimals});
+  //   //   setlpData({name:name_,symbol:symbol_,totalSupply,decimals});
   //   }
   // });
-  
+  const [diffOwner, setDiffOwner]=useState("");
+
+  const newOwner = (e) =>{
+    setDiffOwner(e.target.value);
+  }
 
   return (
     <Fragment>
@@ -186,7 +306,7 @@ async function setMax(){
                       htmlFor='pair'
                       className='font-mont text-left font-medium text-[12px] lg:text-sm  text-[#474646]'
                     >
-                      Enter Nan Pair Address
+                      Enter Pair Address
                     </h1>
                     <input
                       id='lpAddress'
@@ -295,7 +415,9 @@ async function setMax(){
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] rounded-tl-[10px] rounded-bl-[10px] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
                             
-                            <DateTime onChange={setDate} />
+                            <DateTime 
+                            defaultValue={defaultDate}
+                            onChange={setDate} />
 
 
                             {/* <div className='px-2 flex items-center'>
@@ -349,7 +471,7 @@ async function setMax(){
 
                           <div className='flex items-center gap-x-8 pt-6'>
                             <button
-                              onClick={handleLockOptionsModal}
+                              onClick={handleApprove}
                               className='outline-none flex-1 h-[46px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
                             >
                               <h1 className='font-mont font-bold text-[12px] xl:text-sm text-white leading-6'>
@@ -358,6 +480,7 @@ async function setMax(){
                             </button>
                             <button
                               className='outline-none flex-1 h-[46px] py-3 px-3 border border-solid border-custom-accentColor rounded-[10px] flex justify-center items-center bg-white'
+                              onClick={handleSubmit}
                             >
                               <h1 className='font-mont font-bold text-[12px] xl:text-sm text-custom-accentColor leading-6'>
                                 Submit
@@ -371,8 +494,10 @@ async function setMax(){
                 </div>
               </div>
             </div>
-            <ManageLockedTabContent 
-            title='Manage Lock Liquidity' />
+            <LpManageLockedTabContent 
+            title='Manage Lock Liquidity'
+            handleFirstView={handleFirstView}
+            firstView ={firstView} />
           </SaleLockTab>
         </div>
       </div>
@@ -382,6 +507,7 @@ async function setMax(){
           handleToggle={handleLockOptionsModal}
           activeLockOption={activeLockOption}
           handleLockOptions={handleLockOptions}
+
         />
       )}
     </Fragment>
