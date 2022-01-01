@@ -6,7 +6,8 @@ import { useAppContext } from '../../contexts/AppContext';
 import TOKEN_ABI from '../../abis/token-abi.json';
 import RINKEBY from '../../constants/constant.json';
 // import {TokenTimelock} from '../../abis/TokenTimelock.json';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 // custom
@@ -25,6 +26,8 @@ export const tokenData = [];
 
 const index = () => {
   var TokenTimelock = require('../../abis/TokenTimelock.json');
+  var tokLock = require('../../abis/tokLock.json');
+
   const app = useAppContext();
   const [activeTab, setActiveTab] = useState('Lock Token');
   const [selectedUnlockTime, setSelectedUnlockTime] = useState(null);
@@ -52,19 +55,44 @@ const index = () => {
   const [index, setIndex] = useState(null);
   const [decimals, setDecimals] = useState(0);
   const [defaultDate, setDefaultDate] = useState("");
-  
+ 
+  const [feesApproved, setFeesApproved] = useState(false);
+  const [amountApproved, setAmountApproved] =useState(false);
 
+  const handleApprove = async(e) => {
+    if(amount<=balance){
+    // console.log("inside submit")
+    // let date = new Date(lockDate);
+    // let inputDate = Math.floor(date.getTime()/1000);
+    // setInputSec(inputDate);
+
+    // console.log(inputDate);
+    let beneficiary = "";
+    if(diffOwner!==""){
+      beneficiary = diffOwner;
+    }
+    else{
+      beneficiary = app.accountAddress;
+    }
+    console.log("diff"+diffOwner);
+    console.log("token "+lpAddress);
+    let web3 = new Web3(window.ethereum);
+    let lockContract = new web3.eth.Contract(TOKEN_ABI.TOKEN_ABI, lpAddress);
+    await lockContract.methods.approve(beneficiary, String(amount)).call();
+    }
+  }
+  
 const newOwner = (e) =>{
   setDiffOwner(e.target.value);
 }
-  const handleSubmit = async(e) => {
+const handleSubmit = async(e) => {
     if(amount<=balance){
     console.log("inside submit")
     let date = new Date(lockDate);
     let inputDate = Math.floor(date.getTime()/1000);
     setInputSec(inputDate);
 
-    console.log(inputDate);
+    console.log("date"+inputDate);
     let beneficiary = "";
     if(diffOwner!==""){
       beneficiary = diffOwner;
@@ -74,11 +102,21 @@ const newOwner = (e) =>{
     }
     console.log("diff"+diffOwner);
     console.log("token "+tokenAddress);
-    
+    document.getElementById("errDate").innerHTML = "";
+
     if(vestPeriod<=amount){
       let web3 = new Web3(window.ethereum);
       let lockContract = new web3.eth.Contract(TokenTimelock, RINKEBY.RINKEBY.LOCK);
-      await lockContract.methods.lock(tokenAddress, beneficiary, inputDate, String(amount), vestPeriod ).send({from: app.accountAddress});
+
+      try{
+
+        console.log("amount:"+amount);
+        await lockContract.methods.lock(tokenAddress, beneficiary, inputDate, amount.toString(), vestPeriod ).send({from: app.accountAddress});
+
+    }catch(er){
+        document.getElementById("errDate").innerHTML = "Invalid Date";
+        console.log(er)
+    } 
 
     }
   }
@@ -123,12 +161,14 @@ const newOwner = (e) =>{
     setLockDate(String(new Date(lockSec)));
     
   }
-  const handleLockOptions = value => {
+  const handleLockOptions = async(value) => {
+    
     setActiveLockOption(value);
   }
 
   const handleProceed = async ()=>{
-    
+    setInputSec(new Date(defaultDate).getTime());
+    // setLockDate(parseInt(new Date(defaultDate).getTime()));
     try{
       var adr=document.getElementById('lpAddress').value;
       setTokenAddress(adr);
@@ -168,8 +208,9 @@ const newOwner = (e) =>{
   document.getElementById("errAdr").innerHTML = "Invalid Address";
   console.log(er)
 }
-let now = new Date();
-  
+let now = parseInt(Date.now())+ 600000;
+  now = new Date(now);
+  setLockDate(String(new Date(now)));
   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
   setDefaultDate(now.toISOString().slice(0,16));
   }
@@ -230,9 +271,49 @@ let now = new Date();
   }
   setActiveTab(value);
   }
-  function handleLockOptionsModal () {
+  function handleToggle(){
     setLockOptionsModal(!lockOptionsModal);
+  }
+  async function handleLockOptionsModal () {
+    let web3 = new Web3(window.ethereum);
 
+    let lockContract = new web3.eth.Contract(TokenTimelock, RINKEBY.RINKEBY.LOCK)
+    let tokContract = new web3.eth.Contract(tokLock, tokenAddress);
+    let ssnContract = new web3.eth.Contract(tokLock, RINKEBY.RINKEBY.TOKEN);
+    let totalFee = parseInt(await lockContract.methods.totalfee().call());
+    let allowance = parseInt(await ssnContract.methods.allowance(app.accountAddress, RINKEBY.RINKEBY.LOCK).call());
+    if(allowance<totalFee){
+
+       ssnContract.methods.approve(RINKEBY.RINKEBY.LOCK, "1000000000000000000000000000000000").send({from: app.accountAddress}).once('confirmation', () => {
+        setFeesApproved(true);
+       })
+    }
+    else{
+      setFeesApproved(true);
+    }
+    // await tokContract.methods.approve(adminWalletAddress, String(adminFees)).send({from: app.accountAddress});
+
+    //     await tokContract.methods.approve(dead, String(burnFee)).send({from: app.accountAddress});
+    let tokenAllowance = parseInt(await tokContract.methods.allowance(app.accountAddress, RINKEBY.RINKEBY.LOCK).call());
+    if(amount>tokenAllowance){
+      tokContract.methods.approve(RINKEBY.RINKEBY.LOCK, "1000000000000000000000000000000000").send({from: app.accountAddress}).once('confirmation', ()=>{
+        setAmountApproved(true);
+
+      })
+    }
+    else{
+      setAmountApproved(true);
+    }
+    toast.success('Transaction Approved', {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+      document.getElementById('approve').innerHTML = "View Lock Options";
   }
   const handleTokenRelease = value => setTokenRelease(value);
 
@@ -240,7 +321,7 @@ let now = new Date();
 
     console.log(inputSec);
 
-    document.getElementById('lockAmount').value=balance;
+    document.getElementById('lockAmount').value=Number.parseInt(balance) / (10**Number(decimals));
   }
 
   return (
@@ -353,6 +434,7 @@ let now = new Date();
                               type='number'
                               max={balance}
                               min={0}
+                              defaultValue = {0}
                               onChange={handleAmount}
                               className='outline-none w-full bg-[#F6F7FC] flex-1 px-5  placeholder-[#4A4A4A] h-full text-[12px] xl:text-sm text-[#000000] font-medium'
                             />
@@ -382,6 +464,11 @@ let now = new Date();
                             onChange={setDate} />
 
                           </div>
+                            <div className='pt-2'>
+                            <h1 id="errDate" className='font-mont text-center font-medium text-[12px] text-[#E32E2E] leading-[18px]'>
+                              
+                            </h1>
+                            </div>
 
                           {/* method of token release */}
                           <div className='pt-8'>
@@ -607,13 +694,36 @@ let now = new Date();
 
                           <div className='flex items-center gap-x-8 pt-6'>
                             <button
-                              onClick={handleLockOptionsModal}
+                              onClick={async (e)=>{
+                                if(feesApproved && amountApproved){
+      
+                                  setLockOptionsModal(!lockOptionsModal);
+                                                                
+                                }
+                                else{
+                                  await handleLockOptionsModal()
+                                  
+                                }
+                            
+                              }}
+
                               className='outline-none flex-1 h-[46px] py-3 px-3 bg-custom-accentColor rounded-[10px] flex justify-center items-center'
                             >
-                              <h1 className='font-mont font-bold text-[12px] xl:text-sm text-white leading-6'>
+                              <h1 id="approve" className='font-mont font-bold text-[12px] xl:text-sm text-white leading-6'>
                                 Approve
                               </h1>
                             </button>
+                            <ToastContainer
+                                    position="top-center"
+                                    autoClose={4000}
+                                    hideProgressBar={false}
+                                    newestOnTop={false}
+                                    closeOnClick
+                                    rtl={false}
+                                    pauseOnFocusLoss
+                                    draggable
+                                    pauseOnHover
+                                  />  
                           </div>
 
                           <div className='pt-7'>
@@ -645,7 +755,7 @@ let now = new Date();
 
       {lockOptionsModal && (
         <LockOptionsModal
-          handleToggle={handleLockOptionsModal}
+          handleToggle={handleToggle}
           activeLockOption={activeLockOption}
           handleLockOptions={handleLockOptions}
           handleSubmit={handleSubmit}

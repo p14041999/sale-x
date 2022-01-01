@@ -1,5 +1,34 @@
 [
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_adminAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_stakingAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "DEAD",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "ERC20adr",
 		"outputs": [
@@ -33,16 +62,6 @@
 				"type": "address"
 			},
 			{
-				"internalType": "contract IERC20",
-				"name": "toke0",
-				"type": "address"
-			},
-			{
-				"internalType": "contract IERC20",
-				"name": "toke1",
-				"type": "address"
-			},
-			{
 				"internalType": "uint256",
 				"name": "id",
 				"type": "uint256"
@@ -61,6 +80,24 @@
 				"internalType": "uint256",
 				"name": "Amount",
 				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "status",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "SSN",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -87,6 +124,19 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "adminWalletFee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -141,6 +191,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "burnFee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -168,21 +231,6 @@
 			},
 			{
 				"internalType": "address",
-				"name": "token0_",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "token1_",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id_",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
 				"name": "beneficiary_",
 				"type": "address"
 			},
@@ -199,7 +247,7 @@
 		],
 		"name": "lock",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -259,7 +307,7 @@
 		],
 		"name": "release",
 		"outputs": [],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -300,6 +348,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "stakingPoolFee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -321,6 +382,55 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalfee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_newAdminWallet",
+				"type": "address"
+			}
+		],
+		"name": "updateAdminWalletAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "adminWalletFee_",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "stakingPoolFee_",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "burnFee_",
+				"type": "uint256"
+			}
+		],
+		"name": "updateFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

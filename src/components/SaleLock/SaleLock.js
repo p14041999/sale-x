@@ -567,7 +567,7 @@ export const LpManageLockedTabContent = props => {
                       className='w-10 xl:w-auto'
                     /> */}
                     <h1 className='font-semibold font-mont text-sm xl:text-2xl text-custom-primaryColor leading-[29px] uppercase'>
-                      {lpData[0].token0.name}/{lpData[0].token1.name}
+                      {lpData[0].token0Name}/{lpData[0].token1Name}
                     </h1>
                   </div>
                   <h1 className='font-mont font-semibold text-[10px] xl:text-sm text-custom-accentColor underline'>
@@ -639,14 +639,14 @@ export const LpManageLockedTabContent = props => {
 
               <div className='lg:hidden pt-6 lg:pt-0 flex items-center justify-between gap-x-5 xl:gap-x-10 pl-4 pr-4'>
                 <h1 className=' font-mont font-semibold text-[12px] lg:text-[10px] xl:text-sm text-custom-accentColor whitespace-nowrap underline'>
-                  {lpData[0].token0.adress+" Address"}
+                  {lpData[0].token0Adr+" Address"}
                 </h1>
                 </div>
                 <div
                 onClick={()=> window.open("https://rinkeby.etherscan.io/address/"+lpDate[0].lpAdr, "_blank")}
                 className='lg:hidden pt-6 lg:pt-0 flex items-center justify-between gap-x-5 xl:gap-x-10 pl-4 pr-4'>
                 <h1 className='font-mont font-semibold whitespace-nowrap text-[12px] lg:text-[10px] xl:text-sm text-custom-accentColor underline'>
-                {lpData[0].token0.adress+" Address"}
+                {lpData[0].token1Adr+" Address"}
 
                 </h1>
               </div>
